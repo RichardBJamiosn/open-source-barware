@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Gear, GearDivider, CocktailIcon } from "@/components/SteampunkElements";
 
@@ -46,7 +47,17 @@ export default function AboutPage() {
                 How It Started
               </span>
             </div>
-            <CocktailIcon className="mt-4 opacity-40" />
+            <div className="relative mt-6 rounded-sm overflow-hidden panel">
+              <div className="aspect-[3/4] relative">
+                <Image
+                  src="/images/copper-glass.png"
+                  alt="Copper bar tools and glassware on a slate surface"
+                  fill
+                  className="object-cover object-center"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-bg/60 via-transparent to-bg/20" />
+              </div>
+            </div>
           </div>
           <div className="md:col-span-7 md:col-start-6">
             <div className="space-y-5 text-text-muted leading-relaxed text-lg">

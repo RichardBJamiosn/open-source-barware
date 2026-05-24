@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Gear, GearDivider } from "@/components/SteampunkElements";
 
@@ -12,7 +13,15 @@ export default function ResourcesPage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden">
+      <section className="relative min-h-[50vh] flex items-center overflow-hidden grain">
+        <Image
+          src="/images/shelf.png"
+          alt="Backbar shelf lined with bottles"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/70 to-bg/40" />
         <div className="absolute right-[-40px] top-[-20px] text-copper">
           <Gear size={160} className="gear-spin opacity-12" />
         </div>

@@ -195,9 +195,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FIELD TESTED ── compact mention */}
-      <section className="bg-bg-panel border-y border-gear-border">
-        <div className="max-w-3xl mx-auto px-6 py-12 flex items-center gap-6">
+      {/* ── FIELD TESTED ── image-backed mention */}
+      <section className="relative bg-bg-panel border-y border-gear-border overflow-hidden">
+        <Image
+          src="/images/hands.png"
+          alt="Bartender writing inventory counts in a notebook at the bar"
+          fill
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/95 via-bg/75 to-bg/50" />
+        <div className="relative z-10 max-w-3xl mx-auto px-6 py-16 flex items-center gap-6">
           <div className="h-12 w-[2px] bg-copper/40 shrink-0" />
           <p className="text-text-muted leading-relaxed">
             Field-tested at <span className="text-cream font-medium">Agave &amp; Rye</span> in

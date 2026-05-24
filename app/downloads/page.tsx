@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { Gear, GearDivider, BottleIcon } from "@/components/SteampunkElements";
 
@@ -12,7 +13,15 @@ export default function DownloadsPage() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden">
+      <section className="relative min-h-[50vh] flex items-center overflow-hidden grain">
+        <Image
+          src="/images/bartop.png"
+          alt="Overhead view of dark wood bar top with copper jigger"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/70 to-bg/40" />
         <div className="absolute right-[-40px] top-[-20px] text-copper">
           <Gear size={160} className="gear-spin opacity-12" />
         </div>
