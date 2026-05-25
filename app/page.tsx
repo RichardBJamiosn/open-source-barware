@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden grain">
+      <section className="relative min-h-[50vh] flex items-center overflow-hidden grain">
         {/* Hero photo */}
         <Image
           src="/images/hero.png"
@@ -39,7 +39,7 @@ export default function Home() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-24">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
           <div className="max-w-2xl">
             {/* Pipe accent */}
             <div className="flex items-center gap-3 mb-8">
@@ -96,7 +96,7 @@ export default function Home() {
       </section>
 
       {/* ── THE PROBLEM ── */}
-      <section className="max-w-6xl mx-auto px-6 py-24 md:py-32">
+      <section className="max-w-6xl mx-auto px-6 py-12 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
           <div className="md:col-span-4">
             <div className="flex items-center gap-3 mb-4">
@@ -137,7 +137,7 @@ export default function Home() {
       <GearDivider />
 
       {/* ── WHAT WE BUILT ── tool cards with steampunk panels */}
-      <section className="max-w-6xl mx-auto px-6 py-20 md:py-28">
+      <section className="max-w-6xl mx-auto px-6 py-12 md:py-16">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-8 h-[1px] bg-copper/40" />
           <span className="text-[10px] tracking-[0.3em] uppercase text-text-light">
@@ -214,7 +214,7 @@ export default function Home() {
       </section>
 
       {/* ── PULL QUOTE ── */}
-      <section className="max-w-3xl mx-auto px-6 py-20 md:py-28">
+      <section className="max-w-3xl mx-auto px-6 py-12 md:py-16">
         <blockquote className="pull-quote">
           &ldquo;If you&rsquo;re going to build inventory tools, you better do
           it standing behind a bar at 2am with a clipboard. Otherwise
@@ -234,7 +234,7 @@ export default function Home() {
           <Gear size={100} className="gear-spin-slow opacity-15" />
         </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
+        <div className="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-16 text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-copper/40" />
             <span className="text-[10px] tracking-[0.3em] uppercase text-text-light">

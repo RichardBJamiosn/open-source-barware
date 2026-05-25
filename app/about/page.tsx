@@ -18,7 +18,7 @@ export default function AboutPage() {
           <Gear size={200} className="gear-spin opacity-15" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-12 md:pt-28 md:pb-16">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-12 pb-8 md:pt-16 md:pb-10">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-8 h-[1px] bg-copper/40" />
             <span className="text-[10px] tracking-[0.3em] uppercase text-text-light">
@@ -38,7 +38,7 @@ export default function AboutPage() {
       <GearDivider />
 
       {/* ── THE STORY ── */}
-      <section className="max-w-6xl mx-auto px-6 py-16 md:py-24">
+      <section className="max-w-6xl mx-auto px-6 py-10 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           <div className="md:col-span-4">
             <div className="flex items-center gap-3 mb-4">
@@ -100,7 +100,7 @@ export default function AboutPage() {
           <Gear size={160} className="gear-spin-slow opacity-15" />
         </div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 md:py-28">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-16">
           <div className="flex items-center gap-3 mb-4">
             <div className="glow-dot" />
             <span className="text-[10px] tracking-[0.3em] uppercase text-patina-light">
@@ -218,7 +218,7 @@ export default function AboutPage() {
         <div className="absolute left-[-40px] bottom-[-40px] text-copper">
           <Gear size={140} className="gear-spin-slow opacity-10" />
         </div>
-        <div className="relative z-10 max-w-3xl mx-auto px-6 py-20 md:py-28 text-center">
+        <div className="relative z-10 max-w-3xl mx-auto px-6 py-12 md:py-16 text-center">
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="h-[1px] w-12 bg-gradient-to-r from-transparent to-copper/40" />
             <span className="text-[10px] tracking-[0.3em] uppercase text-text-light">

@@ -1,0 +1,2068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Source Barware — Inventory Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;line-height:1.6}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+input,textarea,select{font-family:inherit;border:none;outline:none;background:none}
+ul,ol{list-style:none}
+
+/* ── CSS Variables — Midnight Silver ── */
+:root{
+  --bg:#080c12;
+  --bg-warm:#0c1018;
+  --bg-panel:#111822;
+  --bg-card:#16202e;
+  --text:#e0e6ef;
+  --text-muted:#8b95a8;
+  --text-light:#5c6578;
+  --copper:#a0b4cc;
+  --copper-bright:#c8d8ec;
+  --copper-dark:#5a6e88;
+  --brass:#b8c4d4;
+  --brass-light:#d0daea;
+  --patina:#6b8aad;
+  --patina-light:#84a3c6;
+  --rust:#3d5068;
+  --cream:#eaf0f8;
+  --ivory:#f4f7fc;
+  --wine:#7c3a4e;
+  --wine-glow:#a65068;
+  --gear-border:rgba(160,180,204,0.2);
+  --rivet:#5a6a80;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Typography ── */
+.serif{font-family:'Playfair Display',Georgia,serif}
+.copper-text{
+  background:linear-gradient(135deg,var(--copper-bright) 0%,var(--copper) 40%,var(--brass) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.text-muted{color:var(--text-muted)}
+.text-light{color:var(--text-light)}
+
+/* ── Grain overlay ── */
+.grain{position:relative}
+.grain::after{
+  content:"";position:absolute;inset:0;opacity:0.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;
+}
+
+/* ── Gear keyframes ── */
+@keyframes gear-spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes gear-spin-reverse{0%{transform:rotate(0deg)}100%{transform:rotate(-360deg)}}
+.gear-spin{animation:gear-spin 20s linear infinite}
+.gear-spin-reverse{animation:gear-spin-reverse 28s linear infinite}
+.gear-spin-slow{animation:gear-spin 40s linear infinite}
+
+/* ── Panel (riveted card) ── */
+.panel{
+  background:var(--bg-card);
+  border:1px solid var(--gear-border);
+  position:relative;
+}
+.panel::before{
+  content:"";position:absolute;
+  top:6px;left:6px;right:6px;bottom:6px;
+  border:1px solid rgba(205,127,50,0.08);
+  pointer-events:none;
+}
+
+/* ── Rivets ── */
+.rivets{position:relative}
+.rivets::after{
+  content:"";position:absolute;top:8px;left:8px;
+  width:6px;height:6px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,var(--rivet) 0%,var(--copper-dark) 100%);
+  box-shadow:
+    calc(100% - 22px) 0 0 0 var(--rivet),
+    0 calc(100% - 22px) 0 0 var(--rivet),
+    calc(100% - 22px) calc(100% - 22px) 0 0 var(--rivet);
+}
+
+/* ── Card lift ── */
+.card-lift{transition:transform 0.35s ease,box-shadow 0.35s ease,border-color 0.35s ease}
+.card-lift:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(205,127,50,0.12),0 0 1px rgba(205,127,50,0.3);
+  border-color:var(--copper)!important;
+}
+
+/* ── Glow dot ── */
+.glow-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--patina-light);
+  box-shadow:0 0 8px var(--patina),0 0 20px rgba(107,138,173,0.3);
+  display:inline-block;
+}
+
+/* ── Pipe line ── */
+.pipe-line{position:relative;padding-left:40px}
+.pipe-line::before{
+  content:"";position:absolute;left:15px;top:0;bottom:0;
+  width:2px;
+  background:linear-gradient(to bottom,var(--gear-border),transparent);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--copper-dark);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--copper)}
+
+/* ── Buttons ── */
+.btn-copper{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--copper);color:var(--bg);font-weight:600;
+  padding:12px 28px;font-size:14px;letter-spacing:0.03em;
+  transition:all 0.3s ease;
+}
+.btn-copper:hover{
+  background:var(--copper-bright);
+  box-shadow:0 0 30px rgba(205,127,50,0.25);
+}
+.btn-copper:disabled{opacity:0.4;cursor:not-allowed}
+.btn-copper:disabled:hover{background:var(--copper);box-shadow:none}
+
+.btn-outline{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid var(--gear-border);color:var(--text-muted);
+  padding:12px 28px;font-size:14px;letter-spacing:0.03em;
+  transition:all 0.3s ease;
+}
+.btn-outline:hover{color:var(--copper);border-color:rgba(205,127,50,0.5)}
+
+.btn-sm{padding:8px 16px;font-size:12px}
+.btn-xs{padding:4px 12px;font-size:11px}
+
+/* ── Inputs ── */
+.input{
+  width:100%;padding:12px 16px;
+  background:var(--bg-panel);
+  border:1px solid var(--gear-border);
+  color:var(--text);font-size:14px;
+  transition:border-color 0.3s ease,box-shadow 0.3s ease;
+}
+.input:focus{
+  border-color:var(--copper);
+  box-shadow:0 0 0 3px rgba(205,127,50,0.15);
+}
+.input::placeholder{color:var(--text-light)}
+
+.textarea{
+  width:100%;padding:16px;min-height:160px;resize:vertical;
+  background:var(--bg-panel);border:1px solid var(--gear-border);
+  color:var(--text);font-size:14px;line-height:1.6;
+  transition:border-color 0.3s ease,box-shadow 0.3s ease;
+}
+.textarea:focus{
+  border-color:var(--copper);
+  box-shadow:0 0 0 3px rgba(205,127,50,0.15);
+}
+
+.select{
+  padding:8px 32px 8px 12px;
+  background:var(--bg-panel);border:1px solid var(--gear-border);
+  color:var(--text);font-size:13px;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a89b8c' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+}
+
+/* ── Badge / pill ── */
+.badge{
+  display:inline-block;padding:2px 10px;
+  font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+  border-radius:2px;font-weight:600;
+}
+.badge-well{background:rgba(205,127,50,0.15);color:var(--copper-bright)}
+.badge-backbar{background:rgba(212,168,67,0.15);color:var(--brass)}
+.badge-storage{background:rgba(74,124,111,0.15);color:var(--patina-light)}
+.badge-walkin{background:rgba(114,47,55,0.15);color:var(--wine-glow)}
+.badge-category{
+  display:inline-block;padding:2px 8px;
+  font-size:10px;letter-spacing:0.05em;
+  border-radius:2px;
+  background:rgba(205,127,50,0.1);color:var(--text-muted);
+}
+
+/* ── Gauge bar ── */
+.gauge-track{
+  height:8px;background:var(--bg);border:1px solid rgba(205,127,50,0.12);
+  position:relative;overflow:visible;
+}
+.gauge-fill{
+  height:100%;transition:width 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  position:relative;
+}
+.gauge-fill.above-par{background:linear-gradient(90deg,var(--patina),var(--patina-light))}
+.gauge-fill.at-par{background:linear-gradient(90deg,var(--copper-dark),var(--copper))}
+.gauge-fill.below-par{background:linear-gradient(90deg,var(--wine),var(--wine-glow))}
+.gauge-par-marker{
+  position:absolute;top:-3px;width:2px;height:14px;
+  background:var(--cream);opacity:0.6;
+  transform:translateX(-1px);
+}
+
+/* ── Confidence dot ── */
+.conf-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
+.conf-high{background:var(--patina-light);box-shadow:0 0 4px var(--patina)}
+.conf-med{background:var(--brass);box-shadow:0 0 4px var(--brass)}
+.conf-low{background:var(--wine-glow);box-shadow:0 0 4px var(--wine)}
+
+/* ── Views ── */
+.view{
+  display:none;opacity:0;
+  transform:translateY(12px);
+  transition:opacity 0.4s ease,transform 0.4s ease;
+}
+.view.active{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ── Layout helpers ── */
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+.flex{display:flex}.flex-col{flex-direction:column}
+.items-center{align-items:center}.justify-between{justify-content:space-between}
+.justify-center{justify-content:center}
+.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-6{gap:24px}.gap-8{gap:32px}
+.grid{display:grid}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.w-full{width:100%}
+.text-center{text-align:center}
+.text-right{text-align:right}
+.mt-2{margin-top:8px}.mt-3{margin-top:12px}.mt-4{margin-top:16px}
+.mt-6{margin-top:24px}.mt-8{margin-top:32px}.mt-12{margin-top:48px}
+.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}.mb-4{margin-bottom:16px}
+.mb-6{margin-bottom:24px}.mb-8{margin-bottom:32px}
+.p-4{padding:16px}.p-6{padding:24px}.p-8{padding:32px}
+.py-2{padding-top:8px;padding-bottom:8px}
+.py-3{padding-top:12px;padding-bottom:12px}
+.px-4{padding-left:16px;padding-right:16px}
+
+@media(max-width:768px){
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-2{grid-template-columns:1fr}
+}
+
+/* ── Top bar ── */
+.topbar{
+  background:var(--bg-panel);
+  border-bottom:1px solid var(--gear-border);
+  padding:12px 24px;
+  position:sticky;top:0;z-index:100;
+}
+.topbar-logo{font-size:13px;letter-spacing:0.2em;font-weight:600}
+.topbar-version{
+  font-size:10px;padding:2px 8px;
+  background:rgba(205,127,50,0.12);color:var(--copper);
+  letter-spacing:0.05em;
+}
+.topbar-clock{font-size:12px;color:var(--text-light);font-variant-numeric:tabular-nums}
+
+/* ── Stat card ── */
+.stat-card{
+  background:var(--bg-card);border:1px solid var(--gear-border);
+  padding:20px 24px;position:relative;
+}
+.stat-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--copper),transparent);
+  opacity:0.3;
+}
+.stat-number{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:2.2rem;line-height:1;
+}
+.stat-label{
+  font-size:11px;color:var(--text-light);
+  letter-spacing:0.08em;text-transform:uppercase;margin-top:4px;
+}
+
+/* ── Station panel ── */
+.station-panel{
+  background:var(--bg-card);border:1px solid var(--gear-border);
+  margin-bottom:8px;transition:border-color 0.3s ease;
+}
+.station-panel:hover{border-color:rgba(205,127,50,0.4)}
+.station-header{
+  padding:16px 20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.station-header .chevron{
+  width:20px;height:20px;color:var(--text-light);
+  transition:transform 0.3s ease;
+}
+.station-panel.expanded .chevron{transform:rotate(180deg)}
+.station-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s ease;
+}
+.station-panel.expanded .station-body{max-height:3000px}
+
+/* ── Bottle row ── */
+.bottle-row{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 20px;border-top:1px solid rgba(205,127,50,0.08);
+  transition:background 0.2s ease;
+}
+.bottle-row:hover{background:rgba(205,127,50,0.03)}
+.bottle-name{font-size:14px;color:var(--cream);min-width:140px;flex-shrink:0}
+.bottle-gauge{flex:1;min-width:120px;max-width:260px}
+.bottle-level{font-size:12px;color:var(--text-muted);min-width:40px;text-align:right}
+.bottle-cost{font-size:12px;color:var(--text-light);min-width:50px;text-align:right}
+
+/* ── Alert bar ── */
+.alert-bar{
+  background:rgba(205,127,50,0.08);border-top:1px solid var(--gear-border);
+  padding:12px 24px;position:fixed;bottom:0;left:0;right:0;z-index:99;
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:var(--brass);
+}
+.alert-bar.alert-wine{background:rgba(114,47,55,0.12);color:var(--wine-glow)}
+
+/* ── Wizard ── */
+.wizard-steps{
+  display:flex;align-items:center;gap:0;margin-bottom:40px;
+  justify-content:center;
+}
+.wizard-step{
+  display:flex;align-items:center;gap:8px;padding:8px 16px;
+  font-size:12px;color:var(--text-light);
+  letter-spacing:0.05em;
+}
+.wizard-step .step-num{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--gear-border);font-size:12px;font-weight:600;
+  transition:all 0.3s ease;
+}
+.wizard-step.active .step-num{
+  background:var(--copper);border-color:var(--copper);color:var(--bg);
+}
+.wizard-step.done .step-num{
+  background:var(--patina);border-color:var(--patina);color:var(--bg);
+}
+.wizard-step.active{color:var(--copper)}
+.wizard-step.done{color:var(--patina-light)}
+.wizard-connector{
+  width:40px;height:1px;
+  background:var(--gear-border);
+}
+
+/* ── Wizard station list ── */
+.station-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;background:var(--bg-panel);
+  border:1px solid rgba(205,127,50,0.1);
+  margin-bottom:6px;transition:all 0.3s ease;
+}
+.station-item:hover{border-color:var(--gear-border)}
+.station-item .drag-handle{
+  color:var(--text-light);cursor:grab;font-size:16px;
+}
+.station-item .station-name{flex:1;font-size:14px;color:var(--cream)}
+.station-item .station-actions{display:flex;gap:6px}
+.station-item .station-actions button{
+  color:var(--text-light);font-size:12px;padding:4px 8px;
+  transition:color 0.2s ease;
+}
+.station-item .station-actions button:hover{color:var(--copper)}
+.station-item .station-actions button.delete:hover{color:var(--wine-glow)}
+
+/* ── Parse results ── */
+.parse-group{margin-bottom:24px}
+.parse-group-title{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:16px;color:var(--cream);margin-bottom:12px;
+  padding-bottom:8px;border-bottom:1px solid rgba(205,127,50,0.1);
+}
+.parse-item{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 12px;border:1px solid rgba(205,127,50,0.08);
+  margin-bottom:4px;background:var(--bg-panel);
+}
+.parse-item.unmatched{border-color:rgba(168,66,78,0.3);background:rgba(114,47,55,0.06)}
+
+/* ── Count mode ── */
+.count-station-tab{
+  padding:8px 20px;font-size:13px;color:var(--text-light);
+  border-bottom:2px solid transparent;
+  transition:all 0.3s ease;cursor:pointer;
+}
+.count-station-tab.active{
+  color:var(--copper);border-bottom-color:var(--copper);
+}
+.count-bottle{
+  display:flex;align-items:center;gap:16px;
+  padding:16px 0;border-bottom:1px solid rgba(205,127,50,0.08);
+}
+.count-quick-btns{display:flex;gap:4px}
+.count-quick-btn{
+  padding:6px 12px;font-size:11px;
+  border:1px solid var(--gear-border);color:var(--text-muted);
+  transition:all 0.2s ease;letter-spacing:0.03em;
+}
+.count-quick-btn:hover,.count-quick-btn.selected{
+  background:var(--copper);color:var(--bg);border-color:var(--copper);
+}
+
+/* ── History ── */
+.history-entry{
+  background:var(--bg-card);border:1px solid var(--gear-border);
+  margin-bottom:8px;transition:border-color 0.3s ease;
+}
+.history-entry:hover{border-color:rgba(205,127,50,0.4)}
+.history-header{
+  padding:16px 20px;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.history-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.history-entry.expanded .history-body{max-height:5000px}
+.history-entry.expanded .chevron{transform:rotate(180deg)}
+.variance-row{padding:8px 20px;display:flex;align-items:center;gap:12px;border-top:1px solid rgba(205,127,50,0.06)}
+.variance-row.significant{background:rgba(114,47,55,0.08)}
+
+/* ── Tabs ── */
+.tab-bar{display:flex;border-bottom:1px solid var(--gear-border);margin-bottom:24px}
+.tab{
+  padding:12px 24px;font-size:13px;color:var(--text-light);
+  border-bottom:2px solid transparent;
+  transition:all 0.3s ease;cursor:pointer;letter-spacing:0.03em;
+}
+.tab.active{color:var(--copper);border-bottom-color:var(--copper)}
+.tab:hover{color:var(--text-muted)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* ── Loading gear spinner ── */
+@keyframes gear-loader{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.loader-overlay{
+  position:fixed;inset:0;background:rgba(13,11,9,0.85);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:200;
+}
+.loader-gear{animation:gear-loader 1.5s linear infinite}
+.loader-text{margin-top:16px;font-size:13px;color:var(--text-muted);letter-spacing:0.1em}
+
+/* ── Modal ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(13,11,9,0.8);
+  display:flex;align-items:center;justify-content:center;z-index:150;
+}
+.modal{
+  background:var(--bg-card);border:1px solid var(--gear-border);
+  padding:32px;max-width:480px;width:90%;position:relative;
+}
+.modal::before{
+  content:"";position:absolute;top:6px;left:6px;right:6px;bottom:6px;
+  border:1px solid rgba(205,127,50,0.08);pointer-events:none;
+}
+
+/* ── Welcome ── */
+#view-welcome{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;text-align:center;
+}
+.welcome-gears{position:absolute;pointer-events:none}
+
+/* ── Misc ── */
+.instructions-box{
+  background:var(--bg-panel);border:1px solid rgba(205,127,50,0.1);
+  padding:16px;font-size:13px;color:var(--text-muted);line-height:1.7;
+}
+.instructions-box code{
+  background:rgba(205,127,50,0.08);padding:2px 6px;
+  color:var(--cream);font-size:12px;
+}
+.summary-popup{text-align:center;padding:24px}
+.inline-edit{
+  background:transparent;border-bottom:1px dashed var(--gear-border);
+  color:var(--cream);padding:2px 4px;font-size:14px;
+  transition:border-color 0.2s ease;cursor:text;
+}
+.inline-edit:focus{border-bottom-color:var(--copper)}
+.delete-btn{
+  color:var(--text-light);font-size:14px;padding:4px;
+  transition:color 0.2s ease;cursor:pointer;
+}
+.delete-btn:hover{color:var(--wine-glow)}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ── LOADING OVERLAY ── -->
+<div id="loader" class="loader-overlay hidden">
+  <svg class="loader-gear" width="60" height="60" viewBox="0 0 60 60" fill="none">
+    <g>
+      <path d="M30 8 L33 2 L27 2 Z M30 52 L33 58 L27 58 Z M8 30 L2 33 L2 27 Z M52 30 L58 33 L58 27 Z M14.5 14.5 L10 9 L9 10 Z M45.5 14.5 L50 9 L51 10 Z M14.5 45.5 L10 51 L9 50 Z M45.5 45.5 L50 51 L51 50 Z" fill="var(--copper)" opacity="0.6"/>
+      <circle cx="30" cy="30" r="18" stroke="var(--copper)" stroke-width="2" fill="none" opacity="0.4"/>
+      <circle cx="30" cy="30" r="12" stroke="var(--copper)" stroke-width="1.5" fill="none" opacity="0.25"/>
+      <circle cx="30" cy="30" r="5" fill="var(--copper)" opacity="0.3"/>
+      <rect x="28" y="8" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.5"/>
+      <rect x="28" y="44" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.5"/>
+      <rect x="8" y="28" width="8" height="4" rx="1" fill="var(--copper)" opacity="0.5"/>
+      <rect x="44" y="28" width="8" height="4" rx="1" fill="var(--copper)" opacity="0.5"/>
+      <rect x="14" y="11" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.4" transform="rotate(45 16 15)"/>
+      <rect x="42" y="11" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.4" transform="rotate(-45 44 15)"/>
+      <rect x="14" y="41" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.4" transform="rotate(-45 16 45)"/>
+      <rect x="42" y="41" width="4" height="8" rx="1" fill="var(--copper)" opacity="0.4" transform="rotate(45 44 45)"/>
+    </g>
+  </svg>
+  <div class="loader-text">Loading inventory...</div>
+</div>
+
+<!-- ── MODAL ── -->
+<div id="modal" class="modal-overlay hidden" onclick="if(event.target===this)closeModal()">
+  <div class="modal rivets">
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- VIEW: WELCOME                                   -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="view-welcome" class="view active grain">
+  <!-- Decorative gears -->
+  <svg class="welcome-gears gear-spin" style="position:absolute;right:-40px;top:-20px;opacity:0.08" width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="100" stroke="var(--copper)" stroke-width="3" fill="none"/><circle cx="150" cy="150" r="60" stroke="var(--copper)" stroke-width="2" fill="none"/><circle cx="150" cy="150" r="20" fill="var(--copper)" opacity="0.3"/><rect x="145" y="30" width="10" height="30" rx="2" fill="var(--copper)"/><rect x="145" y="240" width="10" height="30" rx="2" fill="var(--copper)"/><rect x="30" y="145" width="30" height="10" rx="2" fill="var(--copper)"/><rect x="240" y="145" width="30" height="10" rx="2" fill="var(--copper)"/></svg>
+  <svg class="welcome-gears gear-spin-reverse" style="position:absolute;left:-20px;bottom:-10px;opacity:0.06" width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="65" stroke="var(--brass)" stroke-width="2" fill="none"/><circle cx="100" cy="100" r="35" stroke="var(--brass)" stroke-width="1.5" fill="none"/><circle cx="100" cy="100" r="12" fill="var(--brass)" opacity="0.2"/></svg>
+
+  <div style="position:relative;z-index:10;max-width:520px;padding:0 24px">
+    <!-- Pipe accent -->
+    <div class="flex items-center justify-center gap-3 mb-4">
+      <div style="height:1px;width:40px;background:linear-gradient(to right,transparent,var(--patina))"></div>
+      <div class="glow-dot"></div>
+      <div style="height:1px;width:40px;background:linear-gradient(to left,transparent,var(--patina))"></div>
+    </div>
+    <div style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--patina-light);margin-bottom:24px">Free &amp; Open Source</div>
+
+    <h1 class="serif" style="font-size:3.2rem;line-height:1.1;margin-bottom:16px">
+      <span class="copper-text">Open Source</span><br>
+      <span style="color:var(--cream)">Barware</span>
+    </h1>
+    <p class="text-muted" style="font-size:16px;line-height:1.7;margin-bottom:40px">
+      Precision bar inventory built for real bartenders.<br>
+      No subscriptions. No vendor lock-in.<br>
+      Count your bottles and go home.
+    </p>
+
+    <button class="btn-copper" onclick="checkExistingBar()" style="font-size:15px;padding:16px 40px">
+      Set Up Your Bar
+    </button>
+
+    <div style="margin-top:48px;display:flex;align-items:center;justify-content:center;gap:20px">
+      <div style="text-align:center">
+        <div class="serif copper-text" style="font-size:1.8rem">$0</div>
+        <div style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;text-transform:uppercase">Forever</div>
+      </div>
+      <div style="width:1px;height:30px;background:var(--gear-border)"></div>
+      <div style="text-align:center">
+        <div class="serif copper-text" style="font-size:1.8rem">5m</div>
+        <div style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;text-transform:uppercase">Weekly Count</div>
+      </div>
+      <div style="width:1px;height:30px;background:var(--gear-border)"></div>
+      <div style="text-align:center">
+        <div class="serif copper-text" style="font-size:1.8rem">100%</div>
+        <div style="font-size:10px;color:var(--text-light);letter-spacing:0.08em;text-transform:uppercase">Open Source</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- VIEW: SETUP WIZARD                              -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="view-setup" class="view">
+  <div class="container" style="padding-top:48px;padding-bottom:80px">
+    <!-- Wizard step indicator -->
+    <div class="wizard-steps" id="wizard-steps"></div>
+
+    <!-- Step 1: Name Your Bar -->
+    <div id="setup-step-1" class="setup-step">
+      <div class="text-center mb-8">
+        <h2 class="serif" style="font-size:2.4rem;margin-bottom:8px"><span class="copper-text">Name Your Bar</span></h2>
+        <p class="text-muted" style="font-size:14px">This takes 15 minutes the first time. Weekly counts take 5.</p>
+      </div>
+      <div style="max-width:420px;margin:0 auto">
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.08em;text-transform:uppercase;display:block;margin-bottom:8px">Bar Name</label>
+        <input id="bar-name-input" class="input" type="text" placeholder="e.g. The Copper Still" style="font-size:18px;padding:16px 20px;text-align:center">
+        <div class="text-center mt-8">
+          <button class="btn-copper" onclick="wizardNext()" id="step1-next">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Map Your Bar -->
+    <div id="setup-step-2" class="setup-step hidden">
+      <div class="text-center mb-6">
+        <h2 class="serif" style="font-size:2rem;margin-bottom:8px"><span class="copper-text">Map Your Bar</span></h2>
+        <p class="text-muted" style="font-size:14px">Add the stations where your bottles live.</p>
+      </div>
+      <div style="max-width:520px;margin:0 auto">
+        <div id="station-list" class="pipe-line mb-6"></div>
+        <div class="flex gap-2 mb-6" style="padding-left:40px">
+          <input id="new-station-name" class="input" type="text" placeholder="Add custom station..." style="flex:1">
+          <select id="new-station-type" class="select">
+            <option value="well">Well</option>
+            <option value="backbar">Back Bar</option>
+            <option value="storage">Storage</option>
+            <option value="walkin">Walk-in</option>
+          </select>
+          <button class="btn-outline btn-sm" onclick="addStation()">Add</button>
+        </div>
+        <div class="flex justify-between" style="padding-left:40px">
+          <button class="btn-outline" onclick="wizardPrev()">Back</button>
+          <button class="btn-copper" onclick="wizardNext()">Next</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Walk the Bar -->
+    <div id="setup-step-3" class="setup-step hidden">
+      <div class="text-center mb-6">
+        <h2 class="serif" style="font-size:2rem;margin-bottom:8px"><span class="copper-text">Walk the Bar</span></h2>
+        <p class="text-muted" style="font-size:14px">Paste voice notes from your walkthrough, or add bottles manually.</p>
+      </div>
+      <div style="max-width:640px;margin:0 auto">
+        <!-- Tab toggle -->
+        <div class="tab-bar mb-4">
+          <div class="tab active" data-tab="voice-tab" onclick="switchTab(this,'voice-tab','manual-tab')">Voice Notes</div>
+          <div class="tab" data-tab="manual-tab" onclick="switchTab(this,'manual-tab','voice-tab')">Add Manually</div>
+        </div>
+
+        <!-- Voice notes -->
+        <div id="voice-tab" class="tab-content active">
+          <div class="instructions-box mb-4">
+            <strong style="color:var(--cream)">How it works:</strong> Walk each station and dictate what you see. Paste the transcription below.<br><br>
+            <em>Example:</em> <code>Walk one: Tito's vodka half, Stoli point two, Tanqueray empty, Bacardi full, Hennessy three quarters...</code>
+          </div>
+          <textarea id="voice-notes-input" class="textarea" placeholder="Paste your voice notes here..."></textarea>
+          <div class="flex justify-between mt-4">
+            <button class="btn-outline" onclick="wizardPrev()">Back</button>
+            <button class="btn-copper" onclick="parseVoiceNotes()">Parse Notes</button>
+          </div>
+          <div id="parse-results" class="mt-6 hidden"></div>
+          <div id="parse-actions" class="flex justify-between mt-4 hidden">
+            <div></div>
+            <button class="btn-copper" onclick="wizardNext()">Next &mdash; Review</button>
+          </div>
+        </div>
+
+        <!-- Manual add -->
+        <div id="manual-tab" class="tab-content">
+          <div class="panel p-6 mb-4">
+            <div class="grid grid-2 gap-4 mb-4">
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Product Name</label>
+                <input id="manual-name" class="input" type="text" placeholder="e.g. Tito's Vodka">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Category</label>
+                <select id="manual-category" class="select w-full" style="padding:12px 32px 12px 12px">
+                  <option value="vodka">Vodka</option>
+                  <option value="gin">Gin</option>
+                  <option value="rum">Rum</option>
+                  <option value="tequila">Tequila</option>
+                  <option value="whiskey">Whiskey</option>
+                  <option value="bourbon">Bourbon</option>
+                  <option value="scotch">Scotch</option>
+                  <option value="brandy">Brandy / Cognac</option>
+                  <option value="liqueur">Liqueur</option>
+                  <option value="amaro">Amaro / Bitter</option>
+                  <option value="wine">Wine</option>
+                  <option value="beer">Beer</option>
+                  <option value="mixer">Mixer</option>
+                  <option value="syrup">Syrup</option>
+                  <option value="garnish">Garnish</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-2 gap-4 mb-4">
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Station</label>
+                <select id="manual-station" class="select w-full" style="padding:12px 32px 12px 12px"></select>
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Bottle Size (ml)</label>
+                <select id="manual-size" class="select w-full" style="padding:12px 32px 12px 12px">
+                  <option value="750">750ml</option>
+                  <option value="1000">1L</option>
+                  <option value="1750">1.75L</option>
+                  <option value="375">375ml</option>
+                  <option value="200">200ml</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid grid-2 gap-4 mb-4">
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Par Level (bottles)</label>
+                <input id="manual-par" class="input" type="number" value="1" min="0.5" step="0.5" placeholder="1">
+              </div>
+              <div>
+                <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Cost ($)</label>
+                <input id="manual-cost" class="input" type="number" step="0.01" placeholder="24.99">
+              </div>
+            </div>
+            <button class="btn-copper w-full" onclick="addManualBottle()">Add Product</button>
+          </div>
+          <div id="manual-added-list" class="mb-4"></div>
+          <div class="flex justify-between">
+            <button class="btn-outline" onclick="wizardPrev()">Back</button>
+            <button class="btn-copper" onclick="wizardNext()">Next &mdash; Review</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Review -->
+    <div id="setup-step-4" class="setup-step hidden">
+      <div class="text-center mb-6">
+        <h2 class="serif" style="font-size:2rem;margin-bottom:8px"><span class="copper-text">Review Your Setup</span></h2>
+        <p class="text-muted" style="font-size:14px">Click any value to edit it. Everything can be changed later.</p>
+      </div>
+      <div style="max-width:720px;margin:0 auto">
+        <!-- Summary stats -->
+        <div id="review-stats" class="grid grid-4 gap-4 mb-8" style="max-width:520px;margin:0 auto 32px"></div>
+        <!-- Inventory map grouped by station -->
+        <div id="review-inventory"></div>
+        <div class="flex justify-between mt-8">
+          <button class="btn-outline" onclick="wizardPrev()">Back</button>
+          <button class="btn-copper" onclick="finishSetup()" style="font-size:15px;padding:14px 36px">Looks Good &mdash; Start Counting</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- VIEW: DASHBOARD                                 -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="view-dashboard" class="view">
+  <!-- Top bar -->
+  <div class="topbar grain">
+    <div class="flex items-center justify-between container" style="padding:0">
+      <div class="flex items-center gap-3">
+        <span class="topbar-logo copper-text serif">OPEN SOURCE BARWARE</span>
+        <span class="topbar-version">v1.0</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="bar-name-display" class="text-muted" style="font-size:13px"></span>
+        <span class="topbar-clock" id="clock"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:24px;padding-bottom:80px">
+    <!-- Stats row -->
+    <div class="grid grid-4 gap-4 mb-8" id="dashboard-stats"></div>
+
+    <!-- Quick actions -->
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="serif" style="font-size:1.5rem;color:var(--cream)">Inventory</h2>
+      <div class="flex gap-2">
+        <button class="btn-copper btn-sm" onclick="showView('count')">Start Count</button>
+        <button class="btn-outline btn-sm" onclick="showAddProductModal()">Add Product</button>
+        <button class="btn-outline btn-sm" onclick="showView('history')">View History</button>
+      </div>
+    </div>
+
+    <!-- Station panels -->
+    <div id="station-panels"></div>
+  </div>
+
+  <!-- Below par alert -->
+  <div id="below-par-alert" class="alert-bar alert-wine hidden">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l7 14H1L8 1zm0 4v4m0 2v1"/><path d="M8 5v4" stroke="var(--bg)" stroke-width="1.5" fill="none"/><circle cx="8" cy="11.5" r="0.8" fill="var(--bg)"/></svg>
+    <span id="below-par-text"></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- VIEW: COUNT MODE                                -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="view-count" class="view">
+  <div class="topbar grain">
+    <div class="flex items-center justify-between container" style="padding:0">
+      <div class="flex items-center gap-3">
+        <button class="btn-outline btn-xs" onclick="showView('dashboard')">&larr; Back</button>
+        <span class="serif copper-text" style="font-size:15px" id="count-header">Weekly Count</span>
+      </div>
+      <span class="topbar-clock" id="clock2"></span>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:24px;padding-bottom:80px">
+    <div class="tab-bar">
+      <div class="tab active" onclick="switchCountTab(this,'count-voice','count-manual')">Voice Notes</div>
+      <div class="tab" onclick="switchCountTab(this,'count-manual','count-voice')">Manual Count</div>
+    </div>
+
+    <!-- Voice notes count -->
+    <div id="count-voice" class="tab-content active">
+      <textarea id="count-voice-input" class="textarea" placeholder="Paste your voice transcription here..." style="min-height:200px"></textarea>
+      <div class="flex justify-between mt-4">
+        <div></div>
+        <button class="btn-copper" onclick="processCountNotes()">Process Notes</button>
+      </div>
+      <div id="count-parse-results" class="mt-6 hidden"></div>
+      <div id="count-save-voice" class="text-right mt-4 hidden">
+        <button class="btn-copper" onclick="saveCount()">Save Count</button>
+      </div>
+    </div>
+
+    <!-- Manual count -->
+    <div id="count-manual" class="tab-content">
+      <div class="flex gap-2 mb-6" style="overflow-x:auto;padding-bottom:8px" id="count-station-tabs"></div>
+      <div id="count-bottles-list"></div>
+      <div class="text-right mt-6">
+        <button class="btn-copper" onclick="saveCount()">Save Count</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- VIEW: HISTORY                                   -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="view-history" class="view">
+  <div class="topbar grain">
+    <div class="flex items-center justify-between container" style="padding:0">
+      <div class="flex items-center gap-3">
+        <button class="btn-outline btn-xs" onclick="showView('dashboard')">&larr; Back</button>
+        <span class="serif copper-text" style="font-size:15px">Count History</span>
+      </div>
+      <span class="topbar-clock" id="clock3"></span>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:24px;padding-bottom:80px">
+    <div id="history-list"></div>
+    <div id="history-empty" class="text-center hidden" style="padding:80px 0">
+      <p class="text-muted" style="font-size:16px">No counts recorded yet.</p>
+      <button class="btn-copper mt-6" onclick="showView('count')">Start Your First Count</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════ */
+const API = 'http://localhost:5051/api';
+
+let state = {
+  currentView: 'welcome',
+  wizardStep: 1,
+  bar: null,       // { id, name }
+  stations: [],    // [{ id, name, type, order }]
+  bottles: [],     // [{ id, name, category, station_id, size, par, cost, level }]
+  counts: [],      // [{ id, date, items:[{ bottle_id, level, prev_level }] }]
+  pendingCount: {} // { bottle_id: level } for current count session
+};
+
+/* ── Load from localStorage ── */
+function loadState() {
+  try {
+    const saved = localStorage.getItem('osb_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(state, parsed);
+    }
+  } catch(e) { /* ignore corrupt storage */ }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('osb_state', JSON.stringify(state));
+  } catch(e) { /* storage full, ignore */ }
+}
+
+/* ═══════════════════════════════════════════════════
+   API HELPERS
+   ═══════════════════════════════════════════════════ */
+async function apiFetch(path, opts = {}) {
+  const defaults = { headers: { 'Content-Type': 'application/json' } };
+  const config = { ...defaults, ...opts };
+  if (opts.body && typeof opts.body === 'object') {
+    config.body = JSON.stringify(opts.body);
+  }
+  try {
+    const res = await fetch(API + path, config);
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return await res.json();
+  } catch(e) {
+    console.warn('API call failed:', path, e.message);
+    return null;
+  }
+}
+
+function showLoader(msg) {
+  document.getElementById('loader').classList.remove('hidden');
+  document.querySelector('.loader-text').textContent = msg || 'Loading...';
+}
+function hideLoader() {
+  document.getElementById('loader').classList.add('hidden');
+}
+
+/* ═══════════════════════════════════════════════════
+   VIEW MANAGEMENT
+   ═══════════════════════════════════════════════════ */
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + name);
+  if (el) {
+    // Force reflow for animation
+    el.style.display = 'block';
+    el.offsetHeight;
+    el.classList.add('active');
+  }
+  state.currentView = name;
+  saveState();
+
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'count') renderCountMode();
+  if (name === 'history') renderHistory();
+}
+
+/* ═══════════════════════════════════════════════════
+   CLOCK
+   ═══════════════════════════════════════════════════ */
+function updateClock() {
+  const now = new Date();
+  const t = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  document.querySelectorAll('.topbar-clock').forEach(el => el.textContent = t);
+}
+setInterval(updateClock, 30000);
+updateClock();
+
+/* ═══════════════════════════════════════════════════
+   WELCOME
+   ═══════════════════════════════════════════════════ */
+function checkExistingBar() {
+  if (state.bar && state.bottles.length > 0) {
+    showView('dashboard');
+  } else {
+    state.wizardStep = 1;
+    initWizard();
+    showView('setup');
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   SETUP WIZARD
+   ═══════════════════════════════════════════════════ */
+const STEP_NAMES = ['Name', 'Stations', 'Products', 'Review'];
+
+function initWizard() {
+  // Defaults
+  if (!state.stations.length) {
+    state.stations = [
+      { id: genId(), name: 'Well 1', type: 'well', order: 0 },
+      { id: genId(), name: 'Well 2', type: 'well', order: 1 },
+      { id: genId(), name: 'Back Bar (Top)', type: 'backbar', order: 2 },
+      { id: genId(), name: 'Back Bar (Middle)', type: 'backbar', order: 3 },
+      { id: genId(), name: 'Back Bar (Bottom)', type: 'backbar', order: 4 },
+      { id: genId(), name: 'Walk-in', type: 'walkin', order: 5 },
+      { id: genId(), name: 'Dry Storage', type: 'storage', order: 6 },
+    ];
+  }
+  renderWizardStep();
+}
+
+function renderWizardStep() {
+  const step = state.wizardStep;
+
+  // Step indicators
+  let stepsHtml = '';
+  for (let i = 1; i <= 4; i++) {
+    const cls = i === step ? 'active' : (i < step ? 'done' : '');
+    stepsHtml += `<div class="wizard-step ${cls}">
+      <span class="step-num">${i < step ? '&#10003;' : i}</span>
+      <span>${STEP_NAMES[i-1]}</span>
+    </div>`;
+    if (i < 4) stepsHtml += '<div class="wizard-connector"></div>';
+  }
+  document.getElementById('wizard-steps').innerHTML = stepsHtml;
+
+  // Show/hide steps
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('setup-step-' + i);
+    if (el) el.classList.toggle('hidden', i !== step);
+  }
+
+  if (step === 2) renderStationList();
+  if (step === 3) populateStationDropdown();
+  if (step === 4) renderReview();
+}
+
+function wizardNext() {
+  if (state.wizardStep === 1) {
+    const name = document.getElementById('bar-name-input').value.trim();
+    if (!name) { flashInput('bar-name-input'); return; }
+    state.bar = { id: genId(), name: name };
+  }
+  if (state.wizardStep === 2 && state.stations.length === 0) return;
+  state.wizardStep = Math.min(state.wizardStep + 1, 4);
+  saveState();
+  renderWizardStep();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function wizardPrev() {
+  state.wizardStep = Math.max(state.wizardStep - 1, 1);
+  saveState();
+  renderWizardStep();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function flashInput(id) {
+  const el = document.getElementById(id);
+  el.style.borderColor = 'var(--wine-glow)';
+  el.focus();
+  setTimeout(() => el.style.borderColor = '', 1200);
+}
+
+/* ── Stations ── */
+function renderStationList() {
+  const list = document.getElementById('station-list');
+  let html = '';
+  state.stations.sort((a,b) => a.order - b.order).forEach((s, i) => {
+    const badgeCls = 'badge-' + s.type;
+    html += `<div class="station-item" data-id="${s.id}" style="position:relative">
+      <div style="position:absolute;left:-25px;top:50%;transform:translateY(-50%)">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--copper);opacity:0.4;border:1px solid var(--copper-dark)"></div>
+      </div>
+      <span class="drag-handle">&#9776;</span>
+      <span class="station-name">${escHtml(s.name)}</span>
+      <span class="badge ${badgeCls}">${s.type}</span>
+      <div class="station-actions">
+        <button onclick="renameStation('${s.id}')" title="Rename">&#9998;</button>
+        <button class="delete" onclick="deleteStation('${s.id}')" title="Delete">&times;</button>
+      </div>
+    </div>`;
+  });
+  list.innerHTML = html;
+}
+
+function addStation() {
+  const nameEl = document.getElementById('new-station-name');
+  const typeEl = document.getElementById('new-station-type');
+  const name = nameEl.value.trim();
+  if (!name) { flashInput('new-station-name'); return; }
+  state.stations.push({
+    id: genId(), name: name, type: typeEl.value,
+    order: state.stations.length
+  });
+  nameEl.value = '';
+  saveState();
+  renderStationList();
+}
+
+function renameStation(id) {
+  const s = state.stations.find(x => x.id === id);
+  if (!s) return;
+  const newName = prompt('Rename station:', s.name);
+  if (newName && newName.trim()) {
+    s.name = newName.trim();
+    saveState();
+    renderStationList();
+  }
+}
+
+function deleteStation(id) {
+  if (!confirm('Delete this station?')) return;
+  state.stations = state.stations.filter(x => x.id !== id);
+  state.stations.forEach((s, i) => s.order = i);
+  saveState();
+  renderStationList();
+}
+
+/* ── Voice Notes Parsing ── */
+async function parseVoiceNotes() {
+  const notes = document.getElementById('voice-notes-input').value.trim();
+  if (!notes) { flashInput('voice-notes-input'); return; }
+
+  showLoader('Parsing voice notes...');
+  const result = await apiFetch('/parse-notes', {
+    method: 'POST',
+    body: { notes: notes, stations: state.stations }
+  });
+  hideLoader();
+
+  if (result && result.bottles) {
+    result.bottles.forEach(b => {
+      if (!b.id) b.id = genId();
+      if (!b.station_id && state.stations.length) b.station_id = state.stations[0].id;
+      const existing = state.bottles.find(x => x.name === b.name && x.station_id === b.station_id);
+      if (!existing) state.bottles.push(b);
+    });
+    renderParseResults(result, 'parse-results');
+    document.getElementById('parse-results').classList.remove('hidden');
+    document.getElementById('parse-actions').classList.remove('hidden');
+    saveState();
+  } else {
+    // Fallback: local parse
+    const parsed = localParse(notes);
+    parsed.forEach(b => {
+      const existing = state.bottles.find(x => x.name === b.name && x.station_id === b.station_id);
+      if (!existing) state.bottles.push(b);
+    });
+    renderLocalParseResults(parsed, 'parse-results');
+    document.getElementById('parse-results').classList.remove('hidden');
+    document.getElementById('parse-actions').classList.remove('hidden');
+    saveState();
+  }
+}
+
+function localParse(notes) {
+  const levelMap = {
+    'full': 1.0, 'new': 1.0, 'sealed': 1.0,
+    'three quarters': 0.75, '3/4': 0.75, 'three quarter': 0.75,
+    'half': 0.5, '1/2': 0.5,
+    'quarter': 0.25, '1/4': 0.25, 'one quarter': 0.25,
+    'empty': 0.0, 'dead': 0.0, 'gone': 0.0,
+    'point one': 0.1, 'point two': 0.2, 'point three': 0.3,
+    'point four': 0.4, 'point five': 0.5, 'point six': 0.6,
+    'point seven': 0.7, 'point eight': 0.8, 'point nine': 0.9,
+  };
+
+  const bottles = [];
+  let currentStation = state.stations.length ? state.stations[0] : null;
+
+  // Split by commas or periods
+  const parts = notes.split(/[,.\n]+/).map(s => s.trim()).filter(Boolean);
+
+  for (const part of parts) {
+    const lower = part.toLowerCase();
+
+    // Check for station header (e.g., "walk one" or "well 1" or "back bar")
+    const stationMatch = lower.match(/^(?:walk|station|well|back\s*bar|walk-?in|storage)\s*(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)?/i);
+    if (stationMatch) {
+      // Try to match to a station
+      const matched = findClosestStation(lower);
+      if (matched) { currentStation = matched; continue; }
+    }
+
+    // Try to extract name + level
+    let level = null;
+    let name = part;
+    for (const [key, val] of Object.entries(levelMap)) {
+      if (lower.includes(key)) {
+        level = val;
+        name = part.replace(new RegExp(key, 'i'), '').trim();
+        break;
+      }
+    }
+    // Check for decimal like "0.5" or ".3"
+    if (level === null) {
+      const decMatch = lower.match(/\b(0?\.\d+|\d\.\d+)\b/);
+      if (decMatch) {
+        level = parseFloat(decMatch[1]);
+        if (level > 1) level = 1;
+        name = part.replace(decMatch[0], '').trim();
+      }
+    }
+
+    if (name) {
+      // Clean up name
+      name = name.replace(/^[-\s]+|[-\s]+$/g, '');
+      if (name.length < 2) continue;
+      // Capitalize
+      name = name.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+
+      bottles.push({
+        id: genId(),
+        name: name,
+        category: guessCategory(name),
+        station_id: currentStation ? currentStation.id : (state.stations[0]?.id || ''),
+        size: 750,
+        par: 1,
+        cost: 0,
+        level: level !== null ? level : 0.5,
+        confidence: level !== null ? 'high' : 'low'
+      });
+    }
+  }
+  return bottles;
+}
+
+function findClosestStation(text) {
+  const lower = text.toLowerCase();
+  for (const s of state.stations) {
+    if (lower.includes(s.name.toLowerCase())) return s;
+  }
+  // Fuzzy: "walk one" -> "Well 1", etc.
+  if (lower.includes('walk') || lower.includes('well')) {
+    const numMatch = lower.match(/(?:one|1)/);
+    if (numMatch) return state.stations.find(s => s.name.includes('1')) || state.stations[0];
+    const num2 = lower.match(/(?:two|2)/);
+    if (num2) return state.stations.find(s => s.name.includes('2')) || state.stations[1];
+  }
+  if (lower.includes('back bar') || lower.includes('backbar')) {
+    if (lower.includes('top')) return state.stations.find(s => s.name.includes('Top'));
+    if (lower.includes('mid')) return state.stations.find(s => s.name.includes('Mid'));
+    if (lower.includes('bot')) return state.stations.find(s => s.name.includes('Bot'));
+    return state.stations.find(s => s.type === 'backbar');
+  }
+  if (lower.includes('walk-in') || lower.includes('walkin') || lower.includes('walk in')) {
+    return state.stations.find(s => s.type === 'walkin');
+  }
+  if (lower.includes('storage') || lower.includes('dry')) {
+    return state.stations.find(s => s.type === 'storage');
+  }
+  return null;
+}
+
+function guessCategory(name) {
+  const n = name.toLowerCase();
+  if (/vodka|tito|stoli|absolut|grey goose|ketel|smirnoff|belvedere/i.test(n)) return 'vodka';
+  if (/gin|tanqueray|hendrick|bombay|beefeater/i.test(n)) return 'gin';
+  if (/rum|bacardi|captain|malibu|havana|kraken|myers/i.test(n)) return 'rum';
+  if (/tequila|patron|casamigos|don julio|espolon|hornitos|jose cuervo|mezcal/i.test(n)) return 'tequila';
+  if (/bourbon|maker|woodford|bulleit|knob creek|buffalo trace|wild turkey|four roses|eagle rare/i.test(n)) return 'bourbon';
+  if (/whiskey|whisky|jameson|jack daniel|crown royal|fireball|rye|bushmills|tullamore/i.test(n)) return 'whiskey';
+  if (/scotch|johnnie|macallan|glenfiddich|glenlivet|dewar|chivas/i.test(n)) return 'scotch';
+  if (/cognac|brandy|hennessy|remy|courvoisier/i.test(n)) return 'brandy';
+  if (/liqueur|kahlua|baileys|amaretto|cointreau|grand marnier|chambord|midori|frangelico|chartreuse|st.? germain/i.test(n)) return 'liqueur';
+  if (/amaro|campari|aperol|fernet|angostura|bitter/i.test(n)) return 'amaro';
+  if (/wine|champagne|prosecco|vermouth/i.test(n)) return 'wine';
+  if (/beer|ipa|lager|ale|stout|pilsner/i.test(n)) return 'beer';
+  if (/juice|soda|tonic|ginger|cola|sprite|club|cranberry|lime|lemon|orange/i.test(n)) return 'mixer';
+  if (/syrup|simple|grenadine|orgeat|honey|agave/i.test(n)) return 'syrup';
+  return 'other';
+}
+
+function renderParseResults(result, containerId) {
+  const el = document.getElementById(containerId);
+  let html = '';
+  const grouped = {};
+  (result.bottles || []).forEach(b => {
+    const sId = b.station_id || 'unassigned';
+    if (!grouped[sId]) grouped[sId] = [];
+    grouped[sId].push(b);
+  });
+
+  for (const [sId, bottles] of Object.entries(grouped)) {
+    const station = state.stations.find(s => s.id === sId);
+    html += `<div class="parse-group">
+      <div class="parse-group-title">${station ? escHtml(station.name) : 'Unassigned'}</div>`;
+    bottles.forEach(b => {
+      const conf = b.confidence || 'high';
+      const confCls = conf === 'high' ? 'conf-high' : (conf === 'med' ? 'conf-med' : 'conf-low');
+      html += `<div class="parse-item ${!b.matched ? 'unmatched' : ''}">
+        <span class="conf-dot ${confCls}"></span>
+        <span style="flex:1;font-size:14px;color:var(--cream)">${escHtml(b.name)}</span>
+        <span class="badge-category">${b.category || '?'}</span>
+        <span class="text-muted" style="font-size:13px;min-width:50px;text-align:right">${levelLabel(b.level)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (result.unmatched && result.unmatched.length) {
+    html += `<div class="parse-group">
+      <div class="parse-group-title" style="color:var(--wine-glow)">Unmatched Items</div>`;
+    result.unmatched.forEach(u => {
+      html += `<div class="parse-item unmatched">
+        <span style="color:var(--wine-glow);font-size:16px;margin-right:4px">?</span>
+        <span style="flex:1;font-size:14px;color:var(--text-muted)">${escHtml(u)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  el.innerHTML = html;
+}
+
+function renderLocalParseResults(bottles, containerId) {
+  const el = document.getElementById(containerId);
+  const grouped = {};
+  bottles.forEach(b => {
+    const sId = b.station_id || 'unassigned';
+    if (!grouped[sId]) grouped[sId] = [];
+    grouped[sId].push(b);
+  });
+
+  let html = '';
+  for (const [sId, btls] of Object.entries(grouped)) {
+    const station = state.stations.find(s => s.id === sId);
+    html += `<div class="parse-group">
+      <div class="parse-group-title">${station ? escHtml(station.name) : 'Unassigned'}</div>`;
+    btls.forEach(b => {
+      const confCls = b.confidence === 'high' ? 'conf-high' : (b.confidence === 'med' ? 'conf-med' : 'conf-low');
+      html += `<div class="parse-item">
+        <span class="conf-dot ${confCls}"></span>
+        <span style="flex:1;font-size:14px;color:var(--cream)">${escHtml(b.name)}</span>
+        <span class="badge-category">${b.category || '?'}</span>
+        <span class="text-muted" style="font-size:13px;min-width:50px;text-align:right">${levelLabel(b.level)}</span>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (!bottles.length) {
+    html = '<p class="text-muted text-center p-6">No items could be parsed. Try adding bottles manually.</p>';
+  }
+
+  el.innerHTML = html;
+}
+
+/* ── Manual Add ── */
+function populateStationDropdown() {
+  const sel = document.getElementById('manual-station');
+  if (!sel) return;
+  sel.innerHTML = state.stations.map(s =>
+    `<option value="${s.id}">${escHtml(s.name)}</option>`
+  ).join('');
+}
+
+function addManualBottle() {
+  const name = document.getElementById('manual-name').value.trim();
+  if (!name) { flashInput('manual-name'); return; }
+
+  const bottle = {
+    id: genId(),
+    name: name,
+    category: document.getElementById('manual-category').value,
+    station_id: document.getElementById('manual-station').value,
+    size: parseInt(document.getElementById('manual-size').value),
+    par: parseFloat(document.getElementById('manual-par').value) || 1,
+    cost: parseFloat(document.getElementById('manual-cost').value) || 0,
+    level: 1.0
+  };
+
+  state.bottles.push(bottle);
+  saveState();
+
+  document.getElementById('manual-name').value = '';
+  document.getElementById('manual-cost').value = '';
+
+  // Show added
+  const list = document.getElementById('manual-added-list');
+  const station = state.stations.find(s => s.id === bottle.station_id);
+  list.innerHTML += `<div class="parse-item">
+    <span class="conf-dot conf-high"></span>
+    <span style="flex:1;font-size:14px;color:var(--cream)">${escHtml(bottle.name)}</span>
+    <span class="badge-category">${bottle.category}</span>
+    <span class="text-muted" style="font-size:12px">${station ? escHtml(station.name) : ''}</span>
+  </div>`;
+}
+
+/* ── Review ── */
+function renderReview() {
+  // Stats
+  const categories = [...new Set(state.bottles.map(b => b.category))];
+  document.getElementById('review-stats').innerHTML = `
+    <div class="stat-card text-center">
+      <div class="stat-number copper-text">${state.stations.length}</div>
+      <div class="stat-label">Stations</div>
+    </div>
+    <div class="stat-card text-center">
+      <div class="stat-number copper-text">${state.bottles.length}</div>
+      <div class="stat-label">Products</div>
+    </div>
+    <div class="stat-card text-center">
+      <div class="stat-number copper-text">${categories.length}</div>
+      <div class="stat-label">Categories</div>
+    </div>
+    <div class="stat-card text-center">
+      <div class="stat-number copper-text" style="font-size:1.6rem">${state.bar ? escHtml(state.bar.name) : ''}</div>
+      <div class="stat-label">Bar Name</div>
+    </div>
+  `;
+
+  // Inventory map
+  let html = '';
+  state.stations.forEach(station => {
+    const bottles = state.bottles.filter(b => b.station_id === station.id);
+    const badgeCls = 'badge-' + station.type;
+    html += `<div class="station-panel expanded" style="margin-bottom:12px">
+      <div style="padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(205,127,50,0.08)">
+        <span class="serif" style="font-size:16px;color:var(--cream)">${escHtml(station.name)}</span>
+        <span class="badge ${badgeCls}">${station.type}</span>
+        <span class="text-light" style="font-size:12px">${bottles.length} items</span>
+      </div>
+      <div>`;
+
+    if (bottles.length === 0) {
+      html += `<div style="padding:16px 20px;color:var(--text-light);font-size:13px;font-style:italic">No products assigned to this station.</div>`;
+    }
+
+    bottles.forEach(b => {
+      html += `<div class="bottle-row" style="gap:8px">
+        <input class="inline-edit" value="${escAttr(b.name)}" style="min-width:120px;flex:1"
+               onchange="updateBottle('${b.id}','name',this.value)">
+        <select class="select btn-xs" style="font-size:11px" onchange="updateBottle('${b.id}','category',this.value)">
+          ${categoryOptions(b.category)}
+        </select>
+        <input class="inline-edit" value="${b.par}" style="width:40px;text-align:center"
+               type="number" step="0.5" min="0"
+               onchange="updateBottle('${b.id}','par',parseFloat(this.value))">
+        <span class="text-light" style="font-size:11px">par</span>
+        <button class="delete-btn" onclick="deleteBottle('${b.id}')" title="Remove">&times;</button>
+      </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+  document.getElementById('review-inventory').innerHTML = html;
+}
+
+function updateBottle(id, field, value) {
+  const b = state.bottles.find(x => x.id === id);
+  if (b) { b[field] = value; saveState(); }
+}
+
+function deleteBottle(id) {
+  state.bottles = state.bottles.filter(x => x.id !== id);
+  saveState();
+  if (state.currentView === 'setup') renderReview();
+  if (state.currentView === 'dashboard') renderDashboard();
+}
+
+/* ── Finish Setup ── */
+async function finishSetup() {
+  showLoader('Setting up your bar...');
+
+  // Try API
+  const barResult = await apiFetch('/bar/setup', {
+    method: 'POST',
+    body: { bar: state.bar, stations: state.stations }
+  });
+
+  const bottleResult = await apiFetch('/bottles/bulk', {
+    method: 'POST',
+    body: { bottles: state.bottles }
+  });
+
+  hideLoader();
+  saveState();
+  showView('dashboard');
+}
+
+/* ═══════════════════════════════════════════════════
+   DASHBOARD
+   ═══════════════════════════════════════════════════ */
+function renderDashboard() {
+  if (!state.bar) { showView('welcome'); return; }
+
+  // Bar name
+  document.getElementById('bar-name-display').textContent = state.bar.name;
+
+  // Stats
+  const totalProducts = state.bottles.length;
+  const estValue = state.bottles.reduce((sum, b) => sum + (b.cost || 0) * (b.level || 0), 0);
+  const belowPar = state.bottles.filter(b => (b.level || 0) < (b.par || 1) * 0.9).length;
+  const lastCount = state.counts.length ? formatDate(state.counts[state.counts.length - 1].date) : 'Never';
+
+  document.getElementById('dashboard-stats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-number copper-text">${totalProducts}</div>
+      <div class="stat-label">Total Products</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number copper-text">$${estValue.toFixed(0)}</div>
+      <div class="stat-label">Est. Value</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:${belowPar > 0 ? 'var(--wine-glow)' : 'var(--patina-light)'}">${belowPar}</div>
+      <div class="stat-label">Below Par</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number copper-text" style="font-size:1.4rem">${lastCount}</div>
+      <div class="stat-label">Last Count</div>
+    </div>
+  `;
+
+  // Station panels
+  let html = '';
+  state.stations.forEach(station => {
+    const bottles = state.bottles.filter(b => b.station_id === station.id);
+    const badgeCls = 'badge-' + station.type;
+    html += `<div class="station-panel" onclick="toggleStation(this, event)">
+      <div class="station-header">
+        <div class="flex items-center gap-3">
+          <span class="serif" style="font-size:16px;color:var(--cream)">${escHtml(station.name)}</span>
+          <span class="badge ${badgeCls}">${station.type}</span>
+          <span class="text-light" style="font-size:12px">${bottles.length} bottles</span>
+        </div>
+        <svg class="chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="station-body">`;
+
+    bottles.forEach(b => {
+      const level = b.level || 0;
+      const par = b.par || 1;
+      const pct = Math.round(level * 100);
+      const parPct = Math.min(par * 100, 100);
+      let gaugeCls = 'at-par';
+      if (level > par * 1.1) gaugeCls = 'above-par';
+      else if (level < par * 0.9) gaugeCls = 'below-par';
+
+      html += `<div class="bottle-row">
+          <span class="bottle-name">${escHtml(b.name)}</span>
+          <span class="badge-category" style="min-width:60px;text-align:center">${b.category || ''}</span>
+          <div class="bottle-gauge">
+            <div class="gauge-track">
+              <div class="gauge-fill ${gaugeCls}" style="width:${pct}%"></div>
+              <div class="gauge-par-marker" style="left:${parPct}%"></div>
+            </div>
+          </div>
+          <span class="bottle-level">${pct}%</span>
+          <span class="bottle-cost">${b.cost ? '$' + b.cost.toFixed(2) : ''}</span>
+        </div>`;
+    });
+
+    if (!bottles.length) {
+      html += `<div style="padding:16px 20px;color:var(--text-light);font-size:13px;font-style:italic">Empty station</div>`;
+    }
+
+    html += `</div></div>`;
+  });
+  document.getElementById('station-panels').innerHTML = html;
+
+  // Below par alert
+  const alertEl = document.getElementById('below-par-alert');
+  if (belowPar > 0) {
+    alertEl.classList.remove('hidden');
+    document.getElementById('below-par-text').textContent =
+      `${belowPar} item${belowPar > 1 ? 's' : ''} below par level \u2014 consider reordering.`;
+  } else {
+    alertEl.classList.add('hidden');
+  }
+}
+
+function toggleStation(panel, event) {
+  // Don't toggle if clicking inside body
+  if (event.target.closest('.station-body')) return;
+  panel.classList.toggle('expanded');
+}
+
+function showAddProductModal() {
+  const html = `
+    <h3 class="serif" style="font-size:1.4rem;color:var(--cream);margin-bottom:20px">Add Product</h3>
+    <div style="margin-bottom:12px">
+      <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Name</label>
+      <input id="modal-name" class="input" type="text" placeholder="Product name">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Category</label>
+        <select id="modal-category" class="select w-full" style="padding:12px 32px 12px 12px">
+          ${categoryOptions('vodka')}
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Station</label>
+        <select id="modal-station" class="select w-full" style="padding:12px 32px 12px 12px">
+          ${state.stations.map(s => `<option value="${s.id}">${escHtml(s.name)}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px">
+      <div>
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Size</label>
+        <select id="modal-size" class="select w-full" style="padding:12px 32px 12px 12px">
+          <option value="750">750ml</option><option value="1000">1L</option><option value="1750">1.75L</option>
+          <option value="375">375ml</option><option value="200">200ml</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Par</label>
+        <input id="modal-par" class="input" type="number" value="1" step="0.5" min="0">
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--text-light);letter-spacing:0.06em;text-transform:uppercase;display:block;margin-bottom:6px">Cost ($)</label>
+        <input id="modal-cost" class="input" type="number" step="0.01" placeholder="0.00">
+      </div>
+    </div>
+    <button class="btn-copper w-full" onclick="addProductFromModal()">Add Product</button>
+  `;
+  showModal(html);
+}
+
+function addProductFromModal() {
+  const name = document.getElementById('modal-name').value.trim();
+  if (!name) { flashInput('modal-name'); return; }
+  state.bottles.push({
+    id: genId(),
+    name: name,
+    category: document.getElementById('modal-category').value,
+    station_id: document.getElementById('modal-station').value,
+    size: parseInt(document.getElementById('modal-size').value),
+    par: parseFloat(document.getElementById('modal-par').value) || 1,
+    cost: parseFloat(document.getElementById('modal-cost').value) || 0,
+    level: 1.0
+  });
+  saveState();
+  closeModal();
+  renderDashboard();
+}
+
+/* ═══════════════════════════════════════════════════
+   COUNT MODE
+   ═══════════════════════════════════════════════════ */
+let countStationIdx = 0;
+
+function renderCountMode() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById('count-header').textContent = 'Weekly Count \u2014 ' + dateStr;
+
+  state.pendingCount = {};
+
+  // Station tabs for manual
+  let tabsHtml = '';
+  state.stations.forEach((s, i) => {
+    tabsHtml += `<div class="count-station-tab ${i === 0 ? 'active' : ''}" onclick="selectCountStation(${i}, this)">${escHtml(s.name)}</div>`;
+  });
+  document.getElementById('count-station-tabs').innerHTML = tabsHtml;
+
+  countStationIdx = 0;
+  renderCountBottles();
+}
+
+function selectCountStation(idx, el) {
+  countStationIdx = idx;
+  document.querySelectorAll('.count-station-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCountBottles();
+}
+
+function renderCountBottles() {
+  const station = state.stations[countStationIdx];
+  if (!station) return;
+  const bottles = state.bottles.filter(b => b.station_id === station.id);
+  const container = document.getElementById('count-bottles-list');
+
+  let html = '';
+  bottles.forEach(b => {
+    const currentLevel = state.pendingCount[b.id] !== undefined ? state.pendingCount[b.id] : (b.level || 0);
+    const pct = Math.round(currentLevel * 100);
+    const par = b.par || 1;
+    const parPct = Math.min(par * 100, 100);
+    let gaugeCls = 'at-par';
+    if (currentLevel > par * 1.1) gaugeCls = 'above-par';
+    else if (currentLevel < par * 0.9) gaugeCls = 'below-par';
+
+    const quickLevels = [
+      { label: 'Empty', val: 0 },
+      { label: '1/4', val: 0.25 },
+      { label: '1/2', val: 0.5 },
+      { label: '3/4', val: 0.75 },
+      { label: 'Full', val: 1.0 }
+    ];
+
+    html += `<div class="count-bottle">
+      <div style="min-width:140px;flex-shrink:0">
+        <div style="font-size:14px;color:var(--cream)">${escHtml(b.name)}</div>
+        <div style="font-size:11px;color:var(--text-light)">Last: ${levelLabel(b.level)}</div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+        <div class="gauge-track" style="height:10px">
+          <div class="gauge-fill ${gaugeCls}" id="gauge-${b.id}" style="width:${pct}%"></div>
+          <div class="gauge-par-marker" style="left:${parPct}%"></div>
+        </div>
+        <input type="range" min="0" max="1" step="0.1" value="${currentLevel}"
+               style="width:100%;accent-color:var(--copper)"
+               oninput="updateCountLevel('${b.id}', parseFloat(this.value))">
+      </div>
+      <div class="count-quick-btns">
+        ${quickLevels.map(q =>
+          `<button class="count-quick-btn ${Math.abs(currentLevel - q.val) < 0.05 ? 'selected' : ''}"
+                   onclick="setCountLevel('${b.id}', ${q.val})">${q.label}</button>`
+        ).join('')}
+      </div>
+      <span style="min-width:40px;text-align:right;font-size:13px;color:var(--text-muted)" id="level-text-${b.id}">${pct}%</span>
+    </div>`;
+  });
+
+  if (!bottles.length) {
+    html = `<div class="text-center p-8 text-muted">No products at this station.</div>`;
+  }
+
+  container.innerHTML = html;
+}
+
+function updateCountLevel(bottleId, level) {
+  state.pendingCount[bottleId] = level;
+  const pct = Math.round(level * 100);
+  const gauge = document.getElementById('gauge-' + bottleId);
+  const text = document.getElementById('level-text-' + bottleId);
+  if (gauge) gauge.style.width = pct + '%';
+  if (text) text.textContent = pct + '%';
+
+  // Update gauge class
+  const b = state.bottles.find(x => x.id === bottleId);
+  if (b && gauge) {
+    const par = b.par || 1;
+    gauge.classList.remove('above-par', 'at-par', 'below-par');
+    if (level > par * 1.1) gauge.classList.add('above-par');
+    else if (level < par * 0.9) gauge.classList.add('below-par');
+    else gauge.classList.add('at-par');
+  }
+
+  // Update quick button selection
+  const row = gauge?.closest('.count-bottle');
+  if (row) {
+    row.querySelectorAll('.count-quick-btn').forEach(btn => {
+      const vals = [0, 0.25, 0.5, 0.75, 1.0];
+      const txt = btn.textContent.trim();
+      const idx = ['Empty','1/4','1/2','3/4','Full'].indexOf(txt);
+      if (idx >= 0) {
+        btn.classList.toggle('selected', Math.abs(level - vals[idx]) < 0.05);
+      }
+    });
+  }
+}
+
+function setCountLevel(bottleId, level) {
+  state.pendingCount[bottleId] = level;
+  // Update slider
+  const row = document.getElementById('gauge-' + bottleId)?.closest('.count-bottle');
+  if (row) {
+    const slider = row.querySelector('input[type="range"]');
+    if (slider) slider.value = level;
+  }
+  updateCountLevel(bottleId, level);
+}
+
+async function processCountNotes() {
+  const notes = document.getElementById('count-voice-input').value.trim();
+  if (!notes) { flashInput('count-voice-input'); return; }
+
+  showLoader('Processing count...');
+  const result = await apiFetch('/parse-notes', {
+    method: 'POST',
+    body: { notes: notes, stations: state.stations, bottles: state.bottles }
+  });
+  hideLoader();
+
+  if (result && result.bottles) {
+    result.bottles.forEach(b => {
+      const match = state.bottles.find(x =>
+        x.name.toLowerCase() === (b.name || '').toLowerCase()
+      );
+      if (match && b.level !== undefined) {
+        state.pendingCount[match.id] = b.level;
+      }
+    });
+    renderCountParseResults(result);
+  } else {
+    // Local fallback
+    const parsed = localParse(notes);
+    parsed.forEach(p => {
+      const match = state.bottles.find(x =>
+        x.name.toLowerCase() === p.name.toLowerCase()
+      );
+      if (match) {
+        state.pendingCount[match.id] = p.level;
+      }
+    });
+    renderCountParseLocal(parsed);
+  }
+}
+
+function renderCountParseResults(result) {
+  const el = document.getElementById('count-parse-results');
+  let html = '<h3 class="serif mb-4" style="font-size:1.2rem;color:var(--cream)">Parsed Results</h3>';
+
+  (result.bottles || []).forEach(b => {
+    const match = state.bottles.find(x => x.name.toLowerCase() === (b.name || '').toLowerCase());
+    const conf = b.confidence || 'high';
+    const confCls = conf === 'high' ? 'conf-high' : (conf === 'med' ? 'conf-med' : 'conf-low');
+    html += `<div class="parse-item ${match ? '' : 'unmatched'}">
+      <span class="conf-dot ${confCls}"></span>
+      <span style="flex:1;color:var(--cream);font-size:14px">${escHtml(b.name)}</span>
+      <span class="text-muted" style="font-size:13px">${levelLabel(b.level)}</span>
+      ${match ? '<span style="color:var(--patina-light);font-size:11px">Matched</span>' : '<span style="color:var(--wine-glow);font-size:11px">Not found</span>'}
+    </div>`;
+  });
+
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+  document.getElementById('count-save-voice').classList.remove('hidden');
+}
+
+function renderCountParseLocal(parsed) {
+  const el = document.getElementById('count-parse-results');
+  let html = '<h3 class="serif mb-4" style="font-size:1.2rem;color:var(--cream)">Parsed Results</h3>';
+
+  parsed.forEach(p => {
+    const match = state.bottles.find(x => x.name.toLowerCase() === p.name.toLowerCase());
+    const confCls = p.confidence === 'high' ? 'conf-high' : 'conf-low';
+    html += `<div class="parse-item ${match ? '' : 'unmatched'}">
+      <span class="conf-dot ${confCls}"></span>
+      <span style="flex:1;color:var(--cream);font-size:14px">${escHtml(p.name)}</span>
+      <span class="text-muted" style="font-size:13px">${levelLabel(p.level)}</span>
+      ${match ? '<span style="color:var(--patina-light);font-size:11px">Matched</span>' : '<span style="color:var(--wine-glow);font-size:11px">Not found</span>'}
+    </div>`;
+  });
+
+  if (!parsed.length) {
+    html += '<p class="text-muted text-center p-4">Could not parse any items. Try the manual count tab.</p>';
+  }
+
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+  document.getElementById('count-save-voice').classList.remove('hidden');
+}
+
+async function saveCount() {
+  const countItems = [];
+  let countedCount = 0;
+
+  state.bottles.forEach(b => {
+    if (state.pendingCount[b.id] !== undefined) {
+      countItems.push({
+        bottle_id: b.id,
+        prev_level: b.level || 0,
+        level: state.pendingCount[b.id]
+      });
+      b.level = state.pendingCount[b.id];
+      countedCount++;
+    }
+  });
+
+  if (countItems.length === 0) {
+    showModal(`<div class="summary-popup">
+      <h3 class="serif" style="font-size:1.4rem;color:var(--cream);margin-bottom:12px">No Changes</h3>
+      <p class="text-muted">Adjust at least one bottle level before saving.</p>
+      <button class="btn-outline mt-6" onclick="closeModal()">Close</button>
+    </div>`);
+    return;
+  }
+
+  const count = {
+    id: genId(),
+    date: new Date().toISOString(),
+    items: countItems
+  };
+
+  state.counts.push(count);
+  state.pendingCount = {};
+  saveState();
+
+  // Try API
+  await apiFetch('/count', {
+    method: 'POST',
+    body: count
+  });
+
+  // Summary
+  const belowPar = state.bottles.filter(b => (b.level || 0) < (b.par || 1) * 0.9).length;
+  const reorder = state.bottles.filter(b => (b.level || 0) < 0.2).length;
+
+  showModal(`<div class="summary-popup">
+    <div style="margin-bottom:16px">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="display:inline-block">
+        <circle cx="24" cy="24" r="20" stroke="var(--patina-light)" stroke-width="2" fill="rgba(74,124,111,0.1)"/>
+        <path d="M16 24l5 5 11-11" stroke="var(--patina-light)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3 class="serif" style="font-size:1.6rem;color:var(--cream);margin-bottom:16px">Count Saved</h3>
+    <div class="grid grid-2 gap-4" style="max-width:280px;margin:0 auto 20px">
+      <div class="stat-card text-center">
+        <div class="stat-number copper-text" style="font-size:1.8rem">${countedCount}</div>
+        <div class="stat-label">Counted</div>
+      </div>
+      <div class="stat-card text-center">
+        <div class="stat-number" style="font-size:1.8rem;color:${belowPar ? 'var(--wine-glow)' : 'var(--patina-light)'}">${belowPar}</div>
+        <div class="stat-label">Below Par</div>
+      </div>
+    </div>
+    ${reorder > 0 ? `<p style="color:var(--wine-glow);font-size:13px;margin-bottom:16px">${reorder} item${reorder > 1 ? 's' : ''} critically low \u2014 reorder needed.</p>` : ''}
+    <button class="btn-copper" onclick="closeModal();showView('dashboard')">Back to Dashboard</button>
+  </div>`);
+}
+
+function switchCountTab(el, showId, hideId) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(showId).classList.add('active');
+  document.getElementById(hideId).classList.remove('active');
+}
+
+/* ═══════════════════════════════════════════════════
+   HISTORY
+   ═══════════════════════════════════════════════════ */
+function renderHistory() {
+  const container = document.getElementById('history-list');
+  const emptyEl = document.getElementById('history-empty');
+
+  if (!state.counts.length) {
+    container.innerHTML = '';
+    emptyEl.classList.remove('hidden');
+    return;
+  }
+
+  emptyEl.classList.add('hidden');
+
+  // Sort newest first
+  const sorted = [...state.counts].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  let html = '';
+  sorted.forEach(count => {
+    const date = new Date(count.date);
+    const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+    const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const belowPar = count.items.filter(i => {
+      const b = state.bottles.find(x => x.id === i.bottle_id);
+      return b && i.level < (b.par || 1) * 0.9;
+    }).length;
+
+    html += `<div class="history-entry" onclick="toggleHistoryEntry(this, event)">
+      <div class="history-header">
+        <div class="flex items-center gap-4">
+          <div>
+            <div style="font-size:14px;color:var(--cream)">${dateStr}</div>
+            <div style="font-size:12px;color:var(--text-light)">${timeStr}</div>
+          </div>
+          <span class="badge badge-well">${count.items.length} items</span>
+          ${belowPar > 0 ? `<span class="badge badge-walkin">${belowPar} below par</span>` : ''}
+        </div>
+        <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="color:var(--text-light);transition:transform 0.3s"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+      </div>
+      <div class="history-body">
+        <div style="padding:4px 20px 16px">`;
+
+    count.items.forEach(item => {
+      const bottle = state.bottles.find(x => x.id === item.bottle_id);
+      const name = bottle ? bottle.name : 'Unknown';
+      const variance = item.level - item.prev_level;
+      const significant = Math.abs(variance) > 0.3;
+      const varText = variance > 0 ? `+${(variance * 100).toFixed(0)}%` : `${(variance * 100).toFixed(0)}%`;
+      const varColor = variance > 0 ? 'var(--patina-light)' : (variance < -0.1 ? 'var(--wine-glow)' : 'var(--text-light)');
+
+      html += `<div class="variance-row ${significant ? 'significant' : ''}">
+        <span style="flex:1;font-size:13px;color:var(--cream)">${escHtml(name)}</span>
+        <span class="text-muted" style="font-size:12px;min-width:50px;text-align:right">${levelLabel(item.prev_level)}</span>
+        <span style="color:var(--text-light);font-size:12px;margin:0 4px">&rarr;</span>
+        <span style="font-size:12px;min-width:50px;text-align:right;color:var(--cream)">${levelLabel(item.level)}</span>
+        <span style="font-size:11px;min-width:50px;text-align:right;color:${varColor};font-weight:${significant ? '600' : '400'}">${varText}</span>
+      </div>`;
+    });
+
+    html += `</div></div></div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+function toggleHistoryEntry(el, event) {
+  if (event.target.closest('.history-body')) return;
+  el.classList.toggle('expanded');
+}
+
+/* ═══════════════════════════════════════════════════
+   TAB SWITCHING
+   ═══════════════════════════════════════════════════ */
+function switchTab(el, showId, hideId) {
+  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(showId).classList.add('active');
+  document.getElementById(hideId).classList.remove('active');
+}
+
+/* ═══════════════════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════════════════ */
+function showModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal').classList.remove('hidden');
+}
+function closeModal() {
+  document.getElementById('modal').classList.add('hidden');
+}
+
+/* ═══════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════ */
+function genId() {
+  return 'b' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+}
+
+function escHtml(s) {
+  const div = document.createElement('div');
+  div.textContent = s || '';
+  return div.innerHTML;
+}
+
+function escAttr(s) {
+  return (s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+function levelLabel(level) {
+  if (level === undefined || level === null) return '--';
+  const pct = Math.round(level * 100);
+  if (pct === 0) return 'Empty';
+  if (pct === 100) return 'Full';
+  if (pct === 25) return '1/4';
+  if (pct === 50) return '1/2';
+  if (pct === 75) return '3/4';
+  return pct + '%';
+}
+
+function formatDate(dateStr) {
+  try {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch(e) { return dateStr; }
+}
+
+function categoryOptions(selected) {
+  const cats = [
+    ['vodka','Vodka'],['gin','Gin'],['rum','Rum'],['tequila','Tequila'],
+    ['whiskey','Whiskey'],['bourbon','Bourbon'],['scotch','Scotch'],
+    ['brandy','Brandy / Cognac'],['liqueur','Liqueur'],['amaro','Amaro / Bitter'],
+    ['wine','Wine'],['beer','Beer'],['mixer','Mixer'],['syrup','Syrup'],
+    ['garnish','Garnish'],['other','Other']
+  ];
+  return cats.map(([val, label]) =>
+    `<option value="${val}" ${val === selected ? 'selected' : ''}>${label}</option>`
+  ).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+   ═══════════════════════════════════════════════════ */
+loadState();
+
+// Determine starting view
+if (state.bar && state.bottles.length > 0) {
+  showView('dashboard');
+} else if (state.bar && state.wizardStep > 1) {
+  // Resume wizard
+  initWizard();
+  showView('setup');
+} else {
+  showView('welcome');
+}
+</script>
+</body>
+</html>
