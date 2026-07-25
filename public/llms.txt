@@ -8,6 +8,11 @@
 - Bar inventory software comparison: https://opensourcebarware.com/bar-inventory-software-comparison
 - Liquor inventory: https://opensourcebarware.com/liquor-inventory
 - Wine inventory: https://opensourcebarware.com/wine-inventory
+- How it works (setup + weekly workflow): https://opensourcebarware.com/the-process
+- Program guide (documentation): https://opensourcebarware.com/downloads
+- Release notes / changelog: https://opensourcebarware.com/changelog
+- Free bartender resources: https://opensourcebarware.com/resources
+- Open source compliance (GPLv3, source offer): https://opensourcebarware.com/open-source-compliance
 - About: https://opensourcebarware.com/about
 - Manifesto: https://opensourcebarware.com/manifesto
 - Blog: https://opensourcebarware.com/blog
@@ -20,8 +25,13 @@
 
 ## Product facts
 - Price: Free (GPLv3). No subscription. No per-seat fees.
+- Current version: 1.5.0, released 2026-07-10. Release notes: https://opensourcebarware.com/changelog
+- Download size: ~243 KB. Installs and runs locally; no account required to use it.
+- Runs local-first: the operator's data stays in files on their own machine. No cloud service is required and there is no vendor lock-in.
 - Platforms: macOS, Windows, Chrome-side program
-- Features: location-mapped counts, pour cost, variance by bottle/category/shift, invoice/POS inputs, voice walk setup
+- Source code: https://github.com/RichardBJamison/open-source-barware (GPLv3)
+- Features: location-mapped counts, pour cost, variance by bottle/category/shift, invoice/POS inputs, voice walk setup, mobile counting, barcode, recipes, multi-venue, Spanish-ready inventory notes
+- Not a POS: it does not replace a point-of-sale system. It ingests POS exports to reconcile sales against counted inventory.
 - Parent org: Intelligent Hospitality Systems (https://intelligenthospitalitysystems.com)
 - Founder: Richard B. Jamison (https://richardbjamison.com)
 

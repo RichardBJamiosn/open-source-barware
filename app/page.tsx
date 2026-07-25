@@ -9,19 +9,24 @@ import OptimizedPicture from "@/components/OptimizedPicture";
 import ProblemHourglass from "@/components/ProblemHourglass";
 import { pageMetadata } from "@/lib/seo";
 
+// Title deliberately leads with the brand, NOT "Free Bar Inventory Software".
+// GSC 2026-07-25: this page held 188 impressions while /free-bar-inventory-software
+// and /bar-inventory-software-comparison sat at "Discovered - currently not indexed"
+// with zero. Five pages shared the same head phrase and the homepage's authority
+// suppressed the dedicated ones. The exact-match phrase now belongs to
+// /free-bar-inventory-software alone. Do not put it back at the front of this title.
 export const metadata = pageMetadata({
-  title: "Free Bar Inventory Software (Open Source) | Open Source Barware",
+  title: "Open Source Barware — Free Bar Inventory Built by Bartenders",
   description:
-    "Free, open-source bar inventory that runs on your laptop. Counts, variance, pour cost—no subscription, no cloud lock-in. Built by operators.",
+    "Free, open-source bar inventory that runs on your own laptop. Counts, variance, pour cost—no subscription, no account, no cloud lock-in. Built by operators.",
   path: "/",
   keywords: [
-    "free inventory system",
-    "free bar inventory system",
-    "best bar inventory system",
-    "best free bar inventory system",
-    "free bar inventory software",
-    "bar inventory system free",
     "open source bar inventory",
+    "open source barware",
+    "local-first bar inventory",
+    "bar inventory software no subscription",
+    "self-hosted bar inventory",
+    "free inventory system",
   ],
 });
 

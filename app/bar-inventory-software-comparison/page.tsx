@@ -3,18 +3,20 @@ import OptimizedPicture from "@/components/OptimizedPicture";
 import { Gear, GearDivider } from "@/components/SteampunkElements";
 import { pageMetadata, SITE_URL } from "@/lib/seo";
 
+// Retitled to own alternative/comparison intent instead of repeating the
+// "Free Bar Inventory Software" head phrase, which /free-bar-inventory-software owns.
 export const metadata = pageMetadata({
-  title: "Free Bar Inventory Software vs Paid Apps (Honest Comparison) | Open Source Barware",
+  title: "Backbar vs Partender vs Open Source Barware — Compared (2026)",
   description:
-    "Compare Open Source Barware to Backbar, Partender, Bar Patrol, and Provi on cost, data ownership, variance, and lock-in. Free GPLv3—run on your machines.",
+    "Honest comparison of Backbar, Partender, Bar Patrol, Provi and Open Source Barware on cost, free tiers, data ownership and lock-in. Backbar and Provi have free tiers too—here's the real difference.",
   path: "/bar-inventory-software-comparison",
   keywords: [
-    "free bar inventory software vs Backbar",
-    "best free bar inventory",
-    "Partender alternative free",
+    "Backbar alternative",
+    "Partender alternative",
     "Bar Patrol alternative",
     "Provi inventory alternative",
-    "open source bar inventory comparison",
+    "bar inventory software comparison",
+    "open source alternative to bar inventory saas",
   ],
 });
 
@@ -30,34 +32,36 @@ const rows = [
     lockIn: "None — open source",
     highlight: true,
   },
+  // Competitor cost/tier facts verified against first-party pricing pages 2026-07-25.
+  // Backbar and Provi both offer genuine free tiers — do not describe either as paid-only.
   {
     name: "Backbar",
-    cost: "Paid SaaS / tiered",
+    cost: "Freemium — free 1-location tier; $79–99/mo",
     data: "Vendor cloud",
     pos: "Cloud integrations (plan-dependent)",
     variance: "Strong product focus",
     multi: "Cloud multi-location",
     offline: "Cloud-first",
-    lockIn: "Subscription + export process",
+    lockIn: "Account + vendor cloud required",
     highlight: false,
   },
   {
     name: "Partender",
-    cost: "Paid SaaS",
+    cost: "Paid SaaS — from $199/mo",
     data: "Vendor cloud",
     pos: "Cloud ecosystem",
-    variance: "Mobile count tooling",
+    variance: "Fast tap-the-bottle counting",
     multi: "Cloud multi-location",
     offline: "App + cloud",
-    lockIn: "Subscription seats",
+    lockIn: "Subscription seats, annual term",
     highlight: false,
   },
   {
     name: "Bar Patrol",
-    cost: "Paid SaaS",
+    cost: "Paid SaaS — $49–69/mo",
     data: "Vendor cloud",
     pos: "Vendor workflows",
-    variance: "Vendor feature set",
+    variance: "Scale-based counting",
     multi: "Plan-dependent",
     offline: "Cloud-first",
     lockIn: "Subscription",
@@ -65,13 +69,13 @@ const rows = [
   },
   {
     name: "Provi",
-    cost: "Ordering platform (paid ecosystem)",
+    cost: "Free for buyers — account + license",
     data: "Vendor ecosystem",
     pos: "Strong ordering / vendor path",
     variance: "Not the same job as local counts",
     multi: "Vendor network",
     offline: "Cloud",
-    lockIn: "Platform workflows",
+    lockIn: "US-only; needs your distributors onboarded",
     highlight: false,
   },
 ];
@@ -83,7 +87,11 @@ const faqs = [
   },
   {
     q: "Why not just use Backbar or Partender?",
-    a: "Cloud apps win on sync and vendor workflows. Open Source Barware wins on local control, no seat tax, and open source you can audit. Different jobs.",
+    a: "Sometimes you should. Backbar has a free tier for a single location and Provi is free for buyers, so \"free\" alone is not the difference. Cloud apps win on hosted multi-user sync and vendor workflows. Open Source Barware wins when you want the software and the files in your own hands — GPLv3 source, runs locally, no account, no cloud required, nothing to cancel. Different jobs.",
+  },
+  {
+    q: "Is Open Source Barware just the cheapest option?",
+    a: "No — several competitors have free plans. The difference is custody. Their free tiers still require an account and their cloud; ours requires neither. You keep the program and your inventory files whether or not we exist.",
   },
   {
     q: "Do I need an account?",

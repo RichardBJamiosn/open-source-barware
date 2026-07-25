@@ -17,7 +17,11 @@ export const metadata = {
       "bartender resources",
     ],
   }),
+  // Must re-declare canonical here: this object literally replaces the `alternates`
+  // returned by pageMetadata(), so declaring only `types` silently dropped the
+  // canonical and made /blog the one sitemap URL without one.
   alternates: {
+    canonical: "/blog",
     types: {
       'application/rss+xml': '/blog/feed.xml',
     },

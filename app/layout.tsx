@@ -9,7 +9,11 @@ import Footer from "@/components/Footer";
 import JulyFourthLaunchOverlay from "@/components/JulyFourthLaunchOverlay";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo";
 
-const GA_MEASUREMENT_ID = "G-ZM3BBYW5PY";
+// GA4 property 540046010 "Open Source Barware", stream 14996118024 → opensourcebarware.com.
+// Verified against the Admin API 2026-07-25. Do not change without re-checking the property:
+// the previous value (G-ZM3BBYW5PY) belongs to no property on this account and silently
+// blackholed all site analytics from 2026-07-09 onward.
+const GA_MEASUREMENT_ID = "G-DQJKBWMM8H";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -93,9 +97,12 @@ const jsonLd = {
     },
     {
       "@type": "SoftwareApplication",
+      // Same @id as the node on /download so Google treats them as one entity.
+      "@id": `${siteUrl}/#software`,
       name: "Open Source Barware",
       applicationCategory: "BusinessApplication",
-      operatingSystem: "macOS, Windows, Chrome",
+      operatingSystem: "macOS, Windows",
+      softwareVersion: "1.5.0",
       offers: {
         "@type": "Offer",
         price: "0",
@@ -131,6 +138,7 @@ export default function RootLayout({
           `}
         </Script>
         <Script src="/osb-analytics.js" strategy="afterInteractive" />
+        <Script src="/osb-ambient-cursor.js" strategy="afterInteractive" />
         {/* Bing Webmaster Tools verification */}
         <meta name="msvalidate.01" content="0F0DF97AF304FF08B8E12E092B2CEEAF" />
       </head>

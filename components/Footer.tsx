@@ -59,6 +59,7 @@ export default function Footer() {
               <Link href="/free-bar-inventory-software" className="text-sm text-text-muted hover:text-copper transition-colors">Bar Inventory Software</Link>
               <Link href="/liquor-inventory" className="text-sm text-text-muted hover:text-copper transition-colors">Liquor Inventory</Link>
               <Link href="/wine-inventory" className="text-sm text-text-muted hover:text-copper transition-colors">Wine Inventory</Link>
+              <Link href="/bar-inventory-software-comparison" className="text-sm text-text-muted hover:text-copper transition-colors">Compare Alternatives</Link>
             </div>
             <span className="text-[10px] text-text-light tracking-[0.3em] uppercase block mb-4">
               Workshop

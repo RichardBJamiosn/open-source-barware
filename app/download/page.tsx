@@ -115,10 +115,17 @@ export default function DownloadPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "SoftwareApplication",
+            // Shared @id with the sitewide node in app/layout.tsx so Google merges the
+            // two SoftwareApplication entities instead of choosing between them — they
+            // otherwise declare different operatingSystem values for the same product.
+            "@id": "https://opensourcebarware.com/#software",
             name: "Open Source Barware",
             applicationCategory: "BusinessApplication",
             operatingSystem: "macOS, Windows",
             softwareVersion: "1.5.0",
+            datePublished: "2026-07-10",
+            fileSize: "243000",
+            releaseNotes: "https://opensourcebarware.com/changelog",
             license: "https://www.gnu.org/licenses/gpl-3.0.html",
             offers: {
               "@type": "Offer",

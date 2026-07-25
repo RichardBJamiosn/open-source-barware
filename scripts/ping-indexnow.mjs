@@ -21,6 +21,7 @@ const URLS = [
   `https://${HOST}/free-bar-inventory-software`,
   `https://${HOST}/bar-inventory-software-comparison`,
   `https://${HOST}/the-process`,
+  `https://${HOST}/changelog`,
   `https://${HOST}/about`,
   `https://${HOST}/resources`,
   `https://${HOST}/manifesto`,

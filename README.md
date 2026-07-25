@@ -7,7 +7,13 @@
 
 > Free, open-source bar inventory tools — built by bartenders for the trade.
 
-Open Source Barware is a free, open-source bar inventory project for hospitality teams. It includes the public Next.js site, browser-based inventory sandbox, downloadable spreadsheet/prompt assets, and the in-progress local Chrome-side program under `program/`.
+Open Source Barware is a free, open-source bar inventory project for hospitality teams. **The local program is shipping: v1.5.0, released 2026-07-10.** It counts and maps a bar, tracks variance, and reconciles purchases and POS exports — running on the operator's own machine, with no account and no cloud service required.
+
+The repository contains the local program (`program/`), the public Next.js site, the browser-based inventory sandbox, and downloadable spreadsheet/prompt assets.
+
+- **Download:** https://opensourcebarware.com/download (~243 KB, macOS + Windows)
+- **Release notes:** https://opensourcebarware.com/changelog · [Releases](https://github.com/RichardBJamison/open-source-barware/releases)
+- **License:** GPLv3
 
 > **OSB is free forever.** If it saved you a barback shift, [buy the project a beer ☕](https://ko-fi.com/W2J022HCH2). Every bit funds more tools for hospitality teams.
 
