@@ -9,7 +9,7 @@ const navHotspots = [
   { label: "The Process", href: "/the-process", className: "nav-process" },
   { label: "About", href: "/about", className: "nav-about" },
   { label: "Resources", href: "/resources", className: "nav-resources" },
-  { label: "Salle d'Armes", href: "/inventory", className: "nav-app" },
+  { label: "Live Demo", href: "/inventory", className: "nav-app" },
   { label: "Free Program", href: "/downloads", className: "nav-free" },
 ];
 

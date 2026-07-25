@@ -1,0 +1,783 @@
+{
+  "fetched_at": "2026-07-19 22:50",
+  "source_note": "Live GA4 pull (oauth:richard@ohiovalleylandpartners.com) \u00b7 B-ATCAVE Phase 1 \u00b7 SA/OAuth on macbook15",
+  "network": {
+    "ga_live_now": 2,
+    "24h": {
+      "active_users": 26,
+      "new_users": 20,
+      "sessions": 39
+    },
+    "3d": {
+      "active_users": 41,
+      "new_users": 34,
+      "sessions": 72
+    },
+    "7d": {
+      "active_users": 177,
+      "new_users": 179,
+      "sessions": 359
+    },
+    "30d": {
+      "active_users": 628,
+      "new_users": 663,
+      "sessions": 1102
+    },
+    "total": {
+      "active_users": 1107,
+      "sessions": 1803
+    }
+  },
+  "sites": [
+    {
+      "id": "ovlp",
+      "name": "OVLP",
+      "domain": "ohiovalleylandpartners.com",
+      "url": "https://ohiovalleylandpartners.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "530524879",
+      "ga4_measurement_id": "G-7FQDXC8DVC",
+      "periods": {
+        "24h": {
+          "unique_visitors": 10,
+          "active_users": 10,
+          "new_users": 10,
+          "event_count": 33,
+          "sessions": 11,
+          "screen_page_views": 11,
+          "today_users": 5,
+          "today_sessions": 5,
+          "today_new_users": 5,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 12,
+          "new_users": 12,
+          "sessions": 13,
+          "screen_page_views": 13,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 39,
+          "new_users": 40,
+          "event_count": 155,
+          "sessions": 45,
+          "screen_page_views": 52,
+          "active_now": 0,
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 30
+            },
+            {
+              "channel": "Referral",
+              "sessions": 7
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 5
+            },
+            {
+              "channel": "AI Assistant",
+              "sessions": 3
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Sell Land in the Ohio Valley | Cash Land Buyer",
+              "views": 21
+            },
+            {
+              "page": "Buy Land \u2014 Ohio Valley Land Partners | Ohio Valley Land Partners",
+              "views": 3
+            },
+            {
+              "page": "Contact Us | Ohio Valley Land Partners",
+              "views": 3
+            },
+            {
+              "page": "About Us \u2014 Ohio Valley Land Partners | Ohio Valley Land Partners",
+              "views": 2
+            },
+            {
+              "page": "Geauga County, Ohio Vacant Land: 2026 Campaign Notes | Ohio Valley Land Partners",
+              "views": 2
+            },
+            {
+              "page": "Belmont County, Ohio Land: Acquisition Notes for 2026 | Ohio Valley Land Partners",
+              "views": 1
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 38
+            },
+            {
+              "country": "Bangladesh",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 117,
+          "new_users": 120,
+          "sessions": 191,
+          "screen_page_views": 303,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 365,
+          "new_users": 374,
+          "sessions": 615,
+          "screen_page_views": 1051,
+          "active_now": 0
+        }
+      },
+      "priority": "high",
+      "alerts": [],
+      "search_console": {
+        "property": "sc-domain:ohiovalleylandpartners.com",
+        "status": "verified",
+        "checked_at": "2026-06-19 04:06",
+        "checked_as": "rbjpholdings@gmail.com",
+        "dns_provider": "Cloudflare.com",
+        "verification_method": "Domain name provider",
+        "verification_txt": "google-site-verification=vXVCmMua9vrKsbO23ZpWTCD2ZqpJcpSODQtVMDFe3gA",
+        "sitemap": {
+          "url": "https://ohiovalleylandpartners.com/sitemap.xml",
+          "status": "submitted-success",
+          "submitted": "2026-03-29",
+          "last_read": "2026-03-29",
+          "discovered_pages": 40
+        },
+        "notes": "Search Console domain property opens to Overview under rbjpholdings@gmail.com after Cloudflare domain-provider verification."
+      },
+      "cloudflare_zone": "ohiovalleylandpartners.com"
+    },
+    {
+      "id": "rbj",
+      "name": "RBJ",
+      "domain": "richardbjamison.com",
+      "url": "https://richardbjamison.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "530264907",
+      "ga4_measurement_id": "G-7748LM48YW",
+      "periods": {
+        "24h": {
+          "unique_visitors": 1,
+          "active_users": 1,
+          "new_users": 0,
+          "event_count": 14,
+          "sessions": 2,
+          "screen_page_views": 4,
+          "today_users": 0,
+          "today_sessions": 0,
+          "today_new_users": 0,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 2,
+          "new_users": 1,
+          "sessions": 3,
+          "screen_page_views": 5,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 7,
+          "new_users": 7,
+          "event_count": 73,
+          "sessions": 12,
+          "screen_page_views": 20,
+          "active_now": 0,
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 10
+            },
+            {
+              "channel": "Referral",
+              "sessions": 2
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Richard B. Jamison",
+              "views": 11
+            },
+            {
+              "page": "Biography \u2014 Richard B. Jamison",
+              "views": 7
+            },
+            {
+              "page": "Music \u2014 Richard B. Jamison",
+              "views": 2
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 4
+            },
+            {
+              "country": "Bangladesh",
+              "active_users": 1
+            },
+            {
+              "country": "Hong Kong",
+              "active_users": 1
+            },
+            {
+              "country": "Singapore",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 52,
+          "new_users": 53,
+          "sessions": 70,
+          "screen_page_views": 112,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 175,
+          "new_users": 176,
+          "sessions": 205,
+          "screen_page_views": 279,
+          "active_now": 0
+        }
+      },
+      "priority": "medium",
+      "alerts": [],
+      "search_console": {
+        "property": "sc-domain:richardbjamison.com",
+        "status": "verified",
+        "checked_at": "2026-06-19 04:06",
+        "checked_as": "rbjpholdings@gmail.com",
+        "dns_provider": "GoDaddy.com",
+        "verification_method": "Domain name provider",
+        "verification_txt": "google-site-verification=rrnEkk9LFHouKNJNwrOevRwjt-fM_kblhejX3Fh5jKw",
+        "sitemap": {
+          "url": "https://richardbjamison.com/sitemap.xml",
+          "status": "missing-on-site",
+          "checked_at": "2026-06-19 04:06",
+          "notes": "/sitemap.xml and /robots.txt return 404 on the live GitHub Pages site; Search Console is verified but sitemap submission is blocked until those files are published."
+        },
+        "notes": "Search Console domain property opens to Overview under rbjpholdings@gmail.com after GoDaddy Domain Connect verification."
+      },
+      "cloudflare_zone": "richardbjamison.com"
+    },
+    {
+      "id": "osb",
+      "name": "Open Source Barware",
+      "domain": "opensourcebarware.com",
+      "url": "https://opensourcebarware.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "540046010",
+      "ga4_measurement_id": "G-DQJKBWMM8H",
+      "periods": {
+        "24h": {
+          "unique_visitors": 9,
+          "active_users": 9,
+          "new_users": 6,
+          "event_count": 83,
+          "sessions": 15,
+          "screen_page_views": 25,
+          "today_users": 1,
+          "today_sessions": 4,
+          "today_new_users": 0,
+          "active_now": 1
+        },
+        "3d": {
+          "active_users": 16,
+          "new_users": 13,
+          "sessions": 33,
+          "screen_page_views": 48,
+          "active_now": 1
+        },
+        "7d": {
+          "active_users": 77,
+          "new_users": 76,
+          "event_count": 1464,
+          "sessions": 172,
+          "screen_page_views": 531,
+          "active_now": 1,
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 96
+            },
+            {
+              "channel": "Referral",
+              "sessions": 67
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 7
+            },
+            {
+              "channel": "Unassigned",
+              "sessions": 4
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Resonant Web Design | Boutique Websites, SEO & Launch Systems",
+              "views": 145
+            },
+            {
+              "page": "Custom Web Development, SEO & Business Systems | Resonant",
+              "views": 80
+            },
+            {
+              "page": "SEO Foundations for Ohio Service Businesses | Resonant Web Design",
+              "views": 53
+            },
+            {
+              "page": "System Integrations, APIs & Business Automation | Resonant Web Design",
+              "views": 42
+            },
+            {
+              "page": "Affordable Website Ownership | Monthly Websites | Impulse by Design",
+              "views": 37
+            },
+            {
+              "page": "Cleveland & Ohio Web Design, SEO & Integrations | Resonant",
+              "views": 37
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 70
+            },
+            {
+              "country": "Germany",
+              "active_users": 4
+            },
+            {
+              "country": "Bangladesh",
+              "active_users": 1
+            },
+            {
+              "country": "Netherlands",
+              "active_users": 1
+            },
+            {
+              "country": "Poland",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 262,
+          "new_users": 279,
+          "sessions": 515,
+          "screen_page_views": 1306,
+          "active_now": 1
+        },
+        "total": {
+          "active_users": 308,
+          "new_users": 330,
+          "sessions": 585,
+          "screen_page_views": 1402,
+          "active_now": 1
+        }
+      },
+      "priority": "critical",
+      "alerts": [],
+      "search_console": {
+        "property": "sc-domain:opensourcebarware.com",
+        "status": "verified",
+        "checked_at": "2026-06-19 04:06",
+        "checked_as": "rbjpholdings@gmail.com",
+        "dns_provider": "Cloudflare.com",
+        "verification_method": "Domain name provider",
+        "verification_txt": "google-site-verification=JwSei00Ks-0jfzP4WtQQ78Jp3nPCA99k3dQ_0V835nE",
+        "sitemap": {
+          "url": "https://opensourcebarware.com/sitemap.xml",
+          "status": "submitted-success",
+          "submitted": "2026-06-19",
+          "last_read": "2026-06-19",
+          "discovered_pages": 4
+        },
+        "notes": "Search Console domain property opens to Overview under rbjpholdings@gmail.com after Cloudflare domain-provider verification."
+      },
+      "cloudflare_zone": "opensourcebarware.com"
+    },
+    {
+      "id": "resonant",
+      "name": "Resonant Web Design",
+      "domain": "resonantwebdesign.com",
+      "url": "https://resonantwebdesign.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "544077011",
+      "ga4_measurement_id": "G-K7RCVL5RFQ",
+      "periods": {
+        "24h": {
+          "unique_visitors": 5,
+          "active_users": 5,
+          "new_users": 3,
+          "event_count": 50,
+          "sessions": 10,
+          "screen_page_views": 17,
+          "today_users": 1,
+          "today_sessions": 3,
+          "today_new_users": 0,
+          "active_now": 1
+        },
+        "3d": {
+          "active_users": 10,
+          "new_users": 7,
+          "sessions": 22,
+          "screen_page_views": 38,
+          "active_now": 1
+        },
+        "7d": {
+          "active_users": 43,
+          "new_users": 44,
+          "event_count": 1221,
+          "sessions": 119,
+          "screen_page_views": 466,
+          "active_now": 1,
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 61
+            },
+            {
+              "channel": "Referral",
+              "sessions": 49
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 7
+            },
+            {
+              "channel": "Unassigned",
+              "sessions": 3
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Resonant Web Design | Boutique Websites, SEO & Launch Systems",
+              "views": 146
+            },
+            {
+              "page": "Custom Web Development, SEO & Business Systems | Resonant",
+              "views": 79
+            },
+            {
+              "page": "SEO Foundations for Ohio Service Businesses | Resonant Web Design",
+              "views": 53
+            },
+            {
+              "page": "System Integrations, APIs & Business Automation | Resonant Web Design",
+              "views": 42
+            },
+            {
+              "page": "Cleveland & Ohio Web Design, SEO & Integrations | Resonant",
+              "views": 37
+            },
+            {
+              "page": "Starter Sites \u2014 $69/mo Website Ownership | Resonant Web Design",
+              "views": 25
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 41
+            },
+            {
+              "country": "Bangladesh",
+              "active_users": 1
+            },
+            {
+              "country": "Germany",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 124,
+          "new_users": 133,
+          "sessions": 241,
+          "screen_page_views": 782,
+          "active_now": 1
+        },
+        "total": {
+          "active_users": 124,
+          "new_users": 133,
+          "sessions": 241,
+          "screen_page_views": 782,
+          "active_now": 1
+        }
+      },
+      "priority": "high",
+      "alerts": [],
+      "cloudflare_zone": "resonantwebdesign.com"
+    },
+    {
+      "id": "ihs",
+      "name": "Intelligent Hospitality Systems",
+      "domain": "intelligenthospitalitysystems.com",
+      "url": "https://intelligenthospitalitysystems.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "544254228",
+      "ga4_measurement_id": "G-CBWFSS7G5X",
+      "periods": {
+        "24h": {
+          "unique_visitors": 0,
+          "active_users": 0,
+          "new_users": 0,
+          "event_count": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "today_users": 0,
+          "today_sessions": 0,
+          "today_new_users": 0,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 0,
+          "new_users": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 0,
+          "new_users": 0,
+          "event_count": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "active_now": 0,
+          "top_channels": [],
+          "top_pages": [],
+          "top_countries": []
+        },
+        "30d": {
+          "active_users": 17,
+          "new_users": 17,
+          "sessions": 18,
+          "screen_page_views": 21,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 17,
+          "new_users": 17,
+          "sessions": 18,
+          "screen_page_views": 21,
+          "active_now": 0
+        }
+      },
+      "priority": "high",
+      "alerts": [],
+      "cloudflare_zone": "intelligenthospitalitysystems.com"
+    },
+    {
+      "id": "miami",
+      "name": "Miami Hidden Bar Tour",
+      "domain": "miamihiddenbartour.com",
+      "url": "https://miamihiddenbartour.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "544287094",
+      "ga4_measurement_id": "G-SJCKF1EMFL",
+      "periods": {
+        "24h": {
+          "unique_visitors": 1,
+          "active_users": 1,
+          "new_users": 1,
+          "event_count": 4,
+          "sessions": 1,
+          "screen_page_views": 1,
+          "today_users": 1,
+          "today_sessions": 1,
+          "today_new_users": 1,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 1,
+          "new_users": 1,
+          "sessions": 1,
+          "screen_page_views": 1,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 11,
+          "new_users": 12,
+          "event_count": 38,
+          "sessions": 11,
+          "screen_page_views": 12,
+          "active_now": 0,
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 10
+            },
+            {
+              "channel": "Referral",
+              "sessions": 1
+            },
+            {
+              "channel": "Unassigned",
+              "sessions": 1
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Miami Hidden Bar Tour \u2014 Coming September 2026",
+              "views": 12
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 7
+            },
+            {
+              "country": "China",
+              "active_users": 1
+            },
+            {
+              "country": "Russia",
+              "active_users": 1
+            },
+            {
+              "country": "South Korea",
+              "active_users": 1
+            },
+            {
+              "country": "United Kingdom",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 56,
+          "new_users": 61,
+          "sessions": 67,
+          "screen_page_views": 87,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 56,
+          "new_users": 61,
+          "sessions": 67,
+          "screen_page_views": 87,
+          "active_now": 0
+        }
+      },
+      "priority": "medium",
+      "alerts": [],
+      "cloudflare_zone": "miamihiddenbartour.com"
+    },
+    {
+      "id": "rollin",
+      "name": "Rollin Smoke BBQ",
+      "domain": "rollinsmokeatxbbq.com",
+      "url": "https://rollinsmokeatxbbq.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "459646984",
+      "ga4_measurement_id": "G-TD5E4PZM0P",
+      "periods": {
+        "24h": {
+          "unique_visitors": 0,
+          "active_users": 0,
+          "new_users": 0,
+          "event_count": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "today_users": 0,
+          "today_sessions": 0,
+          "today_new_users": 0,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 0,
+          "new_users": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 0,
+          "new_users": 0,
+          "event_count": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "active_now": 0,
+          "top_channels": [],
+          "top_pages": [],
+          "top_countries": []
+        },
+        "30d": {
+          "active_users": 0,
+          "new_users": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 62,
+          "new_users": 62,
+          "sessions": 72,
+          "screen_page_views": 124,
+          "active_now": 0
+        }
+      },
+      "priority": "low",
+      "alerts": [],
+      "cloudflare_zone": "rollinsmokeatxbbq.com"
+    },
+    {
+      "id": "batiya",
+      "name": "Batiya Realty",
+      "domain": "batiya-realty.vercel.app",
+      "url": "https://batiya-realty.vercel.app/pitch.html",
+      "status": "live",
+      "status_label": "NEXUS TRACKED",
+      "ga4_property_id": null,
+      "ga4_measurement_id": null,
+      "periods": {},
+      "priority": "critical",
+      "notes": "Offer pitch \u2014 first-party Nexus collect"
+    },
+    {
+      "id": "hvac",
+      "name": "Sulieman HVAC",
+      "domain": "sulieman-go.vercel.app",
+      "url": "https://sulieman-go.vercel.app/pitch.html",
+      "status": "live",
+      "status_label": "NEXUS TRACKED",
+      "ga4_property_id": null,
+      "ga4_measurement_id": null,
+      "periods": {},
+      "priority": "critical",
+      "notes": "Offer pitch \u2014 first-party Nexus collect"
+    },
+    {
+      "id": "fcr",
+      "name": "FCR Capital / Faber",
+      "domain": "richardbjamison.github.io",
+      "url": "https://richardbjamison.github.io/faber-capital-resources/",
+      "status": "live",
+      "status_label": "NEXUS TRACKED",
+      "ga4_property_id": null,
+      "ga4_measurement_id": null,
+      "periods": {},
+      "priority": "critical",
+      "notes": "Client mockup + offer tracking"
+    }
+  ],
+  "publish_build": "20260719225103"
+}

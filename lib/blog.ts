@@ -38,6 +38,15 @@ export const blogPosts: BlogPost[] = [
     excerpt: "Structured Toast, Square, and CSV imports that turn counts into real usage numbers and smart orders.",
     category: "Operations",
   },
+  {
+    slug: "when-inventory-meets-the-front-of-house",
+    title: "When Inventory Meets the Front of House",
+    date: "2026-07-11",
+    excerpt:
+      "Counts, POS, and guest demand share one truth. Operational notes — free tool stays free; no sales pitch.",
+    category: "Operations",
+    keywords: ["bar inventory and pos", "front of house operations"],
+  },
 ];
 
 export function getPostBySlug(slug: string) {

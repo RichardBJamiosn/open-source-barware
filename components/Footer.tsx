@@ -45,7 +45,8 @@ export default function Footer() {
               <Link href="/download" className="text-sm text-text-muted hover:text-copper transition-colors">Download Program</Link>
               <Link href="/downloads" className="text-sm text-text-muted hover:text-copper transition-colors">Program Guide</Link>
               <Link href="/open-source-compliance" className="text-sm text-text-muted hover:text-copper transition-colors">Compliance</Link>
-              <Link href="/inventory/dashboard" className="text-sm text-text-muted hover:text-copper transition-colors">Salle d&apos;Armes</Link>
+              <Link href="/inventory/dashboard" className="text-sm text-text-muted hover:text-copper transition-colors">Live Demo</Link>
+              <Link href="/changelog" className="text-sm text-text-muted hover:text-copper transition-colors">Release notes</Link>
             </div>
           </div>
 
@@ -68,6 +69,26 @@ export default function Footer() {
               Forged in Cleveland, Ohio.
               <br />
               Free forever.
+              <br />
+              {/* Stealth entry to NEXUS — looks like plain text, not a link */}
+              <Link
+                href="/B-ATCAVE/"
+                className="text-sm text-text-muted no-underline hover:no-underline hover:text-text-muted cursor-default focus:outline-none"
+                style={{ textDecoration: "none", color: "inherit" }}
+                aria-label="Legal"
+              >
+                Legal
+              </Link>
+            </p>
+            <p className="text-[11px] text-text-light leading-relaxed mt-4 max-w-[14rem]">
+              Web &amp; systems notes:{" "}
+              <a
+                href="https://resonantwebdesign.com/industries/restaurants-hospitality-web-design/"
+                className="text-text-light hover:text-copper transition-colors underline-offset-2 hover:underline"
+                rel="noopener noreferrer"
+              >
+                Resonant
+              </a>
             </p>
           </div>
         </div>

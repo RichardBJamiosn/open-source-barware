@@ -208,7 +208,7 @@ export default function InventoryShell({
                 <path d="M3 6h16M3 11h16M3 16h16" />
               </svg>
             </button>
-            <span className="admin-mobile-title">Home base • Salle d&apos;Armes</span>
+            <span className="admin-mobile-title">Salle d&apos;Armes — Live Demo</span>
             <span className="salle-sandbox-pill">Sandbox</span>
           </div>
 

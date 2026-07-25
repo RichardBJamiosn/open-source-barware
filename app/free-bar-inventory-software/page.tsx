@@ -4,9 +4,9 @@ import { Gear, GearDivider } from "@/components/SteampunkElements";
 import { pageMetadata, SITE_URL } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Free Bar Inventory Software — Bottle-Level Variance | OSBW",
+  title: "Free Bar Inventory Software — Bottle-Level Variance | Open Source Barware",
   description:
-    "Free bar inventory software with bottle-level variance—download tonight, no monthly fee.",
+    "Free bar inventory software with bottle-level variance—download tonight, no monthly fee. Open source, local-first, no subscription.",
   path: "/free-bar-inventory-software",
   keywords: [
     "free inventory system",

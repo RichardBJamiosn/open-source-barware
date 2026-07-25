@@ -1,0 +1,140 @@
+{
+  "generated_at": "2026-07-25T11:14:13+00:00",
+  "version": 1,
+  "title": "Nexus Infrastructure & Recurring Cost",
+  "internal_only": true,
+  "notice": "Internal administrative view. Never publish billing data on a public site.",
+  "cloudflare": {
+    "connection": {
+      "zones_api": "connected",
+      "billing_api": "not_connected",
+      "billing_detail": "token has no billing scope (HTTP 403) \u2014 cost figures are human-confirmed",
+      "last_refreshed": "2026-07-25T11:14:13+00:00",
+      "source": "cloudflare_api_live"
+    },
+    "managed_zones": 7,
+    "pro_zones": 1,
+    "free_zones": 6,
+    "zones": [
+      {
+        "name": "impulsebydesign.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "intelligenthospitalitysystems.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "leediscounttire.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "miamihiddenbartour.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "ohiovalleylandpartners.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "opensourcebarware.com",
+        "plan": "Free Website",
+        "paid": false,
+        "status": "active",
+        "paused": false
+      },
+      {
+        "name": "resonantwebdesign.com",
+        "plan": "Pro Website",
+        "paid": true,
+        "status": "active",
+        "paused": false
+      }
+    ],
+    "removed_zones": [
+      {
+        "zone": "intelligentconstruction.com",
+        "status": "removed \u2014 not owned \u2014 added by mistake",
+        "removed_on": "2026-07-24",
+        "note": "Cloudflare zone removed; outside domain registration unaffected. A stale Cloudflare 'recent item' may linger in Cloudflare's own UI \u2014 that is history, not an active zone. Retained here for audit only and must not appear in active managed-domain counts."
+      }
+    ],
+    "workers": {
+      "plan": "Free",
+      "paid_active": false,
+      "note": "Workers stays Free by decision D-021. Do not record the $5 Workers Paid subscription until a later approved decision. Pages Functions, Workers and KV remain a capacity item to monitor, not a cost line.",
+      "source": "human_confirmed"
+    },
+    "warnings": []
+  },
+  "recurring_costs": {
+    "monthly_total_usd": 25.0,
+    "currency": "USD",
+    "items": [
+      {
+        "item": "Cloudflare \u2014 Resonant Pro",
+        "zone": "resonantwebdesign.com",
+        "plan": "Pro",
+        "billing_frequency": "monthly",
+        "base_cost_usd": 25.0,
+        "annual_commitment": false,
+        "purchase_status": "complete",
+        "subscription_status": "active",
+        "next_bill_date": "2026-08-23",
+        "note": "Committed base subscription cost, not a guaranteed all-in ceiling. Applies to the Resonant zone only and is separate from Workers billing.",
+        "source": "human_confirmed"
+      }
+    ],
+    "provenance": {
+      "source": "Richard's authenticated Cloudflare dashboard session",
+      "verified_on": "2026-07-24",
+      "decision_refs": [
+        "D-019",
+        "D-020",
+        "D-021",
+        "D-022"
+      ]
+    },
+    "excluded_by_decision": [
+      "Annual Cloudflare commitment (not selected)",
+      "Workers Paid $5/mo (D-021 \u2014 stays Free)",
+      "RECR Cloudflare billing (D-022 \u2014 deferred)",
+      "Business, Enterprise, Argo, Log Explorer, R2, Load Balancing, Stream"
+    ]
+  },
+  "deferred_projects": [
+    {
+      "project": "Real Estate Capital Resources",
+      "domain": "realestatecapitalresources.com",
+      "build_status": "Mockup / pre-production",
+      "cloudflare_billing": "Deferred",
+      "account_plan": "Separate billable account planned when ready",
+      "note": "Not changed during the 2026-07-24 Cloudflare work and no plan was purchased. Mockup continues in the current local/Codex workflow."
+    }
+  ],
+  "infrastructure_risks": [
+    "Workers and KV remain on Free \u2014 monitor request and write limits.",
+    "Client properties should move toward clearly separated ownership and billing as they become billable.",
+    "Cloudflare plan and payment status must be sourced from verified account data, never inferred from a website being up.",
+    "Optional Cloudflare products (Argo, Log Explorer, R2, Load Balancing, Stream, Business, Enterprise) require explicit human approval before activation."
+  ],
+  "analytics_policy": {
+    "rule": "Never hardcode a one-time Cloudflare traffic snapshot as live data. Any traffic metric must carry its source and a last-refreshed timestamp, and distinguish zone traffic, Worker invocations, KV operations and Pages builds. Missing API access reads 'not connected', never zero.",
+    "cloudflare_traffic": "not_connected"
+  }
+}

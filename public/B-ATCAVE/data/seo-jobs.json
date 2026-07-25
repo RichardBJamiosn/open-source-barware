@@ -1,0 +1,152 @@
+{
+  "generated_at": "2026-07-25T15:23:10+00:00",
+  "title": "SEO Agent Jobs",
+  "spend_mtd": 2.974682,
+  "jobs": [
+    {
+      "job": "dive_resonant",
+      "interval_hours": 168,
+      "description": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Resonant",
+      "last_run": "2026-07-24 13:18 UTC",
+      "next_due": "2026-07-31 13:18 UTC",
+      "status": "current",
+      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Resonant",
+      "last_status": "ok"
+    },
+    {
+      "job": "dive_impulse",
+      "interval_hours": 168,
+      "description": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Impulse",
+      "last_run": "2026-07-24 13:18 UTC",
+      "next_due": "2026-07-31 13:18 UTC",
+      "status": "current",
+      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Impulse",
+      "last_status": "ok"
+    },
+    {
+      "job": "dive_osbw",
+      "interval_hours": 168,
+      "description": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Open Source Barware",
+      "last_run": null,
+      "next_due": null,
+      "status": "never",
+      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Open Source Barware",
+      "last_status": null
+    },
+    {
+      "job": "rank_weekly",
+      "interval_hours": 168,
+      "description": "Full tracking sweep, tier 1+2 at depth 100 (~43 kw) \u2014 catches movement long before it reaches the daily depth-20 window",
+      "last_run": "2026-07-24 17:10 UTC",
+      "next_due": "2026-07-31 17:10 UTC",
+      "status": "current",
+      "notes": "Full tracking sweep, tier 1+2 at depth 100 (~43 kw) \u2014 catches movement long before it reaches the daily depth-20 window \u00b7 last fail: ran at depth 20 before the --deep flag was wired; superseded",
+      "last_status": "ok"
+    },
+    {
+      "job": "rank_daily",
+      "interval_hours": 20,
+      "description": "Daily SERP positions for the tier-1 tracking set (~27 kw)",
+      "last_run": "2026-07-25 11:10 UTC",
+      "next_due": "2026-07-26 07:10 UTC",
+      "status": "current",
+      "notes": "Daily SERP positions for the tier-1 tracking set (~27 kw)",
+      "last_status": "ok"
+    },
+    {
+      "job": "router_resonant",
+      "interval_hours": 168,
+      "description": "Re-score + re-route keywords, catch cannibalization \u00b7 Resonant",
+      "last_run": "2026-07-24 13:19 UTC",
+      "next_due": "2026-07-31 13:19 UTC",
+      "status": "current",
+      "notes": "Re-score + re-route keywords, catch cannibalization \u00b7 Resonant",
+      "last_status": "ok"
+    },
+    {
+      "job": "router_impulse",
+      "interval_hours": 168,
+      "description": "Re-score + re-route keywords, catch cannibalization \u00b7 Impulse",
+      "last_run": "2026-07-24 13:19 UTC",
+      "next_due": "2026-07-31 13:19 UTC",
+      "status": "current",
+      "notes": "Re-score + re-route keywords, catch cannibalization \u00b7 Impulse",
+      "last_status": "ok"
+    },
+    {
+      "job": "router_osbw",
+      "interval_hours": 168,
+      "description": "Re-score + re-route keywords \u00b7 Open Source Barware",
+      "last_run": null,
+      "next_due": null,
+      "status": "never",
+      "notes": "Re-score + re-route keywords \u00b7 Open Source Barware",
+      "last_status": null
+    },
+    {
+      "job": "gsc",
+      "interval_hours": 20,
+      "description": "Google Search Console: clicks, impressions, CTR, true average position (free). Self-skips until the service account is added to each property",
+      "last_run": null,
+      "next_due": null,
+      "status": "never",
+      "notes": "Google Search Console: clicks, impressions, CTR, true average position (free). Self-skips until the service account is added to each property \u00b7 last fail: ATING-SYSTEM/engine/connectors/gsc.py\", line 190, in main\n    sites, err = list_sites(_token())\n  File \"/Users/macbook15",
+      "last_status": "failed"
+    },
+    {
+      "job": "indexnow",
+      "interval_hours": 24,
+      "description": "Push sitemap URLs to Bing/IndexNow (free). Self-skips until the key files are live at each site root \u2014 see _bots/BING-GSC-ACCESS.md",
+      "last_run": null,
+      "next_due": null,
+      "status": "never",
+      "notes": "Push sitemap URLs to Bing/IndexNow (free). Self-skips until the key files are live at each site root \u2014 see _bots/BING-GSC-ACCESS.md",
+      "last_status": "failed"
+    },
+    {
+      "job": "daily_brief",
+      "interval_hours": 20,
+      "description": "Diff vs yesterday, movers, adjustments, action queue",
+      "last_run": "2026-07-25 11:14 UTC",
+      "next_due": "2026-07-26 07:14 UTC",
+      "status": "current",
+      "notes": "Diff vs yesterday, movers, adjustments, action queue",
+      "last_status": "ok"
+    },
+    {
+      "job": "jobs_export",
+      "interval_hours": 6,
+      "description": "Export orchestrator board JSON for B-ATCAVE SEO jobs strip",
+      "last_run": null,
+      "next_due": null,
+      "status": "never",
+      "notes": "Export orchestrator board JSON for B-ATCAVE SEO jobs strip",
+      "last_status": null
+    },
+    {
+      "job": "publish",
+      "interval_hours": 20,
+      "description": "Mirror the warehouse into the B-ATCAVE SEO panel",
+      "last_run": "2026-07-25 11:14 UTC",
+      "next_due": "2026-07-26 07:14 UTC",
+      "status": "current",
+      "notes": "Mirror the warehouse into the B-ATCAVE SEO panel",
+      "last_status": "ok"
+    },
+    {
+      "job": "infra",
+      "interval_hours": 20,
+      "description": "Re-verify Cloudflare zones/plans against the live API and republish the infrastructure + recurring-cost panel (read-only, changes nothing)",
+      "last_run": "2026-07-25 11:14 UTC",
+      "next_due": "2026-07-26 07:14 UTC",
+      "status": "current",
+      "notes": "Re-verify Cloudflare zones/plans against the live API and republish the infrastructure + recurring-cost panel (read-only, changes nothing)",
+      "last_status": "ok"
+    }
+  ],
+  "sites": [
+    "resonantwebdesign.com",
+    "impulsebydesign.com",
+    "opensourcebarware.com"
+  ]
+}

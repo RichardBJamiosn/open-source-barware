@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, type MouseEvent } from "react";
 import {
   getUpdatesSignupStatus,
   submitUpdatesSignup,
@@ -17,15 +16,15 @@ const GITHUB =
   "https://github.com/RichardBJamison/open-source-barware";
 const GITHUB_DISCUSSIONS =
   "https://github.com/RichardBJamison/open-source-barware/discussions";
-const FEEDBACK_EMAIL = "richard@opensourcebarware.com";
+const FEEDBACK_EMAIL = "me@richardbjamison.com";
+
+const downloadCardClass =
+  "border border-gear-border bg-bg/50 p-6 text-left transition-colors hover:border-copper/50 hover:bg-bg-warm/80 block no-underline";
 
 export default function ProgramDownloadPanel() {
-  const searchParams = useSearchParams();
+  // Launch gate only — no useSearchParams (that forced Suspense fallback "Loading…" into static HTML)
   const now = useLaunchNow();
-  const previewParam =
-    searchParams.get("preview") === "july4" ||
-    searchParams.get("july4") === "1";
-  const unlocked = areDownloadsUnlocked(now, { preview: previewParam });
+  const unlocked = areDownloadsUnlocked(now);
 
   const priorStatus = getUpdatesSignupStatus();
   const [email, setEmail] = useState("");
@@ -66,8 +65,13 @@ export default function ProgramDownloadPanel() {
     setSubscribed(true);
   }
 
-  function triggerDownload(href: string, label: string) {
+  function onDownloadClick(
+    e: MouseEvent<HTMLAnchorElement>,
+    href: string,
+    label: string
+  ) {
     if (!unlocked) {
+      e.preventDefault();
       setStatus(`${getDownloadLockMessage()} Leave your email above to get notified.`);
       return;
     }
@@ -78,13 +82,6 @@ export default function ProgramDownloadPanel() {
         }
       ).osbTrackDownload?.(href, label);
     }
-    const a = document.createElement("a");
-    a.href = href;
-    a.download = "";
-    a.setAttribute("data-osb-no-track", "1");
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
     setStatus(`Downloading ${label}…`);
   }
 
@@ -273,12 +270,12 @@ export default function ProgramDownloadPanel() {
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl">
-          <button
-            type="button"
-            onClick={() =>
-              triggerDownload(MAC_ZIP, "Mac program (.zip)")
-            }
-            className="border border-gear-border bg-bg/50 p-6 text-left transition-colors hover:border-copper/50 hover:bg-bg-warm/80"
+          <a
+            href={MAC_ZIP}
+            download
+            onClick={(e) => onDownloadClick(e, MAC_ZIP, "Mac program (.zip)")}
+            className={downloadCardClass}
+            aria-disabled={!unlocked}
           >
             <span className="block text-[10px] tracking-[0.25em] uppercase text-copper mb-3">
               macOS
@@ -289,13 +286,13 @@ export default function ProgramDownloadPanel() {
             <span className="block text-sm text-text-muted">
               Install.command → ~/osb-program
             </span>
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              triggerDownload(WIN_ZIP, "Windows program (.zip)")
-            }
-            className="border border-gear-border bg-bg/50 p-6 text-left transition-colors hover:border-copper/50 hover:bg-bg-warm/80"
+          </a>
+          <a
+            href={WIN_ZIP}
+            download
+            onClick={(e) => onDownloadClick(e, WIN_ZIP, "Windows program (.zip)")}
+            className={downloadCardClass}
+            aria-disabled={!unlocked}
           >
             <span className="block text-[10px] tracking-[0.25em] uppercase text-copper mb-3">
               Windows
@@ -306,7 +303,7 @@ export default function ProgramDownloadPanel() {
             <span className="block text-sm text-text-muted">
               Install.bat → %USERPROFILE%\osb-program
             </span>
-          </button>
+          </a>
         </div>
 
         <div className="mt-6 max-w-3xl space-y-2 text-sm text-text-muted leading-relaxed">

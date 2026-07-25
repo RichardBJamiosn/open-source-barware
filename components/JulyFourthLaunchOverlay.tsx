@@ -218,7 +218,7 @@ export default function JulyFourthLaunchOverlay() {
 
           <div className="mt-6 flex flex-col gap-2.5">
             <Link
-              href="/download"
+              href="/"
               onClick={() => {
                 try {
                   localStorage.setItem(STORAGE_KEY, "1");
@@ -229,11 +229,13 @@ export default function JulyFourthLaunchOverlay() {
                 setVisible(false);
                 if (typeof document !== "undefined") {
                   document.body.style.overflow = "";
+                  // Always land at top of home when arriving from any deep link
+                  window.scrollTo(0, 0);
                 }
               }}
               className="announce-cta-primary block w-full py-3.5 text-center text-sm font-black uppercase tracking-[0.16em]"
             >
-              Download v1.5 now
+              Enter Open Source Barware
             </Link>
             <button
               type="button"

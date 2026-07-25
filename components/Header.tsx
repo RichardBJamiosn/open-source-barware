@@ -30,7 +30,7 @@ export default function Header() {
             href="/inventory/dashboard"
             className={`tracking-wide transition-colors ${isDojo ? "text-copper" : "text-text-muted hover:text-copper"}`}
           >
-            Salle d&apos;Armes
+            Live Demo
           </Link>
           <Link
             href="/download"
@@ -63,7 +63,7 @@ export default function Header() {
             onClick={() => setMenuOpen(false)}
             className={`py-1 transition-colors ${isDojo ? "text-copper" : "text-text-muted hover:text-copper"}`}
           >
-            Salle d&apos;Armes
+            Live Demo
           </Link>
           <Link href="/download" onClick={() => setMenuOpen(false)} className="bg-copper text-bg font-semibold px-6 py-2.5 tracking-wide text-center">Download Program</Link>
         </div>

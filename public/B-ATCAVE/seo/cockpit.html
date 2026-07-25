@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEO Cockpit — Nexus</title>
+<style>
+  :root {
+    --ground:#0d1420; --surface:#131d2e; --surface-2:#1a2540; --raise:#202d4a;
+    --line:rgba(150,178,220,.14); --line-strong:rgba(150,178,220,.28);
+    --ink:#e9eef7; --muted:#8fa0bd; --faint:#64748f;
+    --accent:#3fc4d6; --accent-dim:rgba(63,196,214,.14);
+    --green:#5ec488; --amber:#e6ab52; --red:#e0685f; --violet:#a98ae6;
+    --green-bg:rgba(94,196,136,.14); --amber-bg:rgba(230,171,82,.14);
+    --red-bg:rgba(224,104,95,.14); --grey-bg:rgba(140,160,190,.12);
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --shadow:0 16px 38px rgba(0,0,0,.32);
+  }
+  :root[data-theme="light"]{
+    --ground:#eceff3; --surface:#fff; --surface-2:#f4f7fa; --raise:#eef2f6;
+    --line:rgba(30,54,92,.13); --line-strong:rgba(30,54,92,.24);
+    --ink:#142033; --muted:#56657f; --faint:#8493a8;
+    --accent:#1191a3; --accent-dim:rgba(17,145,163,.1);
+    --green:#2f9159; --amber:#b57d1e; --red:#c0483f; --violet:#7a54c9;
+    --green-bg:rgba(47,145,89,.1); --amber-bg:rgba(181,125,30,.11);
+    --red-bg:rgba(192,72,63,.1); --grey-bg:rgba(90,101,127,.1);
+    --shadow:0 12px 30px rgba(30,54,92,.12);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(1000px 560px at 90% -10%,var(--accent-dim),transparent 60%),var(--ground);
+    color:var(--ink);font-family:var(--sans);line-height:1.5;}
+  .wrap{max-width:1240px;margin:0 auto;padding:26px 24px 70px;}
+  a{color:inherit;}
+  .tnum{font-variant-numeric:tabular-nums;}
+
+  header.top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+  .brand{display:flex;align-items:baseline;gap:11px;}
+  .brand h1{font-size:21px;margin:0;font-weight:800;letter-spacing:-.3px;}
+  .brand .sat{font-size:19px;}
+  .brand .sub{font-family:var(--mono);font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--faint);}
+  .top .spacer{flex:1;}
+  .chip{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface);
+    border:1px solid var(--line);border-radius:999px;padding:7px 13px;display:flex;gap:8px;align-items:center;}
+  .chip b{color:var(--ink);}
+  .chip .paid{color:var(--amber);}
+  button{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface);
+    border:1px solid var(--line);border-radius:999px;padding:7px 13px;cursor:pointer;}
+  button:hover{color:var(--ink);border-color:var(--line-strong);}
+
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:1.8px;text-transform:uppercase;color:var(--faint);
+    margin:26px 0 12px;display:flex;align-items:center;gap:12px;}
+  .eyebrow .rule{flex:1;height:1px;background:var(--line);}
+
+  /* portfolio cards */
+  .fleet{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:13px;}
+  .card{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:16px;
+    cursor:pointer;transition:border-color .15s,transform .1s;box-shadow:var(--shadow);}
+  .card:hover{border-color:var(--accent);}
+  .card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset,var(--shadow);}
+  .card .row1{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+  .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .dot.green{background:var(--green);box-shadow:0 0 0 3px var(--green-bg);}
+  .dot.yellow{background:var(--amber);box-shadow:0 0 0 3px var(--amber-bg);}
+  .dot.unscanned{background:var(--faint);box-shadow:0 0 0 3px var(--grey-bg);}
+  .card .dom{font-size:13px;font-weight:700;word-break:break-word;}
+  .card .lbl{font-size:11px;color:var(--muted);margin-bottom:11px;min-height:28px;}
+  .card .stats{display:flex;gap:14px;font-family:var(--mono);}
+  .card .stat b{display:block;font-size:15px;color:var(--ink);}
+  .card .stat span{font-size:9.5px;letter-spacing:.4px;color:var(--faint);text-transform:uppercase;}
+  .card .unscan{font-family:var(--mono);font-size:11px;color:var(--faint);}
+
+  /* detail */
+  #detail{margin-top:14px;display:none;}
+  .detail-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+  .detail-head h2{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;}
+  .detail-head .llabel{color:var(--muted);font-size:13px;}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px;margin-bottom:18px;}
+  .tile{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:13px 15px;}
+  .tile .k{font-family:var(--mono);font-size:9.5px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);}
+  .tile .v{font-size:23px;font-weight:800;margin-top:5px;letter-spacing:-.5px;}
+  .tile .v small{font-size:12px;color:var(--muted);font-weight:600;}
+  .tile.good .v{color:var(--green);} .tile.warn .v{color:var(--amber);}
+
+  .tabs{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+  .tab{font-family:var(--mono);font-size:11.5px;letter-spacing:.4px;padding:8px 14px;border-radius:999px;
+    border:1px solid var(--line);color:var(--muted);cursor:pointer;background:var(--surface);}
+  .tab.active{background:var(--accent);color:#08222a;border-color:var(--accent);font-weight:600;}
+
+  .pane{display:none;} .pane.active{display:block;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  .tablewrap{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface);}
+  .scroll{overflow-x:auto;}
+  th{font-family:var(--mono);font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);
+    text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);font-weight:500;}
+  td{padding:10px 14px;border-bottom:1px solid var(--line);}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-2);}
+  th.num,td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono);}
+  .kw{font-weight:600;}
+  .diffbar{display:inline-flex;align-items:center;gap:8px;}
+  .diffbar .bar{width:46px;height:5px;border-radius:3px;background:var(--grey-bg);overflow:hidden;}
+  .diffbar .bar i{display:block;height:100%;}
+  .diff-e i{background:var(--green);} .diff-m i{background:var(--amber);} .diff-h i{background:var(--red);}
+  .diffbar .n{font-family:var(--mono);font-size:11px;color:var(--muted);width:22px;text-align:right;}
+  .badge{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:5px;}
+  .badge.pos{color:var(--red);background:var(--red-bg);}
+  .badge.win{color:var(--green);background:var(--green-bg);}
+  .empty{padding:26px;text-align:center;color:var(--faint);font-size:13px;}
+  .note{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:12px;line-height:1.7;}
+  .note b{color:var(--muted);}
+  .issue{font-family:var(--mono);font-size:11px;color:var(--amber);background:var(--amber-bg);padding:3px 8px;border-radius:6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="sat">🛰️</span>
+      <h1>SEO Cockpit</h1>
+      <span class="sub">Nexus · in-house</span>
+    </div>
+    <span class="spacer"></span>
+    <span class="chip" id="spend">spend <b class="paid tnum">—</b></span>
+    <button id="theme">◐ Theme</button>
+  </header>
+
+  <div class="eyebrow">Command Center <span class="rule"></span> <span id="fleetmeta" style="font-family:var(--mono);text-transform:none;letter-spacing:0;color:var(--muted)"></span></div>
+  <div class="fleet" id="fleet"></div>
+
+  <div id="detail">
+    <div class="eyebrow" style="margin-top:30px">Property view <span class="rule"></span></div>
+    <div class="detail-head">
+      <h2 id="d-domain"></h2><span class="llabel" id="d-label"></span>
+    </div>
+    <div class="tiles" id="d-tiles"></div>
+    <div class="tabs">
+      <div class="tab active" data-pane="kw">Keyword Battlefield</div>
+      <div class="tab" data-pane="comp">Competitor Intel</div>
+      <div class="tab" data-pane="tech">Technical</div>
+    </div>
+    <div class="pane active" id="pane-kw"></div>
+    <div class="pane" id="pane-comp"></div>
+    <div class="pane" id="pane-tech"></div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => (s==null?'':String(s)).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const num = n => n==null?'—':Number(n).toLocaleString();
+
+$('#theme').onclick = () => {
+  const r = document.documentElement, cur = r.getAttribute('data-theme')
+    || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  r.setAttribute('data-theme', cur==='dark'?'light':'dark');
+};
+
+async function boot(){
+  const spend = await (await fetch('/api/spend')).json();
+  $('#spend').innerHTML = `spend <b class="paid tnum">$${spend.total.toFixed(3)}</b> / $${spend.cap} &nbsp;·&nbsp; ${spend.calls} calls`;
+  const fleet = await (await fetch('/api/portfolio')).json();
+  const scanned = fleet.filter(p=>p.status!=='unscanned').length;
+  $('#fleetmeta').textContent = `${scanned}/${fleet.length} scanned`;
+  $('#fleet').innerHTML = fleet.map(cardHTML).join('');
+  fleet.forEach(p => $(`#card-${p.id}`).onclick = () => openProp(p.id));
+}
+
+function cardHTML(p){
+  const m = p.metrics||{};
+  const body = p.status==='unscanned'
+    ? `<div class="unscan">Awaiting first scan</div>`
+    : `<div class="stats">
+        <div class="stat"><b class="tnum">${num(m.tracked_keywords)}</b><span>keywords</span></div>
+        <div class="stat"><b class="tnum">${num(m.ranked_keywords)}</b><span>ranked</span></div>
+        <div class="stat"><b class="tnum">${num(m.backlinks)}</b><span>backlinks</span></div>
+      </div>`;
+  return `<div class="card" id="card-${p.id}">
+    <div class="row1"><span class="dot ${p.status}"></span><span class="dom">${esc(p.domain)}</span></div>
+    <div class="lbl">${esc(p.label||'')}</div>${body}</div>`;
+}
+
+function tile(k,v,cls=''){return `<div class="tile ${cls}"><div class="k">${k}</div><div class="v tnum">${v}</div></div>`;}
+
+async function openProp(id){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+  $(`#card-${id}`).classList.add('active');
+  const d = await (await fetch('/api/property?id='+id)).json();
+  const m = d.metrics||{};
+  $('#d-domain').textContent = d.property.domain||'';
+  $('#d-label').textContent = d.property.label||'';
+  const score = m.onpage_score!=null?Math.round(m.onpage_score):null;
+  $('#d-tiles').innerHTML = [
+    tile('Tracked KW', num(m.tracked_keywords)),
+    tile('Ranked (top100)', num(m.ranked_keywords), (m.ranked_keywords||0)>0?'good':'warn'),
+    tile('Backlinks', num(m.backlinks)),
+    tile('Ref domains', num(m.referring_domains)),
+    tile('On-page score', score!=null?`${score}<small>/100</small>`:'—', score>=80?'good':(score!=null?'warn':'')),
+    tile('Home issues', `<span style="font-size:13px">${esc(m.homepage_issues||'—')}</span>`),
+  ].join('');
+  renderKW(d.keywords); renderComp(d.competitors); renderTech(d);
+  $('#detail').style.display='block';
+  $('#detail').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function diffCell(v){
+  if(v==null) return '<span class="diffbar"><span class="n">—</span></span>';
+  const cls = v<30?'diff-e':(v<60?'diff-m':'diff-h');
+  return `<span class="diffbar ${cls}"><span class="bar"><i style="width:${Math.min(100,v)}%"></i></span><span class="n">${Math.round(v)}</span></span>`;
+}
+function renderKW(rows){
+  if(!rows.length){$('#pane-kw').innerHTML='<div class="tablewrap"><div class="empty">No keywords yet.</div></div>';return;}
+  $('#pane-kw').innerHTML = `<div class="tablewrap scroll"><table>
+    <thead><tr><th>Keyword</th><th class="num">Volume</th><th>Difficulty</th><th class="num">CPC</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr>
+      <td class="kw">${esc(r.keyword)}</td>
+      <td class="num">${num(r.volume)}</td>
+      <td>${diffCell(r.difficulty)}</td>
+      <td class="num">$${(r.cpc||0).toFixed(2)}</td></tr>`).join('')}</tbody></table></div>
+    <div class="note"><b>Read:</b> low-difficulty rows (green bars) at high volume are the first pages to build.</div>`;
+}
+function renderComp(rows){
+  if(!rows.length){$('#pane-comp').innerHTML='<div class="tablewrap"><div class="empty">No competitors captured yet.</div></div>';return;}
+  $('#pane-comp').innerHTML = `<div class="tablewrap scroll"><table>
+    <thead><tr><th>Domain</th><th class="num">Best position</th><th class="num">Target SERPs hit</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr>
+      <td class="kw">${esc(r.domain)}</td>
+      <td class="num"><span class="badge pos">#${r.best<999?r.best:'—'}</span></td>
+      <td class="num">${r.appearances}</td></tr>`).join('')}</tbody></table></div>
+    <div class="note"><b>Read:</b> domains hitting several of your target SERPs at high positions are the models to reverse-engineer — content shape and backlinks.</div>`;
+}
+function renderTech(d){
+  const pages = d.pages||[], m=d.metrics||{};
+  const rows = pages.length ? pages.map(p=>`<tr>
+      <td class="kw">${esc(p.url)}</td>
+      <td class="num">${p.status_code||'—'}</td>
+      <td>${esc(p.title||'')}</td></tr>`).join('')
+    : `<tr><td colspan="3"><div class="empty">No pages crawled yet.</div></td></tr>`;
+  $('#pane-tech').innerHTML = `<div class="tablewrap scroll"><table>
+    <thead><tr><th>URL</th><th class="num">Status</th><th>Title</th></tr></thead>
+    <tbody>${rows}</tbody></table></div>
+    <div class="note"><b>On-page score:</b> ${m.onpage_score!=null?Math.round(m.onpage_score)+'/100':'—'}
+      &nbsp;·&nbsp; <b>Flagged:</b> <span class="issue">${esc(m.homepage_issues||'none')}</span></div>`;
+}
+
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active'); $('#pane-'+t.dataset.pane).classList.add('active');
+});
+
+boot();
+</script>
+</body>
+</html>

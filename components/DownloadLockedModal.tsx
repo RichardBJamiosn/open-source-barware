@@ -29,7 +29,7 @@ export default function DownloadLockedModal({
             Not open yet
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-text-muted">
-            {getDownloadLockMessage()} Explore the Salle sandbox and program
+            {getDownloadLockMessage()} Explore the Live Demo and program
             guide while you wait.
           </p>
           <button

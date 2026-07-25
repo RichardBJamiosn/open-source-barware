@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>NEXUS</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f3f0fa; --card: #fff; --text: #1e1b2e; --muted: #7a7490; --line: #e8e4f2;
+      --purple: #7c3aed; --purple-soft: #ede9fe; --green: #10b981; --sidebar-w: 280px;
+      --radius: 18px; --shadow: 0 10px 40px rgba(88,70,160,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: radial-gradient(ellipse 60% 40% at 100% 0%, rgba(167,139,250,.3), transparent 55%), var(--bg);
+      color: var(--text); min-height: 100vh; line-height: 1.45;
+    }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    /* Password gate — fast in/out */
+    .nexus-gate {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: radial-gradient(ellipse 60% 40% at 50% 20%, rgba(124,58,237,.18), transparent 55%), var(--bg);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .nexus-gate.show { display: flex; }
+    .nexus-gate-card {
+      background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+      border: 1px solid var(--line); padding: 2rem 1.75rem; width: 100%; max-width: 320px; text-align: center;
+    }
+    .nexus-gate-card .gate-mark {
+      width: 48px; height: 48px; border-radius: 14px; margin: 0 auto .85rem;
+      background: linear-gradient(135deg, #0f172a, #7c3aed 70%);
+      color: #fff; font-weight: 800; font-size: .72rem; letter-spacing: .06em;
+      display: grid; place-items: center;
+    }
+    .nexus-gate-card h1 { font-size: 1.15rem; font-weight: 750; margin-bottom: .35rem; letter-spacing: .04em; }
+    .nexus-gate-card p { font-size: .82rem; color: var(--muted); margin-bottom: 1.1rem; }
+    .nexus-gate-card input {
+      width: 100%; padding: .7rem .85rem; border-radius: 12px; border: 1px solid var(--line);
+      font: inherit; font-size: .95rem; text-align: center; letter-spacing: .12em; margin-bottom: .65rem;
+      background: #fbfaff; color: var(--text); outline: none;
+    }
+    .nexus-gate-card input:focus { border-color: #c4b5fd; box-shadow: 0 0 0 3px rgba(124,58,237,.12); }
+    .nexus-gate-card .gate-go {
+      width: 100%; padding: .7rem 1rem; border-radius: 12px; font-weight: 700; font-size: .9rem;
+      background: linear-gradient(135deg, #0f172a, #7c3aed 85%); color: #fff;
+    }
+    .nexus-gate-card .gate-go:hover { filter: brightness(1.06); }
+    .nexus-gate-card .gate-err { color: #b91c1c; font-size: .78rem; margin-top: .55rem; min-height: 1.1em; }
+    body.nexus-locked .app { visibility: hidden; pointer-events: none; }
+    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+    @media (max-width: 960px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 40; width: var(--sidebar-w); transform: translateX(-105%); transition: .25s; }
+      .sidebar.open { transform: none; }
+      .menu-toggle { display: inline-flex !important; }
+    }
+    .sidebar {
+      background: rgba(255,255,255,.9); backdrop-filter: blur(14px); border-right: 1px solid var(--line);
+      padding: 1.1rem .85rem 1.5rem; overflow-y: auto;
+    }
+    .brand { display: flex; gap: .7rem; align-items: center; padding: .4rem .5rem .45rem; }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(135deg, #0f172a, #7c3aed 70%);
+      color: #fff; font-weight: 800; font-size: .58rem; display: grid; place-items: center;
+      letter-spacing: .05em;
+    }
+    .brand h1 { font-size: .95rem; font-weight: 750; letter-spacing: .06em; }
+    .brand p { font-size: .7rem; color: var(--muted); }
+    .brand-web {
+      display: block; margin: 0 .5rem 1rem; padding: .45rem .75rem; border-radius: 10px;
+      font-size: .78rem; font-weight: 650; color: var(--muted);
+      border: 1px solid var(--line); background: #fbfaff; text-align: center;
+    }
+    .brand-web:hover { color: var(--purple); border-color: #c4b5fd; background: var(--purple-soft); }
+    .nav-section {
+      font-size: .65rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); padding: .65rem .7rem .3rem;
+    }
+    .nav-item, .nav a {
+      display: flex; align-items: center; gap: .65rem; width: 100%; text-align: left;
+      padding: .62rem .75rem; border-radius: 11px; font-size: .86rem; font-weight: 600;
+    }
+    .nav-item:hover, .nav a:hover { background: var(--purple-soft); color: var(--purple); }
+    .nav-item.active, .nav a.active { background: linear-gradient(90deg, var(--purple-soft), #f3e8ff); color: var(--purple); }
+    .ico { width: 26px; height: 26px; border-radius: 8px; background: #f4f1fb; display: grid; place-items: center; font-size: .85rem; flex-shrink: 0; }
+    .nav-sub {
+      display: none; flex-direction: column; gap: .1rem; margin: .15rem 0 .4rem .55rem;
+      padding-left: .7rem; border-left: 2px solid var(--line);
+    }
+    .nav-sub.open { display: flex; }
+    .nav-sub a { font-size: .8rem; font-weight: 500; color: var(--muted); padding: .4rem .65rem; border-radius: 8px; }
+    .nav-sub a.active { color: var(--purple); background: var(--purple-soft); font-weight: 650; }
+    .nav-sub .nested { margin-left: .4rem; border-left: 1px dashed var(--line); padding-left: .5rem; display: none; flex-direction: column; }
+    .nav-sub .nested.open { display: flex; }
+    .main { padding: 1.15rem 1.25rem 2.5rem; min-width: 0; }
+    .topbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem; margin-bottom: 1rem; align-items: center; }
+    .topbar h2 { font-size: 1.35rem; font-weight: 750; letter-spacing: -.02em; }
+    .topbar .sub { color: var(--muted); font-size: .86rem; margin-top: .15rem; }
+    .menu-toggle { display: none; width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: #fff; align-items: center; justify-content: center; }
+    .topbar-right { display: flex; gap: .55rem; align-items: center; }
+    .chip, .avatar {
+      width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--line); background: #fff;
+      display: grid; place-items: center; box-shadow: var(--shadow);
+    }
+    .avatar { background: linear-gradient(135deg, #0f172a, #7c3aed); color: #fff; font-weight: 700; border: 0; }
+    .chip { position: relative; }
+    .chip .badge {
+      position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px; border-radius: 999px;
+      background: var(--purple); color: #fff; font-size: .62rem; font-weight: 700; display: grid; place-items: center;
+    }
+    .note {
+      font-size: .8rem; color: var(--muted); background: #fff; border: 1px solid var(--line);
+      border-radius: 12px; padding: .7rem .9rem; margin-bottom: 1rem; box-shadow: var(--shadow);
+    }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: .85rem; margin-bottom: 1rem; }
+    .kpis-truth { grid-template-columns: repeat(6, 1fr); }
+    .kpi-live .value { color: #9ca3af; }
+    .kpi-live.is-live {
+      background: #fff7ed;
+      border: 2px solid #ea580c;
+      box-shadow: 0 0 0 3px rgba(234, 88, 12, .15);
+    }
+    .kpi-live.is-live .value { color: #ea580c; }
+    .kpi-live.is-live .label { color: #c2410c; font-weight: 800; }
+    .live-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: .68rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 999px; border: none; cursor: default;
+      background: #e5e7eb; color: #6b7280; white-space: nowrap;
+    }
+    .live-pill.is-hot {
+      background: #ea580c; color: #fff;
+      box-shadow: 0 0 0 3px rgba(234, 88, 12, .25), 0 4px 14px rgba(234, 88, 12, .35);
+      animation: liveOrangePulse 1.5s ease-in-out infinite;
+    }
+    .truth-note { margin: -0.35rem 0 1rem; font-size: .8rem; }
+    .funnel-strip { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin: .5rem 0 1rem; }
+    .funnel-stage { background: #f4f1fb; border-radius: 12px; padding: .65rem 1rem; min-width: 5.5rem; text-align: center; }
+    .funnel-stage strong { display: block; font-size: 1.35rem; font-weight: 750; color: var(--purple, #7c3aed); }
+    .funnel-stage span { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+    .funnel-convert { background: #dcfce7; }
+    .funnel-convert strong { color: #15803d; }
+    .funnel-arrow { color: var(--muted); font-weight: 700; }
+    .funnel-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr .7fr; gap: .5rem; padding: .45rem 0; border-bottom: 1px solid var(--line, #ece8f5); font-size: .85rem; align-items: center; }
+    .funnel-row:last-child { border-bottom: 0; }
+    .funnel-row .muted { color: var(--muted); font-size: .78rem; }
+    .alert-item { display: flex; gap: .55rem; padding: .55rem 0; border-bottom: 1px solid var(--line, #ece8f5); font-size: .84rem; line-height: 1.35; }
+    .alert-item:last-child { border-bottom: 0; }
+    .alert-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: .35rem; flex-shrink: 0; background: #94a3b8; }
+    .alert-dot.critical { background: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,.2); }
+    .alert-dot.high { background: #f59e0b; }
+    .alert-dot.info { background: #3b82f6; }
+    .alert-when { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+    @media (max-width: 1100px) { .kpis-truth { grid-template-columns: repeat(3, 1fr); } .funnel-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 900px) { .kpis, .kpis-truth { grid-template-columns: 1fr 1fr; } }
+    .kpi { background: #fff; border-radius: var(--radius); padding: 1rem 1.05rem; box-shadow: var(--shadow); }
+    .kpi .label { font-size: .72rem; color: var(--muted); font-weight: 650; text-transform: uppercase; letter-spacing: .04em; }
+    .kpi .value { font-size: 1.5rem; font-weight: 750; margin-top: .25rem; letter-spacing: -.02em; }
+    .kpi .hint { font-size: .75rem; color: var(--muted); margin-top: .2rem; }
+    .row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+    .row-2 { grid-template-columns: 1.35fr 1fr; }
+    @media (max-width: 1000px) { .row-2 { grid-template-columns: 1fr; } }
+    .card { background: #fff; border-radius: var(--radius); padding: 1.1rem 1.15rem; box-shadow: var(--shadow); min-width: 0; }
+    .card-h { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; margin-bottom: .85rem; align-items: center; }
+    .card-h h3 { font-size: .98rem; font-weight: 700; }
+    .periods { display: flex; flex-wrap: wrap; gap: .3rem; }
+    .periods button { padding: .32rem .6rem; border-radius: 999px; font-size: .72rem; font-weight: 700; color: var(--muted); background: #f4f1fb; }
+    .periods button.active { background: var(--purple-soft); color: var(--purple); }
+    .line-chart { width: 100%; height: 200px; display: block; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .empty { color: var(--muted); font-size: .9rem; }
+    .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: .75rem; }
+    .project-card {
+      border: 1px solid var(--line); border-radius: 14px; padding: .9rem; background: #fbfaff; cursor: pointer;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .project-card:hover { border-color: #c4b5fd; box-shadow: 0 8px 24px rgba(124,58,237,.1); }
+    .project-card strong { display: block; font-size: .9rem; margin-bottom: .25rem; }
+    .project-card span { font-size: .78rem; color: var(--muted); }
+    .milestone { display: grid; grid-template-columns: 52px 1fr auto; gap: .55rem; align-items: center; padding: .5rem 0; border-bottom: 1px solid var(--line); font-size: .84rem; }
+    .milestone:last-child { border-bottom: 0; }
+    .milestone .tag { font-size: .68rem; font-weight: 800; background: var(--purple-soft); color: var(--purple); border-radius: 8px; padding: .3rem; text-align: center; }
+    .milestone.done .tag { background: #d1fae5; color: #047857; }
+    .milestone.now .tag { background: #7c3aed; color: #fff; }
+    .activity-item { display: grid; grid-template-columns: 12px 1fr; gap: .7rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .84rem; }
+    .activity-item:last-child { border-bottom: 0; }
+    .activity-item .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--purple); margin-top: .35rem; }
+    .when { font-size: .72rem; color: var(--muted); margin-top: .15rem; }
+    .site-tag { display: inline-block; font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 6px; background: var(--purple-soft); color: var(--purple); }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; margin: .75rem 0; }
+    .stat-row div { background: #f7f5fc; border-radius: 12px; padding: .65rem; text-align: center; }
+    .stat-row strong { display: block; font-size: 1.05rem; }
+    .stat-row span { font-size: .68rem; color: var(--muted); font-weight: 650; }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(30,27,46,.35); z-index: 30; }
+    .overlay.show { display: block; }
+    footer.note { text-align: center; font-size: .72rem; color: var(--muted); margin-top: 1rem; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+    .btn {
+      display: inline-flex; align-items: center; padding: .45rem .8rem; border-radius: 999px;
+      background: var(--purple-soft); color: var(--purple); font-size: .78rem; font-weight: 700;
+    }
+    .btn.ghost { background: #f4f1fb; color: var(--muted); }
+    /* COMMS site analytics cards */
+    .site-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 1rem; }
+    .site-card {
+      background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.05rem;
+      box-shadow: var(--shadow); border-top: 3px solid #7c3aed;
+    }
+    .site-card.setup { border-top-color: #f59e0b; }
+    .site-card.nexus { border-top-color: #10b981; }
+    .site-card.stale-card { opacity: 0.95; border-top-color: #f59e0b; }
+    .site-card.stale-card .site-status { background: #fef3c7; color: #b45309; }
+    .site-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .site-name { font-size: .92rem; font-weight: 750; letter-spacing: .02em; }
+    .site-domain { font-size: .72rem; color: var(--muted); margin-top: 3px; }
+    .site-status {
+      font-size: .65rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 999px; background: #d1fae5; color: #047857; white-space: nowrap; height: fit-content;
+    }
+    .site-card.setup .site-status { background: #fef3c7; color: #b45309; }
+    .site-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .site-live {
+      font-size: .65rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 999px; background: #e5e7eb; color: #6b7280; white-space: nowrap;
+      border: none;
+    }
+    .site-live.is-hot {
+      background: #ea580c; color: #fff;
+      box-shadow: 0 0 0 3px rgba(234, 88, 12, .28), 0 4px 14px rgba(234, 88, 12, .4);
+      animation: liveOrangePulse 1.5s ease-in-out infinite;
+    }
+    .site-card.is-live {
+      border-color: #ea580c;
+      box-shadow: 0 0 0 2px rgba(234, 88, 12, .2), 0 10px 28px rgba(234, 88, 12, .12);
+      background: #fff7ed;
+    }
+    @keyframes liveOrangePulse {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(234, 88, 12, .22), 0 4px 12px rgba(234, 88, 12, .3); }
+      50% { box-shadow: 0 0 0 5px rgba(234, 88, 12, .35), 0 6px 20px rgba(234, 88, 12, .45); }
+    }
+    .site-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .site-metric { border: 1px solid var(--line); border-radius: 10px; padding: 10px 8px; background: #fbfaff; min-height: 68px; }
+    .site-metric-num { font-size: 1.25rem; font-weight: 800; line-height: 1.1; }
+    .site-metric-lbl { font-size: .62rem; color: var(--muted); letter-spacing: .06em; margin-top: 6px; font-weight: 700; }
+    .site-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+    .site-panel { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); }
+    .site-panel-title { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 750; margin-bottom: 10px; }
+    .site-row { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .84rem; }
+    .site-row:last-child { border-bottom: 0; }
+    .site-row-name { min-width: 0; overflow: hidden; }
+    .site-row-val { color: var(--purple); font-weight: 700; text-align: right; white-space: nowrap; }
+    .site-row-sub { display: block; color: var(--muted); font-size: .72rem; margin-top: 2px; }
+    .site-alert { color: #b45309; font-size: .82rem; padding: 8px 0; border-bottom: 1px solid var(--line); line-height: 1.45; }
+    .site-alert:last-child { border-bottom: 0; }
+    .site-note { font-size: .78rem; color: var(--muted); margin-bottom: 12px; }
+    .fp-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+    .fp-chip { background: #0f172a; color: #e2e8f0; border-radius: 14px; padding: 12px 14px; }
+    .fp-chip strong { display: block; font-size: 1.35rem; color: #c4b5fd; }
+    .fp-chip span { font-size: .7rem; color: #94a3b8; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+    /* SEO Analysis sandbox */
+    .seo-toolbar { display: flex; flex-wrap: wrap; gap: .65rem; align-items: center; margin-bottom: 1rem; }
+    .seo-spend, .seo-meta { font-size: .8rem; color: var(--muted); background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: .55rem .85rem; box-shadow: var(--shadow); }
+    .seo-spend strong { color: #b45309; }
+    .seo-fleet { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .75rem; }
+    .seo-card { text-align: left; border: 1px solid var(--line); border-radius: 16px; padding: .95rem 1rem; background: #fff; box-shadow: var(--shadow); cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+    .seo-card:hover { border-color: #c4b5fd; box-shadow: 0 8px 24px rgba(124,58,237,.12); }
+    .seo-card-top { display: flex; align-items: center; gap: .45rem; margin-bottom: .35rem; flex-wrap: wrap; }
+    .seo-dom { font-size: .88rem; word-break: break-word; }
+    .seo-lbl { font-size: .75rem; color: var(--muted); min-height: 2.1em; margin-bottom: .55rem; }
+    .seo-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35rem; font-size: .72rem; }
+    .seo-stats b { display: block; font-size: .95rem; color: var(--text); }
+    .seo-stats span { color: var(--muted); text-transform: uppercase; letter-spacing: .03em; font-size: .62rem; font-weight: 700; }
+    .seo-unscan { font-size: .78rem; color: var(--muted); font-style: italic; }
+    .seo-card-foot { margin-top: .55rem; font-size: .68rem; color: var(--muted); }
+    .seo-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .seo-dot.green { background: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,.18); }
+    .seo-dot.yellow { background: #f59e0b; box-shadow: 0 0 0 3px rgba(245,158,11,.18); }
+    .seo-dot.grey { background: #94a3b8; box-shadow: 0 0 0 3px rgba(148,163,184,.18); }
+    .seo-tabs { display: flex; flex-wrap: wrap; gap: .35rem; margin: .85rem 0 1rem; }
+    .seo-tab { padding: .4rem .75rem; border-radius: 999px; font-size: .75rem; font-weight: 700; color: var(--muted); background: #f4f1fb; border: 1px solid transparent; }
+    .seo-tab.active { background: var(--purple-soft); color: var(--purple); border-color: #ddd6fe; }
+    .seo-tablewrap { overflow-x: auto; }
+    .seo-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .seo-table th { text-align: left; font-size: .68rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); padding: .55rem .45rem; border-bottom: 1px solid var(--line); }
+    .seo-table td { padding: .5rem .45rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .seo-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .seo-kw { font-weight: 650; }
+    .seo-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .74rem; word-break: break-all; }
+    .seo-diff { display: inline-flex; align-items: center; gap: .35rem; min-width: 4.5rem; }
+    .seo-diff-track { width: 42px; height: 5px; border-radius: 3px; background: #e5e7eb; overflow: hidden; display: inline-block; }
+    .seo-diff-fill { display: block; height: 100%; border-radius: 3px; background: #94a3b8; }
+    .seo-diff.easy .seo-diff-fill { background: #10b981; }
+    .seo-diff.mid .seo-diff-fill { background: #f59e0b; }
+    .seo-diff.hard .seo-diff-fill { background: #ef4444; }
+    .seo-diff.easy b { color: #047857; }
+    .seo-diff.mid b { color: #b45309; }
+    .seo-diff.hard b { color: #b91c1c; }
+    .seo-diff b { font-size: .72rem; font-weight: 750; min-width: 1.4rem; }
+    .seo-site-head { display: flex; flex-wrap: wrap; gap: .75rem; align-items: flex-start; justify-content: space-between; margin-bottom: .75rem; }
+    .seo-site-title { font-size: 1.15rem; font-weight: 750; display: flex; align-items: center; gap: .45rem; }
+    .seo-cmd { background: #0f172a; color: #e2e8f0; border-radius: 12px; padding: 1rem; font-size: .8rem; overflow-x: auto; white-space: pre-wrap; word-break: break-all; margin: .75rem 0; }
+    .seo-ol { margin: .5rem 0 0 1.1rem; color: var(--muted); font-size: .86rem; line-height: 1.7; }
+    .seo-toast { position: fixed; bottom: 1.25rem; right: 1.25rem; background: #0f172a; color: #fff; padding: .55rem .9rem; border-radius: 999px; font-size: .8rem; font-weight: 700; z-index: 80; box-shadow: var(--shadow); }
+    .seo-modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .65rem; margin-bottom: 1rem; }
+    .seo-mod { display: block; text-align: left; background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: .85rem 1rem; box-shadow: var(--shadow); cursor: pointer; color: inherit; text-decoration: none; font: inherit; }
+    .seo-mod:hover { border-color: #c4b5fd; }
+    .seo-mod strong { display: block; font-size: .9rem; margin-bottom: .2rem; color: var(--purple); }
+    .seo-mod span { font-size: .75rem; color: var(--muted); }
+    .seo-section .card { margin-bottom: 0; }
+    .seo-section .seo-tablewrap { margin-bottom: .25rem; }
+    #view-seo-analysis .empty { min-height: 0; }
+    #seo-root { min-height: 320px; }
+  </style>
+</head>
+<body class="nexus-locked">
+  <div class="nexus-gate show" id="nexusGate" role="dialog" aria-modal="true" aria-labelledby="nexusGateTitle">
+    <div class="nexus-gate-card">
+      <div class="gate-mark">NX</div>
+      <h1 id="nexusGateTitle">NEXUS</h1>
+      <p>Operator access</p>
+      <form id="nexusGateForm" autocomplete="off">
+        <input type="password" id="nexusGateInput" name="nexus-pass" placeholder="Password" autofocus autocomplete="current-password" />
+        <button type="submit" class="gate-go">Enter</button>
+        <div class="gate-err" id="nexusGateErr" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+  <div class="overlay" id="overlay"></div>
+  <div class="app" id="nexusApp">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">NX</div>
+        <div>
+          <h1>NEXUS</h1>
+          <p>Operator admin</p>
+        </div>
+      </div>
+      <a class="brand-web" href="https://opensourcebarware.com/" title="Open Source Barware website">← Website</a>
+
+      <nav class="nav" aria-label="NEXUS">
+        <a href="#dashboard" class="active" data-view="dashboard"><span class="ico">⌂</span> Dashboard</a>
+        <a href="#website-analytics" data-view="website-analytics"><span class="ico">◈</span> Website analytics</a>
+
+        <div class="nav-section">SEO Analysis</div>
+        <button type="button" class="nav-item" data-toggle="sub-seo"><span class="ico">⌁</span> SEO Analysis</button>
+        <div class="nav-sub" id="sub-seo">
+          <a href="#seo" id="nav-seo-home" data-view="seo-analysis"><span class="ico">▣</span> Portfolio / sandbox</a>
+          <a href="#seo/resonantwebdesign.com" data-view="seo-analysis" data-seo-domain="resonantwebdesign.com">Resonant Web Design</a>
+          <a href="#seo/impulsebydesign.com" data-view="seo-analysis" data-seo-domain="impulsebydesign.com">Impulse by Design</a>
+          <a href="#seo/ohiovalleylandpartners.com" data-view="seo-analysis" data-seo-domain="ohiovalleylandpartners.com">Ohio Valley Land Partners</a>
+          <a href="#seo/opensourcebarware.com" data-view="seo-analysis" data-seo-domain="opensourcebarware.com">Open Source Barware</a>
+          <a href="#seo/realestatecapitalresources.com" data-view="seo-analysis" data-seo-domain="realestatecapitalresources.com">RECR (Real Estate Capital)</a>
+          <a href="#seo/fabercapitalresources.com" data-view="seo-analysis" data-seo-domain="fabercapitalresources.com">FCR (legacy)</a>
+        </div>
+
+        <div class="nav-section">Builds</div>
+
+        <button type="button" class="nav-item" data-toggle="sub-faber"><span class="ico">🏛</span> Faber / FCR build</button>
+        <div class="nav-sub" id="sub-faber">
+          <a href="#proj-fcr" data-view="project" data-project="fcr-capital">FCR Capital working admin</a>
+          <a href="#proj-fcr-site" data-view="project" data-project="fcr-site">FCR communication site</a>
+          <a href="#proj-re-capital" data-view="project" data-project="re-capital">Real Estate Capital Resources</a>
+          <a href="#proj-faber-creations" data-view="project" data-project="faber-creations">Faber Creations (art)</a>
+        </div>
+
+        <button type="button" class="nav-item" data-toggle="sub-osb"><span class="ico">🍸</span> Open Source Barware</button>
+        <div class="nav-sub" id="sub-osb">
+          <a href="#proj-osb" data-view="project" data-project="osb">Program overview</a>
+          <a href="#proj-osb-analytics" data-view="project" data-project="osb-analytics">OSB analytics</a>
+          <a href="#proj-osb-downloads" data-view="project" data-project="osb-downloads">Downloads &amp; signups</a>
+        </div>
+
+        <button type="button" class="nav-item" data-toggle="sub-ovlp"><span class="ico">🌲</span> Ohio Valley Land Partners</button>
+        <div class="nav-sub" id="sub-ovlp">
+          <a href="#proj-ovlp" data-view="project" data-project="ovlp">Website &amp; ops</a>
+          <a href="#proj-ovlp-flip" data-view="project" data-project="ovlp-flip">Flip lab</a>
+          <a href="#proj-ovlp-portal" data-view="project" data-project="ovlp-portal">Buyers portal</a>
+          <a href="#proj-ovlp-screenpop" data-view="project" data-project="ovlp-screenpop">Screen Pop</a>
+        </div>
+
+        <button type="button" class="nav-item" data-toggle="sub-residents"><span class="ico">◎</span> Residents</button>
+        <div class="nav-sub" id="sub-residents">
+          <button type="button" class="nav-item" data-toggle="nested-resonant" style="font-size:.8rem;padding:.4rem .55rem;"><span class="ico">✦</span> Resonant Web Design</button>
+          <div class="nested" id="nested-resonant">
+            <a href="#proj-resonant" data-view="project" data-project="resonant">Overview dashboard</a>
+            <a href="#proj-resonant-seo" data-view="project" data-project="resonant-seo">SEO foundations</a>
+            <a href="#proj-resonant-industries" data-view="project" data-project="resonant-industries">Industries / roofers</a>
+          </div>
+          <button type="button" class="nav-item" data-toggle="nested-impulse" style="font-size:.8rem;padding:.4rem .55rem;"><span class="ico">⚡</span> Impulse by Design</button>
+          <div class="nested" id="nested-impulse">
+            <a href="#proj-impulse" data-view="project" data-project="impulse">Overview dashboard</a>
+            <a href="#proj-impulse-offers" data-view="project" data-project="impulse-offers">Offers &amp; starters</a>
+          </div>
+          <a href="#proj-antojitos" data-view="project" data-project="antojitos">Antojitos Salvadoreños</a>
+          <a href="#proj-rbj" data-view="project" data-project="rbj">Richard B. Jamison site</a>
+        </div>
+
+        <button type="button" class="nav-item" data-toggle="sub-ihs"><span class="ico">🏨</span> Intelligent Hospitality Systems</button>
+        <div class="nav-sub" id="sub-ihs">
+          <a href="#proj-ihs" data-view="project" data-project="ihs">Overview dashboard</a>
+          <a href="#proj-ihs-landing" data-view="project" data-project="ihs-landing">Landing / under construction</a>
+        </div>
+
+        <div class="nav-section">Client workspaces</div>
+        <button type="button" class="nav-item" data-toggle="sub-clients"><span class="ico">◇</span> Active client builds</button>
+        <div class="nav-sub" id="sub-clients">
+          <a href="#proj-batiya" data-view="project" data-project="batiya">Batiya Realty</a>
+          <a href="#proj-hvac" data-view="project" data-project="hvac">Sulieman HVAC</a>
+          <a href="#proj-fcr-client" data-view="project" data-project="fcr-capital">FCR Capital (client UI)</a>
+        </div>
+
+        <div class="nav-section">System</div>
+        <a href="#settings" data-view="settings"><span class="ico">⚙</span> Settings</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div style="display:flex;gap:.65rem;align-items:flex-start;">
+          <button type="button" class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+          <div>
+            <h2 id="pageTitle">Master Dashboard</h2>
+            <p class="sub" id="pageSub">NEXUS · project dashboards · not public site links</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <div class="chip">🔔<span class="badge" id="alertBadge">0</span></div>
+          <div class="avatar">RB</div>
+        </div>
+      </div>
+
+      <!-- MASTER DASHBOARD -->
+      <section class="panel active" id="view-dashboard">
+        <p class="note">
+          <strong>NEXUS (you only).</strong> Each menu item opens a <em>project dashboard</em> for work in progress — not a jump to the live website.
+          Client-facing UIs (e.g. FCR Capital Working Admin) stay separate so clients never see other clients.
+        </p>
+        <div class="kpis kpis-truth" id="truthRow">
+          <div class="kpi kpi-live"><div class="label">Live now</div><div class="value" id="kpiLive">0</div><div class="hint">On sites right now</div></div>
+          <div class="kpi"><div class="label">New</div><div class="value" id="kpiNew">—</div><div class="hint">New uniques · period</div></div>
+          <div class="kpi"><div class="label">Sessions</div><div class="value" id="kpiSess">—</div><div class="hint">Visits · period</div></div>
+          <div class="kpi"><div class="label">Traffic</div><div class="value" id="kpiTraffic">—</div><div class="hint">Pageviews · period</div></div>
+          <div class="kpi"><div class="label">Converts</div><div class="value" id="kpiConvert">—</div><div class="hint">Downloads · signups · actions</div></div>
+          <div class="kpi"><div class="label">Alerts</div><div class="value" id="kpiAlerts">0</div><div class="hint">Needs your eye</div></div>
+        </div>
+        <p class="note truth-note" id="truthNote">Fusing first-party Nexus + GA4 + edge…</p>
+        <div class="row row-2">
+          <article class="card">
+            <div class="card-h">
+              <h3>Network traffic</h3>
+              <div class="periods" id="periods">
+                <button type="button" data-p="today" class="active">24h</button>
+                <button type="button" data-p="3d">3d</button>
+                <button type="button" data-p="7d">7d</button>
+                <button type="button" data-p="30d">30d</button>
+                <button type="button" data-p="total">Forever</button>
+              </div>
+            </div>
+            <svg class="line-chart" id="trafficChart" viewBox="0 0 640 200" preserveAspectRatio="none"></svg>
+          </article>
+          <article class="card">
+            <div class="card-h"><h3>Jump to a project dashboard</h3></div>
+            <div class="project-grid">
+              <div class="project-card" data-view="seo-analysis"><strong>SEO Analysis</strong><span>Per-site keyword · tech · ranking sandbox</span></div>
+              <div class="project-card" data-view="project" data-project="fcr-capital"><strong>FCR Capital</strong><span>Client working admin · 8-week build</span></div>
+              <div class="project-card" data-view="project" data-project="osb"><strong>Open Source Barware</strong><span>Program, analytics, downloads</span></div>
+              <div class="project-card" data-view="project" data-project="ovlp"><strong>OVLP</strong><span>Website, flip lab, portal, screen pop</span></div>
+              <div class="project-card" data-view="project" data-project="resonant"><strong>Resonant Web Design</strong><span>National systems · industries</span></div>
+              <div class="project-card" data-view="project" data-project="impulse"><strong>Impulse by Design</strong><span>Local starter / offers</span></div>
+              <div class="project-card" data-view="project" data-project="ihs"><strong>IHS</strong><span>Hospitality systems</span></div>
+              <div class="project-card" data-view="project" data-project="batiya"><strong>Batiya Realty</strong><span>Ron offer + camera research</span></div>
+              <div class="project-card" data-view="project" data-project="hvac"><strong>Sulieman HVAC</strong><span>Pitch + partner system</span></div>
+            </div>
+          </article>
+        </div>
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="card-h">
+            <h3>Selling surfaces · conversion spine</h3>
+            <span class="site-tag" id="funnelRate">—</span>
+          </div>
+          <div class="funnel-strip" id="funnelStrip">
+            <div class="funnel-stage"><strong id="funAware">0</strong><span>Aware</span></div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage"><strong id="funEngage">0</strong><span>Engaged</span></div>
+            <div class="funnel-arrow">→</div>
+            <div class="funnel-stage funnel-convert"><strong id="funConvert">0</strong><span>Converted</span></div>
+          </div>
+          <div id="funnelBySite"><p class="empty">Waiting for pitch / offer traffic…</p></div>
+        </div>
+        <div class="row row-2">
+          <article class="card">
+            <div class="card-h"><h3>Alerts</h3><span class="site-tag" id="alertListCount">0</span></div>
+            <div id="alertList"><p class="empty">No alerts yet</p></div>
+          </article>
+          <article class="card">
+            <div class="card-h"><h3>Latest external activity</h3></div>
+            <div id="activityList"><p class="empty">Waiting for external visitors…</p></div>
+          </article>
+        </div>
+        <div class="row row-2">
+          <article class="card">
+            <div class="card-h"><h3>Top sites (period)</h3></div>
+            <div id="topSites"><p class="empty">—</p></div>
+          </article>
+          <article class="card">
+            <div class="card-h"><h3>Recent converts</h3></div>
+            <div id="recentConverts"><p class="empty">No conversions yet</p></div>
+          </article>
+        </div>
+        <div class="card">
+          <div class="card-h">
+            <h3>COMMS · site health · LIVE badges (first-party)</h3>
+            <a class="btn" href="#website-analytics" data-view="website-analytics">Full analytics</a>
+          </div>
+          <div class="site-summary" id="dashSiteSummary"><p class="empty">Loading…</p></div>
+        </div>
+      </section>
+
+      <!-- SEO ANALYSIS = full warehouse cockpit per client site -->
+      <section class="panel" id="view-seo-analysis">
+        <p class="note">
+          <strong>SEO Analysis — full cockpit.</strong> Every client site has keywords, page map, content gap,
+          competitors, technical crawl, backlinks, queues, and a printable HTML report.
+          Data is the in-house warehouse (our Semrush/Ahrefs-class engine). Public site design is never rewritten from here.
+        </p>
+        <div id="seo-root">
+          <p class="empty">Loading SEO warehouse…</p>
+          <noscript><p class="empty">JavaScript required. Or open <a href="/B-ATCAVE/seo/reports/">HTML reports</a> directly.</p></noscript>
+        </div>
+      </section>
+
+      <!-- WEBSITE ANALYTICS = COMMS sites + Nexus first-party -->
+      <section class="panel" id="view-website-analytics">
+        <p class="note">
+          <strong>One radar.</strong> GA4 (live pull on macbook15 → site-stats) +
+          <strong>Nexus first-party</strong> (live journeys, humans only) + edge geo.
+          Periods: <strong>24h · 3d · 7d · 30d · Forever</strong>. Conversion spine expands next.
+        </p>
+
+        <div class="card-h"><h3>Nexus first-party (offer / comms surfaces)</h3>
+          <div class="periods" id="waPeriods">
+            <button type="button" data-p="today" class="active">24h</button>
+            <button type="button" data-p="3d">3d</button>
+            <button type="button" data-p="7d">7d</button>
+            <button type="button" data-p="30d">30d</button>
+            <button type="button" data-p="total">Forever</button>
+          </div>
+        </div>
+        <div class="fp-strip">
+          <div class="fp-chip"><strong id="waPv">—</strong><span>Pageviews</span></div>
+          <div class="fp-chip"><strong id="waSess">—</strong><span>Sessions</span></div>
+          <div class="fp-chip"><strong id="waUni">—</strong><span>Uniques</span></div>
+          <div class="fp-chip"><strong id="waAvg">—</strong><span>Avg dwell</span></div>
+          <div class="fp-chip"><strong id="waLive">—</strong><span>Live now</span></div>
+        </div>
+
+        <div class="card" style="margin-bottom:1rem;">
+          <div class="card-h"><h3>First-party by site</h3></div>
+          <div id="fpSites"><p class="empty">Loading…</p></div>
+        </div>
+
+        <div class="card-h">
+          <h3>COMMS · site analytics</h3>
+          <span class="site-tag" id="sites-count">0</span>
+        </div>
+        <div class="site-note" id="sites-note">Loading COMMS snapshot…</div>
+        <div class="site-summary" id="site-summary"></div>
+        <div class="site-detail-grid" id="site-details"></div>
+
+        <div class="btn-row" style="margin-top:1rem;">
+          <a class="btn" href="/analytics.html">OSB classic analytics</a>
+          <a class="btn ghost" href="/B-ATCAVE/fcr/">FCR client dashboard</a>
+          <a class="btn ghost" href="/B-ATCAVE/data/site-stats.json" target="_blank" rel="noopener">Raw COMMS JSON</a>
+        </div>
+      </section>
+
+      <!-- PROJECT DASHBOARD (dynamic) -->
+      <section class="panel" id="view-project">
+        <div class="card">
+          <div class="card-h">
+            <h3 id="projTitle">Project</h3>
+            <span class="site-tag" id="projTag">dashboard</span>
+          </div>
+          <p class="empty" id="projBlurb">Project working dashboard.</p>
+          <div class="stat-row">
+            <div><strong id="projPv">—</strong><span>Related pageviews</span></div>
+            <div><strong id="projLive">—</strong><span>Live now</span></div>
+            <div><strong id="projStatus">Active</strong><span>Build status</span></div>
+          </div>
+          <div class="card-h" style="margin-top:1rem;"><h3>What we’re building</h3></div>
+          <div id="projMilestones"></div>
+          <div class="card-h" style="margin-top:1rem;"><h3>Sub-projects</h3></div>
+          <div class="project-grid" id="projSubs"></div>
+          <div class="btn-row" id="projActions"></div>
+        </div>
+        <div class="card" style="margin-top:1rem;">
+          <div class="card-h"><h3>Movements on this surface</h3></div>
+          <div id="projActivity"><p class="empty">No external hits for this project filter yet.</p></div>
+        </div>
+      </section>
+
+      <section class="panel" id="view-settings">
+        <div class="card">
+          <div class="card-h"><h3>Settings</h3></div>
+          <p class="empty">NEXUS · light gate active · client UIs stay isolated.</p>
+          <ul style="margin:1rem 0 0 1.1rem;color:var(--muted);font-size:.88rem;line-height:1.75;">
+            <li>Website exit: top-left <strong>← Website</strong> → opensourcebarware.com</li>
+            <li>Site entry: footer stealth <strong>Legal</strong> → /B-ATCAVE/</li>
+            <li>FCR client UI: <code>/B-ATCAVE/fcr/</code> (FCR only)</li>
+            <li>Upcoming client UIs: Real Estate Capital Resources · Faber Creations</li>
+            <li>Mark yourself: <code>?owner=1</code> on each offer domain</li>
+            <li>SEO sandbox: <code>#seo</code> · per site <code>#seo/domain.com</code></li>
+            <li>Refresh SEO data: <code>python3 ~/Documents/SEO/NEXUS-SEO-OPERATING-SYSTEM/engine/publish_seo_to_batcave.py</code></li>
+            <li><button type="button" id="nexusLockBtn" style="color:var(--purple);font-weight:650;padding:0;">Lock NEXUS</button> (clear session gate)</li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="note">NEXUS · project dashboards · operator only</footer>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      /* Fast gate — password bbbb; session remembered in localStorage */
+      var GATE_KEY = "nexus_gate_ok";
+      var GATE_PASS = "bbbb";
+      var gateEl = document.getElementById("nexusGate");
+      var gateForm = document.getElementById("nexusGateForm");
+      var gateInput = document.getElementById("nexusGateInput");
+      var gateErr = document.getElementById("nexusGateErr");
+
+      function unlockNexus() {
+        document.body.classList.remove("nexus-locked");
+        if (gateEl) gateEl.classList.remove("show");
+        try { localStorage.setItem(GATE_KEY, "1"); } catch (e) {}
+      }
+
+      function lockNexus() {
+        document.body.classList.add("nexus-locked");
+        if (gateEl) gateEl.classList.add("show");
+        try { localStorage.removeItem(GATE_KEY); } catch (e) {}
+        if (gateInput) { gateInput.value = ""; setTimeout(function () { gateInput.focus(); }, 50); }
+        if (gateErr) gateErr.textContent = "";
+      }
+
+      try {
+        if (localStorage.getItem(GATE_KEY) === "1") unlockNexus();
+      } catch (e) {}
+
+      if (gateForm) {
+        gateForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var val = (gateInput && gateInput.value) ? gateInput.value : "";
+          if (val === GATE_PASS) {
+            unlockNexus();
+          } else {
+            if (gateErr) gateErr.textContent = "Wrong password";
+            if (gateInput) { gateInput.value = ""; gateInput.focus(); }
+          }
+        });
+      }
+      var lockBtn = document.getElementById("nexusLockBtn");
+      if (lockBtn) lockBtn.addEventListener("click", lockNexus);
+
+      var API = "https://opensourcebarware.com/api/nexus-stats";
+      var period = "today";
+      var dataCache = null;
+      var currentProject = null;
+
+      /** Project registry — dashboards for work, not live websites */
+      var PROJECTS = {
+        "fcr-capital": {
+          title: "FCR Capital — working admin",
+          tag: "client ui",
+          blurb: "Client-facing Nexus 1 UI for Bill Faber / FCR Capital. They only see FCR — never other clients.",
+          siteIds: ["fcr-funding"],
+          milestones: [
+            { t: "Done", s: "done", l: "Communication site + offer surfaces" },
+            { t: "Now", s: "now", l: "Working admin dashboard (Nexus 1 UI)" },
+            { t: "Next", s: "todo", l: "GHL pipelines + SEO wave" },
+            { t: "W8", s: "todo", l: "Handoff & training" },
+          ],
+          subs: [
+            { id: "fcr-site", title: "Communication site", span: "Public FCR pages" },
+            { id: "fcr-capital", title: "Working admin", span: "This client dashboard" },
+          ],
+          actions: [
+            { href: "/B-ATCAVE/fcr/", label: "Open FCR client UI", external: true },
+          ],
+        },
+        "fcr-site": {
+          title: "FCR communication site",
+          tag: "site build",
+          blurb: "Public / pitch surfaces for Faber Capital Resources communication.",
+          siteIds: ["fcr-funding"],
+          milestones: [
+            { t: "Live", s: "done", l: "Core pages on GH Pages deploy" },
+            { t: "Live", s: "done", l: "Tracker → Nexus collect" },
+            { t: "Next", s: "todo", l: "Content polish with Bill" },
+          ],
+          subs: [],
+          actions: [],
+        },
+        "re-capital": {
+          title: "Real Estate Capital Resources",
+          tag: "upcoming",
+          blurb: "Next client workspace — same Nexus 1 UI shell, isolated branding.",
+          siteIds: [],
+          milestones: [{ t: "Soon", s: "todo", l: "Scaffold client dashboard from Nexus 1 UI" }],
+          subs: [],
+          actions: [],
+        },
+        "faber-creations": {
+          title: "Faber Creations (art)",
+          tag: "upcoming",
+          blurb: "Art site workspace for Bill — separate dashboard, same GUI family.",
+          siteIds: [],
+          milestones: [{ t: "Soon", s: "todo", l: "Brand shell + gallery build plan" }],
+          subs: [],
+          actions: [],
+        },
+        osb: {
+          title: "Open Source Barware",
+          tag: "resident",
+          blurb: "Free bar inventory program — site, packages, analytics, downloads.",
+          siteIds: ["osb"],
+          milestones: [
+            { t: "Live", s: "done", l: "v1 program + downloads" },
+            { t: "Live", s: "done", l: "First-party CF analytics" },
+            { t: "Now", s: "now", l: "B-ATCAVE / Nexus hub host" },
+          ],
+          subs: [
+            { id: "osb-analytics", title: "OSB analytics", span: "Classic dashboard" },
+            { id: "osb-downloads", title: "Downloads", span: "Packages & signups" },
+          ],
+          actions: [{ href: "/analytics.html", label: "Open OSB analytics", external: true }],
+        },
+        "osb-analytics": {
+          title: "OSB analytics",
+          tag: "resident",
+          blurb: "Cloudflare KV + GA first-party stats for opensourcebarware.com.",
+          siteIds: ["osb"],
+          milestones: [{ t: "Live", s: "done", l: "stats + track APIs" }],
+          subs: [],
+          actions: [{ href: "/analytics.html", label: "Open analytics.html", external: true }],
+        },
+        "osb-downloads": {
+          title: "OSB downloads & signups",
+          tag: "resident",
+          blurb: "Program package downloads and email list safety net.",
+          siteIds: ["osb"],
+          milestones: [{ t: "Live", s: "done", l: "download + subscribe functions" }],
+          subs: [],
+          actions: [],
+        },
+        ovlp: {
+          title: "Ohio Valley Land Partners",
+          tag: "resident",
+          blurb: "Land wholesale boiler room — site, ops tools, portal.",
+          siteIds: [],
+          milestones: [
+            { t: "Live", s: "done", l: "Production website" },
+            { t: "Now", s: "now", l: "Flip lab experiments" },
+            { t: "Active", s: "now", l: "Screen Pop + buyers portal" },
+          ],
+          subs: [
+            { id: "ovlp-flip", title: "Flip lab", span: "County / FAQ motion" },
+            { id: "ovlp-portal", title: "Buyers portal", span: "Vercel portal" },
+            { id: "ovlp-screenpop", title: "Screen Pop", span: "v1.5 deploy" },
+          ],
+          actions: [],
+        },
+        "ovlp-flip": {
+          title: "OVLP flip lab",
+          tag: "lab",
+          blurb: "Local county + FAQ flip timing lab (Desktop OVLP-flip-lab).",
+          siteIds: [],
+          milestones: [{ t: "Active", s: "now", l: "Scroll scrub + lag experiments" }],
+          subs: [],
+          actions: [],
+        },
+        "ovlp-portal": {
+          title: "OVLP buyers portal",
+          tag: "product",
+          blurb: "Vercel-hosted buyers portal workspace.",
+          siteIds: [],
+          milestones: [{ t: "Live", s: "done", l: "Portal deploy path" }],
+          subs: [],
+          actions: [],
+        },
+        "ovlp-screenpop": {
+          title: "OVLP Screen Pop",
+          tag: "ops",
+          blurb: "v1.5 screen pop — Kehlen live; OJ + Lucia pending.",
+          siteIds: [],
+          milestones: [
+            { t: "Done", s: "done", l: "Kehlen live" },
+            { t: "Next", s: "todo", l: "OJ + Lucia" },
+          ],
+          subs: [],
+          actions: [],
+        },
+        resonant: {
+          title: "Resonant Web Design",
+          tag: "resident",
+          blurb: "National custom systems brand — homepage, industries, SEO.",
+          siteIds: [],
+          milestones: [
+            { t: "Live", s: "done", l: "National positioning" },
+            { t: "Live", s: "done", l: "Industries / roofers" },
+            { t: "Active", s: "now", l: "SEO foundations polish" },
+          ],
+          subs: [
+            { id: "resonant-seo", title: "SEO foundations", span: "On-site SEO wave" },
+            { id: "resonant-industries", title: "Industries", span: "Roofers etc." },
+          ],
+          actions: [],
+        },
+        "resonant-seo": {
+          title: "Resonant — SEO foundations",
+          tag: "sub-project",
+          blurb: "SEO foundations polish workstream.",
+          siteIds: [],
+          milestones: [{ t: "Active", s: "now", l: "Pricing, FAQ, chips" }],
+          subs: [],
+          actions: [],
+        },
+        "resonant-industries": {
+          title: "Resonant — industries",
+          tag: "sub-project",
+          blurb: "Industry pages (roofing, hospitality, landscape).",
+          siteIds: [],
+          milestones: [{ t: "Live", s: "done", l: "Roofers page + nav Work menu" }],
+          subs: [],
+          actions: [],
+        },
+        impulse: {
+          title: "Impulse by Design",
+          tag: "resident",
+          blurb: "Local Cleveland/Ohio starter brand under Resonant orbit.",
+          siteIds: [],
+          milestones: [{ t: "Active", s: "now", l: "Starter offers & positioning" }],
+          subs: [{ id: "impulse-offers", title: "Offers", span: "Starter packages" }],
+          actions: [],
+        },
+        "impulse-offers": {
+          title: "Impulse — offers",
+          tag: "sub-project",
+          blurb: "Starter offer surfaces for Impulse.",
+          siteIds: [],
+          milestones: [{ t: "Planned", s: "todo", l: "Offer cards & CTAs" }],
+          subs: [],
+          actions: [],
+        },
+        antojitos: {
+          title: "Antojitos Salvadoreños",
+          tag: "resident",
+          blurb: "Restaurant / hospitality site project under residents.",
+          siteIds: [],
+          milestones: [{ t: "Library", s: "done", l: "Project files in Me-Nexus library" }],
+          subs: [],
+          actions: [],
+        },
+        rbj: {
+          title: "Richard B. Jamison site",
+          tag: "resident",
+          blurb: "Personal / professional site property.",
+          siteIds: [],
+          milestones: [{ t: "Live", s: "done", l: "GA property on registry" }],
+          subs: [],
+          actions: [],
+        },
+        ihs: {
+          title: "Intelligent Hospitality Systems",
+          tag: "resident",
+          blurb: "Hospitality systems brand — landing and product direction.",
+          siteIds: [],
+          milestones: [
+            { t: "Live", s: "done", l: "Under-construction / new market direction" },
+            { t: "Next", s: "todo", l: "Full product narrative" },
+          ],
+          subs: [{ id: "ihs-landing", title: "Landing", span: "Current public surface" }],
+          actions: [],
+        },
+        "ihs-landing": {
+          title: "IHS — landing",
+          tag: "sub-project",
+          blurb: "Current public landing / direction page.",
+          siteIds: [],
+          milestones: [{ t: "Live", s: "done", l: "New market wording live" }],
+          subs: [],
+          actions: [],
+        },
+        batiya: {
+          title: "Batiya Realty",
+          tag: "client",
+          blurb: "Ron’s private offer, From Richard’s Eyes, camera research.",
+          siteIds: ["batiya-realty"],
+          milestones: [
+            { t: "Live", s: "done", l: "Pitch + options on Vercel" },
+            { t: "Live", s: "done", l: "Camera · Mac · Research page" },
+            { t: "Live", s: "done", l: "Tracker → Nexus" },
+          ],
+          subs: [],
+          actions: [],
+        },
+        hvac: {
+          title: "Sulieman HVAC",
+          tag: "client",
+          blurb: "Partner pitch and HVAC site system.",
+          siteIds: ["sulieman-hvac"],
+          milestones: [
+            { t: "Live", s: "done", l: "Pitch pages on Vercel" },
+            { t: "Live", s: "done", l: "Tracker → Nexus" },
+          ],
+          subs: [],
+          actions: [],
+        },
+      };
+
+      function esc(s) {
+        return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      }
+
+      function showView(name) {
+        document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
+        var el = document.getElementById("view-" + name);
+        if (el) el.classList.add("active");
+      }
+
+      function openProject(id) {
+        var p = PROJECTS[id];
+        if (!p) return;
+        currentProject = id;
+        showView("project");
+        document.getElementById("pageTitle").textContent = p.title;
+        document.getElementById("pageSub").textContent = "Project dashboard · work in progress · not the live site";
+        document.getElementById("projTitle").textContent = p.title;
+        document.getElementById("projTag").textContent = p.tag;
+        document.getElementById("projBlurb").textContent = p.blurb;
+        document.getElementById("projStatus").textContent = p.tag === "upcoming" ? "Planned" : "Active";
+
+        document.getElementById("projMilestones").innerHTML = (p.milestones || []).map(function (m) {
+          return '<div class="milestone ' + m.s + '"><div class="tag">' + esc(m.t) + "</div><div>" + esc(m.l) + "</div><div></div></div>";
+        }).join("") || '<p class="empty">No milestones yet.</p>';
+
+        document.getElementById("projSubs").innerHTML = (p.subs || []).length
+          ? p.subs.map(function (s) {
+              return '<div class="project-card" data-view="project" data-project="' + esc(s.id) + '"><strong>' +
+                esc(s.title) + "</strong><span>" + esc(s.span) + "</span></div>";
+            }).join("")
+          : '<p class="empty">No sub-projects listed.</p>';
+
+        document.getElementById("projActions").innerHTML = (p.actions || []).map(function (a) {
+          return '<a class="btn" href="' + esc(a.href) + '"' + (a.external ? ' target="_blank" rel="noopener"' : "") + ">" + esc(a.label) + "</a>";
+        }).join("");
+
+        // filter activity
+        var siteIds = p.siteIds || [];
+        var items = [];
+        if (dataCache) {
+          items = (dataCache.live || []).concat(dataCache.journeys || dataCache.recent || []);
+          if (siteIds.length) {
+            items = items.filter(function (row) { return siteIds.indexOf(row.site) !== -1; });
+          } else {
+            items = [];
+          }
+        }
+        document.getElementById("projLive").textContent = items.filter(function (r) { return r.last_ts; }).length || "0";
+        var siteHit = null;
+        if (dataCache && siteIds[0]) {
+          siteHit = (dataCache.topSites || []).find(function (s) { return s.name === siteIds[0]; });
+        }
+        document.getElementById("projPv").textContent = siteHit ? siteHit.count : (siteIds.length ? "0" : "—");
+        document.getElementById("projActivity").innerHTML = items.length
+          ? items.slice(0, 12).map(function (row) {
+              var when = row.last_ts || row.ts;
+              return '<div class="activity-item"><div class="dot"></div><div><strong>' +
+                esc(row.path || row.land || "") + '</strong><div class="when">' +
+                '<span class="site-tag">' + esc(row.site || "") + "</span> " +
+                (when ? new Date(when).toLocaleString() : "") +
+                (row.journey && row.journey.length ? " · " + esc(row.journey.join(" → ")).slice(0, 120) : "") +
+                "</div></div></div>";
+            }).join("")
+          : '<p class="empty">No external hits for this project filter yet.</p>';
+
+        // wire sub cards
+        document.querySelectorAll("#projSubs .project-card").forEach(function (card) {
+          card.onclick = function () { openProject(card.getAttribute("data-project")); };
+        });
+      }
+
+      function drawChart(trend) {
+        var svg = document.getElementById("trafficChart");
+        if (!trend || !trend.length) {
+          svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="#7a7490" font-size="14">No traffic in period</text>';
+          return;
+        }
+        var w = 640, h = 200, pad = 22;
+        var vals = trend.map(function (t) { return t.pageviews || 0; });
+        var uni = trend.map(function (t) { return t.uniques || 0; });
+        var max = Math.max.apply(null, vals.concat(uni).concat([1]));
+        function pts(arr) {
+          return arr.map(function (v, i) {
+            var x = pad + (i * (w - pad * 2)) / Math.max(arr.length - 1, 1);
+            var y = h - pad - (v / max) * (h - pad * 2);
+            return x + "," + y;
+          }).join(" ");
+        }
+        svg.innerHTML =
+          '<polyline fill="none" stroke="#7c3aed" stroke-width="3" points="' + pts(vals) + '" />' +
+          '<polyline fill="none" stroke="#f472b6" stroke-width="2.5" points="' + pts(uni) + '" />';
+      }
+
+      function siteMetric(value, label) {
+        var shown = value === undefined || value === null || value === "" ? "—" : value;
+        return '<div class="site-metric"><div class="site-metric-num">' + esc(shown) +
+          '</div><div class="site-metric-lbl">' + esc(label) + "</div></div>";
+      }
+      function rows(items, nameKey, valKey, suffix) {
+        return (items || []).map(function (item) {
+          return '<div class="site-row"><div class="site-row-name">' + esc(item[nameKey]) +
+            '</div><div class="site-row-val">' + esc(item[valKey]) + " " + esc(suffix || "") + "</div></div>";
+        }).join("");
+      }
+      function searchConsolePanel(site) {
+        var gsc = site.search_console;
+        if (!gsc) return "";
+        var isGood = gsc.status === "verified";
+        var sitemap = gsc.sitemap;
+        var sitemapGood = sitemap && sitemap.status === "submitted-success";
+        return '<div class="site-panel"><div class="site-panel-title">' + esc(site.name) +
+          " · Search Console</div><div class=\"site-row\"><div class=\"site-row-name\">" +
+          esc(gsc.property || "—") + '<br><span class="site-row-sub">' +
+          esc((gsc.dns_provider || "") + " · " + (gsc.checked_as || "")) +
+          '</span></div><div class="site-row-val' + (isGood ? "" : " warn") + '">' +
+          esc(String(gsc.status || "unknown").toUpperCase()) + "</div></div>" +
+          (sitemap
+            ? '<div class="site-row"><div class="site-row-name">' + esc(sitemap.url || "Sitemap") +
+              '</div><div class="site-row-val">' + esc(String(sitemap.status || "").toUpperCase()) + "</div></div>"
+            : "") +
+          (gsc.notes ? '<div class="site-alert">' + esc(gsc.notes) + "</div>" : "") +
+          "</div>";
+      }
+      /* COMMS card id → Nexus first-party site id */
+      var NEXUS_SITE_MAP = {
+        batiya: "batiya-realty",
+        hvac: "sulieman-hvac",
+        fcr: "fcr-funding",
+        osb: "osb",
+        ovlp: "ovlp",
+        rbj: "rbj",
+        resonant: "resonant",
+      };
+      function snapshotIsStale(SITES) {
+        var raw = (SITES && SITES.fetched_at) || "";
+        if (!raw) return true;
+        var t = Date.parse(String(raw).replace(" ", "T"));
+        if (!t || isNaN(t)) return true;
+        return Date.now() - t > 48 * 60 * 60 * 1000; // > 48h
+      }
+      /** Map UI period → GA period key on site-stats */
+      function gaPeriodKey(p) {
+        if (p === "today" || p === "1d" || p === "24h") return "24h";
+        if (p === "total" || p === "all" || p === "forever") return "total";
+        return p;
+      }
+      function networkFromSites(SITES, p) {
+        var key = gaPeriodKey(p);
+        if (SITES && SITES.network && SITES.network[key]) return SITES.network[key];
+        var acc = { active_users: 0, new_users: 0, sessions: 0, screen_page_views: 0 };
+        ((SITES && SITES.sites) || []).forEach(function (s) {
+          var per = (s.periods && s.periods[key]) || {};
+          acc.active_users += Number(per.active_users || per.unique_visitors || 0);
+          acc.new_users += Number(per.new_users || 0);
+          acc.sessions += Number(per.sessions || 0);
+          acc.screen_page_views += Number(per.screen_page_views || 0);
+        });
+        return acc;
+      }
+      function siteCard(site, liveBySite, opts) {
+        opts = opts || {};
+        var stale = !!opts.stale;
+        var p24 = (site.periods && site.periods["24h"]) || {};
+        var p7 = (site.periods && site.periods["7d"]) || {};
+        var p30 = (site.periods && site.periods["30d"]) || {};
+        var cls = site.status === "setup" ? "setup" : (site.status_label === "NEXUS TRACKED" ? "nexus" : "");
+        if (stale) cls += " stale-card";
+        var nexusId = NEXUS_SITE_MAP[site.id] || site.id;
+        var liveN = (liveBySite && (liveBySite[nexusId] || liveBySite[site.id])) || 0;
+        var liveCls = liveN > 0 ? "site-live is-hot live-pill is-hot" : "site-live live-pill";
+        // Solid orange when someone real is present — "ONE LIVE" / "2 LIVE"
+        var liveLabel =
+          liveN <= 0
+            ? "NO ONE LIVE"
+            : liveN === 1
+              ? "ONE LIVE"
+              : liveN + " LIVE";
+        if (liveN > 0) cls += " is-live";
+        // GA period cells: only when snapshot is fresh — never invent from pageviews
+        var ga = function (v) {
+          if (stale) return "—";
+          return v === undefined || v === null || v === "" ? "—" : v;
+        };
+        // First-party today pageviews (honest label — not uniques)
+        var fpToday = opts.fpToday && opts.fpToday[nexusId] != null ? opts.fpToday[nexusId] : "—";
+        var statusLabel = stale
+          ? "GA STALE"
+          : (site.status_label || site.status || "TRACKED");
+        return '<div class="site-card ' + cls + '" data-site-id="' + esc(site.id) + '" data-nexus-id="' + esc(nexusId) + '"><div class="site-top"><div><div class="site-name">' +
+          esc(site.name) + '</div><div class="site-domain">' + esc(site.domain || "") +
+          (stale && opts.asOf ? '<div class="site-domain">GA as of ' + esc(opts.asOf) + " — not current</div>" : "") +
+          '</div></div><div class="site-badges"><button type="button" class="' + liveCls + '">' + esc(liveLabel) +
+          '</button><div class="site-status">' + esc(statusLabel) +
+          '</div></div></div><div class="site-metrics">' +
+          siteMetric(liveN, "LIVE NOW") +
+          siteMetric(fpToday, "FP VIEWS · TODAY") +
+          siteMetric(ga(p24.unique_visitors != null ? p24.unique_visitors : p24.active_users), "UNIQUE · 24H") +
+          siteMetric(ga(p7.active_users), "ACTIVE · 7D") +
+          siteMetric(ga(p30.active_users), "ACTIVE · 30D") +
+          siteMetric(ga(p7.sessions), "SESSIONS · 7D") +
+          "</div></div>";
+      }
+      function siteDetails(site) {
+        var p7 = (site.periods && site.periods["7d"]) || {};
+        var p24 = (site.periods && site.periods["24h"]) || {};
+        return '<div class="site-panel"><div class="site-panel-title">' + esc(site.name) +
+          " · Traffic sources</div>" +
+          rows(p7.top_channels, "channel", "sessions", "SESSIONS") +
+          (!p7.top_channels || !p7.top_channels.length
+            ? '<div class="site-alert">Traffic source data pending (next GA4 collect).</div>'
+            : "") +
+          "</div><div class=\"site-panel\"><div class=\"site-panel-title\">" +
+          esc(site.name) + " · Top pages</div>" +
+          rows(p7.top_pages, "page", "views", "VIEWS") +
+          (!p7.top_pages || !p7.top_pages.length
+            ? '<div class="site-alert">Page data pending.</div>'
+            : "") +
+          "</div>" +
+          searchConsolePanel(site) +
+          '<div class="site-panel"><div class="site-panel-title">' + esc(site.name) +
+          " · Countries</div>" +
+          rows(p7.top_countries, "country", "active_users", "USERS") +
+          rows(p24.cloudflare_top_countries, "country", "traffic", "REQ") +
+          (site.alerts || []).map(function (a) {
+            return '<div class="site-alert">' + esc(a) + "</div>";
+          }).join("") +
+          "</div>";
+      }
+      function liveBySiteFrom(nexusData) {
+        var map = {};
+        ((nexusData && nexusData.live) || []).forEach(function (row) {
+          var id = row.site || "unknown";
+          map[id] = (map[id] || 0) + 1;
+        });
+        return map;
+      }
+
+      function renderCommsSites(SITES, nexusData) {
+        var sites = (SITES && SITES.sites) || [];
+        var liveBySite = liveBySiteFrom(nexusData);
+        var stale = snapshotIsStale(SITES);
+        var asOf = (SITES && SITES.fetched_at) || "";
+        // First-party pageviews today by site id — labeled honestly, not as uniques
+        var fpToday = {};
+        ((nexusData && nexusData.topSites) || []).forEach(function (s) {
+          fpToday[s.name] = s.count;
+        });
+        var cardOpts = { stale: stale, asOf: asOf, fpToday: fpToday };
+
+        var liveTotal = nexusData && nexusData.live_count != null
+          ? nexusData.live_count
+          : Object.keys(liveBySite).reduce(function (n, k) { return n + liveBySite[k]; }, 0);
+        document.getElementById("sites-count").textContent = String(sites.length);
+        var noteBits = [];
+        if (stale) {
+          noteBits.push(
+            "GA numbers HIDDEN — snapshot is stale (" +
+              (asOf || "unknown date") +
+              "). Re-run: python3 ~/Me-Nexus/scripts/batcave_analytics_publish.py then deploy B-ATCAVE. LIVE + FP are first-party and current."
+          );
+        } else if (SITES) {
+          noteBits.push((SITES.fetched_at || "—") + " · " + (SITES.source_note || "COMMS snapshot"));
+        } else {
+          noteBits.push("NO SITE DATA LOADED");
+        }
+        noteBits.push("Live now: " + liveTotal + " (external humans, last 3 min)");
+        document.getElementById("sites-note").textContent = noteBits.join(" · ");
+        document.getElementById("site-summary").innerHTML = sites.length
+          ? sites.map(function (s) { return siteCard(s, liveBySite, cardOpts); }).join("")
+          : '<div class="empty">No site analytics configured</div>';
+        document.getElementById("site-details").innerHTML = sites.map(siteDetails).join("");
+        var dashSum = document.getElementById("dashSiteSummary");
+        if (dashSum) {
+          dashSum.innerHTML = sites.length
+            ? sites.map(function (s) { return siteCard(s, liveBySite, cardOpts); }).join("")
+            : '<p class="empty">No COMMS site snapshot</p>';
+        }
+
+        // first-party by site list + live
+        var top = (nexusData && nexusData.topSites) || [];
+        var liveRows = Object.keys(liveBySite).map(function (id) {
+          return { name: id, count: liveBySite[id], live: true };
+        });
+        document.getElementById("fpSites").innerHTML =
+          (liveRows.length
+            ? liveRows
+                .map(function (s) {
+                  return '<div class="site-row"><div class="site-row-name"><span class="site-tag">' +
+                    esc(s.name) +
+                    '</span> · LIVE</div><div class="site-row-val" style="color:#16a34a">' +
+                    esc(s.count) +
+                    " NOW</div></div>";
+                })
+                .join("")
+            : "") +
+          (top.length
+            ? top
+                .map(function (s) {
+                  return '<div class="site-row"><div class="site-row-name"><span class="site-tag">' +
+                    esc(s.name) +
+                    "</span></div><div class=\"site-row-val\">" +
+                    esc(s.count) +
+                    " VIEWS · TODAY</div></div>";
+                })
+                .join("")
+            : (liveRows.length ? "" : '<p class="empty">No first-party offer hits yet. NEXUS TRACKED sites need a real external visitor (owner browsers are ignored).</p>'));
+      }
+
+      async function loadCommsSites(nexusData) {
+        try {
+          var r = await fetch("/B-ATCAVE/data/site-stats.json?_=" + Date.now(), { cache: "no-store" });
+          if (!r.ok) throw new Error("site-stats " + r.status);
+          var SITES = await r.json();
+          renderCommsSites(SITES, nexusData);
+        } catch (e) {
+          document.getElementById("sites-note").textContent =
+            "Could not load COMMS site-stats.json — " + (e.message || e);
+        }
+      }
+
+      async function load() {
+        try {
+          var r = await fetch(API + "?period=" + encodeURIComponent(period) + "&_=" + Date.now(), { cache: "no-store", mode: "cors" });
+          if (!r.ok) throw new Error("API " + r.status);
+          var d = await r.json();
+          dataCache = d;
+          var o = d.overview || {};
+          var fpLive = d.live_count != null ? d.live_count : 0;
+          var alertsN = (d.alerts || []).length;
+          document.getElementById("alertBadge").textContent = String(alertsN);
+          var kpiAlerts = document.getElementById("kpiAlerts");
+          if (kpiAlerts) kpiAlerts.textContent = String(alertsN);
+
+          // Converts: funnel.convert first, else OSB downloads
+          var funnel = d.funnel || {};
+          var converts =
+            funnel.convert != null && funnel.convert > 0
+              ? funnel.convert
+              : d.osb && d.osb.downloads != null
+                ? d.osb.downloads
+                : funnel.convert != null
+                  ? funnel.convert
+                  : "—";
+          var kpiConvert = document.getElementById("kpiConvert");
+          if (kpiConvert) kpiConvert.textContent = converts;
+
+          // Funnel spine strip
+          var fa = funnel.aware != null ? funnel.aware : (d.overview && d.overview.aware) || 0;
+          var fe = funnel.engage != null ? funnel.engage : (d.overview && d.overview.engage) || 0;
+          var fc = funnel.convert != null ? funnel.convert : (d.overview && d.overview.convert) || 0;
+          var fr = funnel.rate != null ? funnel.rate : fa > 0 ? Math.round((fc / fa) * 1000) / 10 : 0;
+          var elA = document.getElementById("funAware");
+          var elE = document.getElementById("funEngage");
+          var elC = document.getElementById("funConvert");
+          var elR = document.getElementById("funnelRate");
+          if (elA) elA.textContent = fa;
+          if (elE) elE.textContent = fe;
+          if (elC) elC.textContent = fc;
+          if (elR) elR.textContent = fr + "% convert";
+
+          var bySite = funnel.bySite || [];
+          var fbs = document.getElementById("funnelBySite");
+          if (fbs) {
+            fbs.innerHTML = bySite.length
+              ? '<div class="funnel-row muted"><div>Site</div><div>Aware</div><div>Engaged</div><div>Converted</div><div>Rate</div></div>' +
+                bySite
+                  .map(function (s) {
+                    return (
+                      '<div class="funnel-row"><div><strong>' +
+                      esc(s.id) +
+                      "</strong></div><div>" +
+                      esc(s.aware) +
+                      "</div><div>" +
+                      esc(s.engage) +
+                      "</div><div>" +
+                      esc(s.convert) +
+                      "</div><div>" +
+                      esc(s.rate) +
+                      "%</div></div>"
+                    );
+                  })
+                  .join("")
+              : '<p class="empty">No offer journeys in this period yet. Tracker fires aware → engage → convert on pitch pages.</p>';
+          }
+
+          var rc = funnel.recentConverts || [];
+          var rcEl = document.getElementById("recentConverts");
+          if (rcEl) {
+            rcEl.innerHTML = rc.length
+              ? rc
+                  .slice(0, 12)
+                  .map(function (c) {
+                    return (
+                      '<div class="activity-item"><div class="dot" style="background:#16a34a"></div><div><strong>' +
+                      esc(c.label || "convert") +
+                      '</strong><div class="when"><span class="site-tag">' +
+                      esc(c.site || "") +
+                      "</span> " +
+                      esc(c.path || "") +
+                      " · " +
+                      (c.ts ? new Date(c.ts).toLocaleString() : "") +
+                      "</div></div></div>"
+                    );
+                  })
+                  .join("")
+              : '<p class="empty">No conversions yet</p>';
+          }
+
+          // Alerts list
+          var alerts = d.alerts || [];
+          var alEl = document.getElementById("alertList");
+          var alCount = document.getElementById("alertListCount");
+          if (alCount) alCount.textContent = String(alerts.length);
+          if (alEl) {
+            alEl.innerHTML = alerts.length
+              ? alerts
+                  .slice(0, 20)
+                  .map(function (a) {
+                    var sev = a.severity || "info";
+                    return (
+                      '<div class="alert-item"><div class="alert-dot ' +
+                      esc(sev) +
+                      '"></div><div><div>' +
+                      esc(a.message || a.kind || "alert") +
+                      '</div><div class="alert-when">' +
+                      esc(sev.toUpperCase()) +
+                      (a.ts ? " · " + new Date(a.ts).toLocaleString() : "") +
+                      "</div></div></div>"
+                    );
+                  })
+                  .join("")
+              : '<p class="empty">No alerts — quiet board</p>';
+          }
+
+          // Load COMMS (GA4 pack) then fuse truth row
+          var SITES = null;
+          try {
+            var sr = await fetch("/B-ATCAVE/data/site-stats.json?_=" + Date.now(), { cache: "no-store" });
+            if (sr.ok) SITES = await sr.json();
+          } catch (e2) {}
+
+          var gaNet = networkFromSites(SITES, period);
+          var gaLive = (SITES && SITES.network && SITES.network.ga_live_now) || 0;
+          // Live KPI: first-party only (external humans). Never use GA live for "you might be in it".
+          var liveShow = fpLive;
+          var liveElTop = document.getElementById("kpiLive");
+          var liveKpi = liveElTop && liveElTop.closest ? liveElTop.closest(".kpi-live") : null;
+          if (liveElTop) {
+            liveElTop.textContent = liveShow > 0
+              ? (liveShow === 1 ? "ONE LIVE" : liveShow + " LIVE")
+              : "0";
+          }
+          if (liveKpi) liveKpi.classList.toggle("is-live", liveShow > 0);
+
+          // Prefer first-party uniques/sessions/pageviews when present; else GA network sum
+          var newShow = o.uniques != null && o.uniques > 0 ? o.uniques : (gaNet.new_users || gaNet.active_users || "—");
+          var sessShow = o.sessions != null && o.sessions > 0 ? o.sessions : (gaNet.sessions || "—");
+          var trafficShow = o.pageviews != null && o.pageviews > 0 ? o.pageviews : (gaNet.screen_page_views || gaNet.active_users || "—");
+          // When FP is thin, surface GA for the selected period so the row never looks empty
+          if ((newShow === "—" || newShow === 0) && gaNet.active_users) newShow = gaNet.active_users;
+          if ((sessShow === "—" || sessShow === 0) && gaNet.sessions) sessShow = gaNet.sessions;
+          if ((trafficShow === "—" || trafficShow === 0) && (gaNet.screen_page_views || gaNet.active_users)) {
+            trafficShow = gaNet.screen_page_views || gaNet.active_users;
+          }
+          document.getElementById("kpiNew").textContent = newShow;
+          document.getElementById("kpiSess").textContent = sessShow;
+          document.getElementById("kpiTraffic").textContent = trafficShow;
+
+          document.getElementById("waPv").textContent = trafficShow;
+          document.getElementById("waSess").textContent = sessShow;
+          document.getElementById("waUni").textContent = newShow;
+          document.getElementById("waAvg").textContent = o.avg_sec != null ? o.avg_sec + "s" : "—";
+          var liveEl = document.getElementById("waLive");
+          if (liveEl) liveEl.textContent = String(liveShow);
+
+          var note = document.getElementById("truthNote");
+          if (note) {
+            var stale = snapshotIsStale(SITES);
+            var asOf = (SITES && SITES.fetched_at) || "—";
+            note.textContent =
+              "Truth row · period " +
+              (period === "today" ? "24h" : period === "total" ? "Forever" : period) +
+              " · FP live " +
+              fpLive +
+              " · GA live " +
+              gaLive +
+              " · GA as of " +
+              asOf +
+              (stale ? " (stale — re-run batcave_analytics_publish)" : " · fresh") +
+              " · funnel " +
+              fa +
+              "→" +
+              fe +
+              "→" +
+              fc +
+              " (" +
+              fr +
+              "% convert)";
+          }
+
+          drawChart(d.dailyTrend || []);
+          if (SITES) renderCommsSites(SITES, d);
+          else loadCommsSites(d);
+
+          var items = (d.live || []).concat(d.journeys || d.recent || []).slice(0, 10);
+          document.getElementById("activityList").innerHTML = items.length
+            ? items.map(function (row) {
+                var when = row.last_ts || row.ts;
+                return '<div class="activity-item"><div class="dot"></div><div><strong>' +
+                  esc(row.path || row.land || "") + '</strong><div class="when"><span class="site-tag">' +
+                  esc(row.site || "") + "</span> " + (when ? new Date(when).toLocaleString() : "") +
+                  "</div></div></div>";
+              }).join("")
+            : '<p class="empty">Waiting for external visitors…</p>';
+
+          var sites = d.topSites || [];
+          document.getElementById("topSites").innerHTML = sites.length
+            ? sites.map(function (s) {
+                return '<div class="milestone"><div class="tag">SITE</div><div>' + esc(s.name) +
+                  '</div><div class="muted" style="font-size:.8rem">' + s.count + "</div></div>";
+              }).join("")
+            : '<p class="empty">—</p>';
+
+          if (currentProject) openProject(currentProject);
+        } catch (e) {
+          document.getElementById("kpiTraffic").textContent = "—";
+        }
+      }
+
+      // toggles
+      document.querySelectorAll("[data-toggle]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var id = btn.getAttribute("data-toggle");
+          var el = document.getElementById(id);
+          if (!el) return;
+          el.classList.toggle("open");
+          btn.classList.toggle("active", el.classList.contains("open"));
+        });
+      });
+
+      function bindNav() {
+        document.querySelectorAll("[data-view]").forEach(function (el) {
+          el.addEventListener("click", function (e) {
+            if (el.tagName === "A") e.preventDefault();
+            var view = el.getAttribute("data-view");
+            var project = el.getAttribute("data-project");
+            var seoDomain = el.getAttribute("data-seo-domain");
+            if (view === "project" && project) {
+              openProject(project);
+              return;
+            }
+            if (view === "seo-analysis") {
+              currentProject = null;
+              if (window.BatcaveSEO && typeof window.BatcaveSEO.open === "function") {
+                window.BatcaveSEO.open(seoDomain || null);
+              } else {
+                showView("seo-analysis");
+                document.getElementById("pageTitle").textContent = "SEO Analysis";
+                document.getElementById("pageSub").textContent = "Loading SEO panel…";
+              }
+              if (seoDomain) {
+                try { history.replaceState(null, "", "#seo/" + seoDomain); } catch (err) {}
+              } else {
+                try { history.replaceState(null, "", "#seo"); } catch (err) {}
+              }
+              return;
+            }
+            currentProject = null;
+            showView(view);
+            if (view === "dashboard") {
+              document.getElementById("pageTitle").textContent = "Master Dashboard";
+              document.getElementById("pageSub").textContent = "NEXUS · project dashboards · not public site links";
+            } else if (view === "website-analytics") {
+              document.getElementById("pageTitle").textContent = "Website analytics";
+              document.getElementById("pageSub").textContent = "Aggregate NEXUS + OSB analytics";
+            } else if (view === "settings") {
+              document.getElementById("pageTitle").textContent = "Settings";
+              document.getElementById("pageSub").textContent = "NEXUS configuration";
+            }
+            document.querySelectorAll(".nav > a").forEach(function (a) {
+              a.classList.toggle("active", a.getAttribute("data-view") === view);
+            });
+          });
+        });
+      }
+      bindNav();
+
+      function bindPeriodButtons(sel) {
+        document.querySelectorAll(sel).forEach(function (btn) {
+          btn.onclick = function () {
+            period = btn.getAttribute("data-p") || "today";
+            document.querySelectorAll("#periods button, #waPeriods button").forEach(function (b) {
+              b.classList.toggle("active", b.getAttribute("data-p") === period);
+            });
+            load();
+          };
+        });
+      }
+      bindPeriodButtons("#periods button");
+      bindPeriodButtons("#waPeriods button");
+
+      var sidebar = document.getElementById("sidebar");
+      var overlay = document.getElementById("overlay");
+      document.getElementById("menuToggle").onclick = function () {
+        sidebar.classList.add("open"); overlay.classList.add("show");
+      };
+      overlay.onclick = function () {
+        sidebar.classList.remove("open"); overlay.classList.remove("show");
+      };
+
+      // owner mark
+      try { localStorage.setItem("ot_owner", "1"); } catch (e) {}
+
+      load();
+      setInterval(load, 15000);
+    })();
+  </script>
+  <script src="/B-ATCAVE/seo-data.js?v=20260724c"></script>
+  <script src="/B-ATCAVE/seo-panel.js?v=20260724c"></script>
+</body>
+</html>

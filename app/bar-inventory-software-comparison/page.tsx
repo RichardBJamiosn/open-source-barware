@@ -4,7 +4,7 @@ import { Gear, GearDivider } from "@/components/SteampunkElements";
 import { pageMetadata, SITE_URL } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Free Bar Inventory Software vs Paid Apps (Honest Comparison) | OSBW",
+  title: "Free Bar Inventory Software vs Paid Apps (Honest Comparison) | Open Source Barware",
   description:
     "Compare Open Source Barware to Backbar, Partender, Bar Patrol, and Provi on cost, data ownership, variance, and lock-in. Free GPLv3—run on your machines.",
   path: "/bar-inventory-software-comparison",
@@ -83,7 +83,7 @@ const faqs = [
   },
   {
     q: "Why not just use Backbar or Partender?",
-    a: "Cloud apps win on sync and vendor workflows. OSBW wins on local control, no seat tax, and open source you can audit. Different jobs.",
+    a: "Cloud apps win on sync and vendor workflows. Open Source Barware wins on local control, no seat tax, and open source you can audit. Different jobs.",
   },
   {
     q: "Do I need an account?",

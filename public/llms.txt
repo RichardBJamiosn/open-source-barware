@@ -5,7 +5,7 @@
 - Home: https://opensourcebarware.com/
 - Download: https://opensourcebarware.com/download
 - Free bar inventory software: https://opensourcebarware.com/free-bar-inventory-software
-- Comparison vs paid apps: https://opensourcebarware.com/bar-inventory-software-comparison
+- Bar inventory software comparison: https://opensourcebarware.com/bar-inventory-software-comparison
 - Liquor inventory: https://opensourcebarware.com/liquor-inventory
 - Wine inventory: https://opensourcebarware.com/wine-inventory
 - About: https://opensourcebarware.com/about
@@ -13,6 +13,10 @@
 - Blog: https://opensourcebarware.com/blog
 - Free Inventory System Guide: https://opensourcebarware.com/blog/free-inventory-system-guide
 - Best Free Bar Inventory System: https://opensourcebarware.com/blog/best-free-bar-inventory-system
+- Variance Tracking: https://opensourcebarware.com/blog/variance-tracking-that-works
+- POS Integration: https://opensourcebarware.com/blog/pos-integration-free-inventory
+- When Inventory Meets the Front of House: https://opensourcebarware.com/blog/when-inventory-meets-the-front-of-house
+- RSS Feed: https://opensourcebarware.com/blog/feed.xml
 
 ## Product facts
 - Price: Free (GPLv3). No subscription. No per-seat fees.

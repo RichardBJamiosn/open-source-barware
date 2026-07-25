@@ -99,7 +99,15 @@ export default function Home() {
               Free. No subscriptions. No vendor lock-in.
             </p>
 
+            {/* Signal design: Download first only after /download serves real zips (not Loading…).
+                Wrong order used to push traffic into a broken funnel and poison engagement signals. */}
             <div className="flex flex-wrap gap-4">
+              <Link
+                href="/download"
+                className={primaryCtaClass}
+              >
+                <span className="relative z-10">Download Program</span>
+              </Link>
               <Link
                 href="/the-process"
                 className={primaryCtaClass}
@@ -111,12 +119,6 @@ export default function Home() {
                 className="border border-gear-border text-text-muted hover:text-copper hover:border-copper/50 px-8 py-4 text-sm tracking-wide transition-all"
               >
                 Read Our Story
-              </Link>
-              <Link
-                href="/download"
-                className={primaryCtaClass}
-              >
-                <span className="relative z-10">Download Program</span>
               </Link>
             </div>
           </div>

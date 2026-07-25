@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import OptimizedPicture from "@/components/OptimizedPicture";
 import ProgramDownloadPanel from "@/components/ProgramDownloadPanel";
 import { Gear, GearDivider } from "@/components/SteampunkElements";
@@ -42,22 +41,43 @@ export default function DownloadPage() {
             <br />
             the free program.
           </h1>
-          <p className="text-text-muted text-lg max-w-xl leading-relaxed">
+          <p className="text-text-muted text-lg max-w-xl leading-relaxed mb-8">
             Free, local bar inventory on your laptop. No subscription. No cloud
             tax.{" "}
             <strong className="text-cream">Version 1.5 is live</strong> —
             Spanish-ready inventory notes, mobile counting, POS, multi-venue,
             and the full toolkit.
           </p>
+          {/* Last-ten-feet trust strip — ranking signals need completed downloads, not just clicks */}
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[11px] tracking-[0.12em] uppercase text-text-light max-w-xl">
+            <li className="text-patina-light">v1.5 live</li>
+            <li>GPLv3 · free forever</li>
+            <li>Mac &amp; Windows · ~243 KB</li>
+            <li>Local-first · no account to run</li>
+            <li>
+              <Link
+                href="/changelog"
+                className="text-copper hover:text-copper-bright transition-colors"
+              >
+                Release notes
+              </Link>
+            </li>
+            <li>
+              <a
+                href="#program-downloads"
+                className="text-copper hover:text-copper-bright transition-colors"
+              >
+                Skip to installers ↓
+              </a>
+            </li>
+          </ul>
         </div>
       </section>
 
       <GearDivider />
 
-      <section className="max-w-4xl mx-auto px-6 py-12 md:py-16">
-        <Suspense fallback={<div className="text-text-muted text-center py-12">Loading…</div>}>
-          <ProgramDownloadPanel />
-        </Suspense>
+      <section className="max-w-4xl mx-auto px-6 py-12 md:py-16" id="program-downloads-section">
+        <ProgramDownloadPanel />
       </section>
 
       <section className="border-t border-gear-border bg-bg-panel">
@@ -74,7 +94,7 @@ export default function DownloadPage() {
         </div>
       </section>
 
-      {/* Image structured data for SEO - backend only */}
+      {/* Image + SoftwareApplication — download-intent page needs product schema, not only image */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -87,6 +107,32 @@ export default function DownloadPage() {
             "width": "1200",
             "height": "630"
           })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Open Source Barware",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "macOS, Windows",
+            softwareVersion: "1.5.0",
+            license: "https://www.gnu.org/licenses/gpl-3.0.html",
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "USD",
+            },
+            downloadUrl: [
+              "https://opensourcebarware.com/downloads/open-source-barware-program-mac.zip",
+              "https://opensourcebarware.com/downloads/open-source-barware-program-win.zip",
+            ],
+            url: "https://opensourcebarware.com/download",
+            description:
+              "Free, open-source bar inventory program: local-first counts, variance, POS inputs, multi-venue. No subscription.",
+          }),
         }}
       />
     </>

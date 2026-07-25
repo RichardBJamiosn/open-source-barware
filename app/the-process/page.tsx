@@ -3,9 +3,9 @@ import { Gear, GearDivider, PipeLine, PipeNode } from "@/components/SteampunkEle
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "The Process - Open Source Barware",
+  title: "How Free Bar Inventory Works (Voice Walk → Count) | Open Source Barware",
   description:
-    "How Open Source Barware v1.5 works: voice walk in English or Spanish, mobile counts, POS, smart orders — free, local, open source bar inventory.",
+    "How free bar inventory software works: voice walk, tenths, variance, POS, smart orders — local-first, no subscription. Full Open Source Barware process.",
   path: "/the-process",
 });
 
@@ -224,7 +224,7 @@ export default function TheProcess() {
           <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-tight mb-8">
             <span className="copper-text">One Chrome-side program.</span>
             <br />
-            <span className="text-cream">Simple to start. Industrial strength when you need it.</span>
+            <span className="text-cream">Simple to start. Industrial strength when needed.</span>
           </h1>
 
           <p className="text-text-muted text-xl leading-relaxed max-w-2xl mx-auto mb-6">
@@ -639,7 +639,7 @@ export default function TheProcess() {
               prefetch={false}
               className="inline-block bg-copper hover:bg-copper-bright text-bg font-semibold px-10 py-4 text-base tracking-wide transition-all hover:shadow-[0_0_40px_rgba(168,120,79,0.3)]"
             >
-              Visit Our Arms
+              Visit Live Demo
             </Link>
             <Link
               href="/download"

@@ -20,7 +20,7 @@ export default function PreLaunchDownloadsBanner() {
     <div className="border-b border-copper/30 bg-copper/10">
       <div className="mx-auto max-w-6xl px-6 py-4 text-center text-sm leading-relaxed text-cream">
         <span className="font-semibold text-copper-bright">Explore freely.</span>{" "}
-        {getDownloadLockMessage()} Read the guide, tour the Salle sandbox, and
+        {getDownloadLockMessage()} Read the guide, tour the Live Demo, and
         join the release list on the download page.
       </div>
     </div>

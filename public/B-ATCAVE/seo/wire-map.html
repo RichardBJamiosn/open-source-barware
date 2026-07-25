@@ -1,0 +1,467 @@
+<title>SEO Cockpit — Nexus Service Map</title>
+<style>
+  :root {
+    --ground: #0d1420;
+    --surface: #131d2e;
+    --surface-2: #1a2540;
+    --raise: #202d4a;
+    --line: rgba(150,178,220,.14);
+    --line-strong: rgba(150,178,220,.28);
+    --ink: #e9eef7;
+    --muted: #8fa0bd;
+    --faint: #64748f;
+    --accent: #3fc4d6;
+    --accent-dim: rgba(63,196,214,.14);
+    --owned: #5ec488;
+    --paid: #e6ab52;
+    --license: #a98ae6;
+    --build: #3fc4d6;
+    --owned-bg: rgba(94,196,136,.13);
+    --paid-bg: rgba(230,171,82,.13);
+    --license-bg: rgba(169,138,230,.14);
+    --build-bg: rgba(63,196,214,.12);
+    --shadow: 0 18px 40px rgba(0,0,0,.34);
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #ecf0f4;
+      --surface: #ffffff;
+      --surface-2: #f4f7fa;
+      --raise: #eaf0f6;
+      --line: rgba(30,54,92,.13);
+      --line-strong: rgba(30,54,92,.24);
+      --ink: #142033;
+      --muted: #56657f;
+      --faint: #8493a8;
+      --accent: #1191a3;
+      --accent-dim: rgba(17,145,163,.1);
+      --owned: #2f9159;
+      --paid: #b57d1e;
+      --license: #7a54c9;
+      --build: #1191a3;
+      --owned-bg: rgba(47,145,89,.1);
+      --paid-bg: rgba(181,125,30,.11);
+      --license-bg: rgba(122,84,201,.1);
+      --build-bg: rgba(17,145,163,.09);
+      --shadow: 0 14px 32px rgba(30,54,92,.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0d1420; --surface: #131d2e; --surface-2: #1a2540; --raise: #202d4a;
+    --line: rgba(150,178,220,.14); --line-strong: rgba(150,178,220,.28);
+    --ink: #e9eef7; --muted: #8fa0bd; --faint: #64748f;
+    --accent: #3fc4d6; --accent-dim: rgba(63,196,214,.14);
+    --owned: #5ec488; --paid: #e6ab52; --license: #a98ae6; --build: #3fc4d6;
+    --owned-bg: rgba(94,196,136,.13); --paid-bg: rgba(230,171,82,.13);
+    --license-bg: rgba(169,138,230,.14); --build-bg: rgba(63,196,214,.12);
+    --shadow: 0 18px 40px rgba(0,0,0,.34);
+  }
+  :root[data-theme="light"] {
+    --ground: #ecf0f4; --surface: #ffffff; --surface-2: #f4f7fa; --raise: #eaf0f6;
+    --line: rgba(30,54,92,.13); --line-strong: rgba(30,54,92,.24);
+    --ink: #142033; --muted: #56657f; --faint: #8493a8;
+    --accent: #1191a3; --accent-dim: rgba(17,145,163,.1);
+    --owned: #2f9159; --paid: #b57d1e; --license: #7a54c9; --build: #1191a3;
+    --owned-bg: rgba(47,145,89,.1); --paid-bg: rgba(181,125,30,.11);
+    --license-bg: rgba(122,84,201,.1); --build-bg: rgba(17,145,163,.09);
+    --shadow: 0 14px 32px rgba(30,54,92,.12);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(1100px 600px at 88% -8%, var(--accent-dim), transparent 60%),
+      var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.5;
+    letter-spacing: .1px;
+  }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 40px 28px 80px; }
+
+  /* header */
+  header.masthead { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; flex-wrap: wrap; }
+  .eyebrow {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 2.4px; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 12px;
+  }
+  h1 {
+    font-size: clamp(28px, 4.4vw, 44px); line-height: 1.04; margin: 0 0 14px; font-weight: 800;
+    letter-spacing: -.5px; text-wrap: balance; max-width: 16ch;
+  }
+  h1 .thin { font-weight: 400; color: var(--muted); }
+  .lede { margin: 0; color: var(--muted); max-width: 56ch; font-size: 15.5px; }
+  .id-block {
+    font-family: var(--mono); font-size: 12px; color: var(--muted); border: 1px solid var(--line);
+    border-radius: 12px; padding: 14px 16px; background: var(--surface); min-width: 230px; line-height: 1.9;
+  }
+  .id-block b { color: var(--ink); font-weight: 600; }
+  .id-block .dot { color: var(--accent); }
+
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
+  .toolbar .spacer { flex: 1; }
+  button {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .4px; color: var(--muted);
+    background: var(--surface); border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 14px; cursor: pointer; transition: all .15s ease;
+  }
+  button:hover { color: var(--ink); border-color: var(--line-strong); }
+  button.active { color: var(--ground); background: var(--accent); border-color: var(--accent); font-weight: 600; }
+  :root[data-theme="light"] button.active, @media (prefers-color-scheme: light) { }
+  button.active { color: #08222a; }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .filter-label { font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--faint); margin-right: 4px; }
+
+  /* legend */
+  .legend { display: flex; gap: 22px; flex-wrap: wrap; margin: 22px 0 6px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+  .legend .grp { display: flex; flex-direction: column; gap: 8px; }
+  .legend h4 { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--faint); margin: 0 0 2px; }
+  .key { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+  .swatch { width: 11px; height: 11px; border-radius: 3px; flex: none; }
+  .sw-owned { background: var(--owned); } .sw-paid { background: var(--paid); }
+  .sw-license { background: var(--license); } .sw-build { background: var(--build); }
+
+  /* pipeline strip */
+  .pipeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 30px 0 40px; }
+  .stage { border: 1px solid var(--line); border-radius: 16px; padding: 18px; background: linear-gradient(180deg, var(--surface), var(--surface-2)); position: relative; overflow: hidden; }
+  .stage::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); opacity: .6; }
+  .stage .n { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 1.5px; }
+  .stage h3 { margin: 8px 0 6px; font-size: 16px; font-weight: 700; }
+  .stage p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .stage .where { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-top: 10px; }
+  .flowarrow { text-align: center; color: var(--faint); font-family: var(--mono); font-size: 12px; margin: -28px 0 34px; letter-spacing: 3px; }
+
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin: 6px 0 20px; }
+  .section-head h2 { font-size: 18px; margin: 0; font-weight: 700; letter-spacing: -.2px; }
+  .section-head .count { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .section-head .rule { flex: 1; height: 1px; background: var(--line); }
+
+  /* module grid */
+  .modules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .module {
+    border: 1px solid var(--line); border-radius: 18px; background: var(--surface);
+    padding: 20px; box-shadow: var(--shadow); transition: opacity .2s ease, filter .2s ease;
+  }
+  .module.dim { opacity: .28; filter: saturate(.4); }
+  .module > header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+  .module h3 { margin: 0; font-size: 16.5px; font-weight: 700; letter-spacing: -.2px; }
+  .replaces { font-family: var(--mono); font-size: 10.5px; letter-spacing: .3px; color: var(--faint); margin-top: 5px; }
+  .replaces b { color: var(--muted); font-weight: 600; }
+  .cockpit-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .5px; color: var(--accent); background: var(--accent-dim); border: 1px solid var(--line); border-radius: 6px; padding: 4px 7px; white-space: nowrap; }
+  .tools { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+  .tools li { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--ink); }
+  .tools li .tick { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .tools li .src { margin-left: auto; font-family: var(--mono); font-size: 10px; letter-spacing: .3px; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+  .src.owned { color: var(--owned); background: var(--owned-bg); } .tick.owned { background: var(--owned); }
+  .src.paid { color: var(--paid); background: var(--paid-bg); } .tick.paid { background: var(--paid); }
+  .src.license { color: var(--license); background: var(--license-bg); } .tick.license { background: var(--license); }
+  .src.build { color: var(--build); background: var(--build-bg); } .tick.build { background: var(--build); }
+  .phase-pill { font-family: var(--mono); font-size: 10px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); }
+
+  footer.note { margin-top: 46px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--faint); font-family: var(--mono); line-height: 1.8; }
+  footer.note b { color: var(--muted); }
+
+  /* portfolio */
+  .portfolio { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 26px; }
+  .prop { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); padding: 14px; display: flex; flex-direction: column; gap: 4px; }
+  .prop b { font-size: 13px; word-break: break-word; }
+  .prop span:last-child { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+  .ptag { align-self: flex-start; font-family: var(--mono); font-size: 9px; letter-spacing: .8px; padding: 3px 6px; border-radius: 5px; margin-bottom: 4px; }
+  .ptag.test { color: var(--build); background: var(--build-bg); }
+  .ptag.host { color: var(--owned); background: var(--owned-bg); }
+  .ptag.soon { color: var(--paid); background: var(--paid-bg); }
+
+  /* pay bar */
+  .paybar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 16px 20px; border: 1px solid var(--line); border-left: 3px solid var(--paid); border-radius: 14px; background: var(--surface); margin-bottom: 40px; font-size: 13.5px; color: var(--muted); }
+  .paylabel { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--faint); }
+  .paybar b { color: var(--ink); font-weight: 600; }
+  .paybar .paid-num { color: var(--paid); }
+  .paybar .free-note { color: var(--muted); }
+  .paybar .free-note b { color: var(--owned); }
+
+  @media (max-width: 720px) {
+    .modules { grid-template-columns: 1fr; }
+    .pipeline { grid-template-columns: 1fr; }
+    .portfolio { grid-template-columns: 1fr 1fr; }
+    .flowarrow { display: none; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <p class="eyebrow">Nexus SEO Operating System · Service Map</p>
+      <h1>The SEO Cockpit <span class="thin">— every paid tool, rebuilt in-house</span></h1>
+      <p class="lede">One command panel that replaces Semrush, Ahrefs, and Screaming Frog across every agency site. Built and tested in the sandbox, deployed into the Nexus admin panel. Color = who owns the data. Filter by build phase to see the sequence.</p>
+    </div>
+    <div class="id-block">
+      <div><span class="dot">▪</span> <b>Sandbox</b> &nbsp;~/Documents/SEO/NEXUS-SEO-OPERATING-SYSTEM</div>
+      <div><span class="dot">▪</span> <b>Deploy · you</b> &nbsp;opensourcebarware.com</div>
+      <div><span class="dot">▪</span> <b>Deploy · client</b> &nbsp;Faber Nexus /nexus/</div>
+      <div><span class="dot">▪</span> <b>Test bed</b> &nbsp;residentwebdesign.com</div>
+      <div><span class="dot">▪</span> <b>Renderer</b> &nbsp;GROC → Nexus admin</div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <span class="filter-label">Phase</span>
+    <button class="phase-btn active" data-phase="all">All</button>
+    <button class="phase-btn" data-phase="1">1 · Foundation</button>
+    <button class="phase-btn" data-phase="2">2 · Core tools</button>
+    <button class="phase-btn" data-phase="3">3 · Intelligence</button>
+    <button class="phase-btn" data-phase="4">4 · Cockpit &amp; automation</button>
+    <span class="spacer"></span>
+    <button id="theme">◐ Theme</button>
+  </div>
+
+  <div class="legend">
+    <div class="grp">
+      <h4>Data source</h4>
+      <div class="key"><span class="swatch sw-owned"></span> Owned / free — Google first-party &amp; our crawler</div>
+      <div class="key"><span class="swatch sw-paid"></span> Paid data — DataForSEO, pay-per-query</div>
+    </div>
+    <div class="grp">
+      <h4>&nbsp;</h4>
+      <div class="key"><span class="swatch sw-license"></span> Selective license — Ahrefs / Screaming Frog (optional)</div>
+      <div class="key"><span class="swatch sw-build"></span> Our software — engine, scoring, cockpit UI</div>
+    </div>
+  </div>
+
+  <!-- pipeline -->
+  <div class="pipeline">
+    <div class="stage">
+      <div class="n">LAYER 01</div>
+      <h3>The Sandbox</h3>
+      <p>Python connectors pull data, a local warehouse keeps permanent history, our crawler and scoring run here. The workshop — nothing public.</p>
+      <div class="where">this folder · SQLite + JSON · MCP server</div>
+    </div>
+    <div class="stage">
+      <div class="n">LAYER 02</div>
+      <h3>The Cockpit Panel</h3>
+      <p>The Semrush/Ahrefs-replacement UI. Every rebuilt tool showcased on one screen, reading from our warehouse. Built here as HTML first.</p>
+      <div class="where">dashboard pattern from barware bar-app</div>
+    </div>
+    <div class="stage">
+      <div class="n">LAYER 03</div>
+      <h3>The Deployed Nexus</h3>
+      <p>GROC renders the cockpit into the live Nexus admin panel — your site and each client's. Same engine, per-property views.</p>
+      <div class="where">opensourcebarware.com · client /nexus/</div>
+    </div>
+  </div>
+  <div class="flowarrow">build &amp; test  ───────▶  assemble panel  ───────▶  GROC deploy</div>
+
+  <div class="section-head">
+    <h2>Portfolio — one sub-panel per property</h2>
+    <span class="count">5 properties · live in warehouse</span>
+    <span class="rule"></span>
+  </div>
+  <div class="portfolio">
+    <div class="prop"><span class="ptag test">TEST BED</span><b>resonantwebdesign.com</b><span>Resonant · web + SEO agency · first live dive done</span></div>
+    <div class="prop"><b>impulsebydesign.com</b><span>Web design agency</span></div>
+    <div class="prop"><b>ohiovalleylandpartners.com</b><span>Land · GA4 already live (G-7FQDXC8DVC)</span></div>
+    <div class="prop"><span class="ptag host">NEXUS HOST</span><b>opensourcebarware.com</b><span>SaaS · hosts the SEO Cockpit admin panel</span></div>
+    <div class="prop"><span class="ptag soon">TO BUILD</span><b>realestatecapitalresources.com</b><span>RECR pilot · future flagship</span></div>
+  </div>
+
+  <div class="paybar">
+    <span class="paylabel">What you pay</span>
+    <span><b class="paid-num">DataForSEO</b> — pay-per-query, ~$0.015 per 25-keyword pull. $51 funded. <b>One paid service.</b></span>
+    <span class="free-note">Everything else — Google, Bing, Cloudflare, our crawler, the warehouse, the cockpit — <b>$0</b>.</span>
+  </div>
+
+  <div class="section-head">
+    <h2>Service modules</h2>
+    <span class="count" id="modcount">10 modules · 60 tools</span>
+    <span class="rule"></span>
+  </div>
+
+  <div class="modules" id="grid">
+    <!-- 1 Keyword Research -->
+    <div class="module" data-phase="2">
+      <header>
+        <div><h3>Keyword Research</h3><div class="replaces">replaces <b>Semrush Keyword Magic · Ahrefs Keywords Explorer</b></div></div>
+        <span class="cockpit-tag">Keyword Battlefield</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Keyword ideas &amp; volume <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick paid"></span> Difficulty &amp; CPC scoring <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick build"></span> Intent + cluster grouping <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Question / long-tail mining <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Keyword → page map (1:1) <span class="src build">our engine</span></li>
+      </ul>
+    </div>
+
+    <!-- 2 Rank Tracking -->
+    <div class="module" data-phase="2">
+      <header>
+        <div><h3>Rank Tracking</h3><div class="replaces">replaces <b>Semrush Position Tracking · Ahrefs Rank Tracker</b></div></div>
+        <span class="cockpit-tag">Keyword Battlefield</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Daily SERP positions <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick owned"></span> Real clicks &amp; impressions <span class="src owned">GSC</span></li>
+        <li><span class="tick paid"></span> Local / device / language <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick build"></span> Share of voice vs rivals <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Movement history &amp; alerts <span class="src build">warehouse</span></li>
+      </ul>
+    </div>
+
+    <!-- 3 Site Audit / Technical -->
+    <div class="module" data-phase="1">
+      <header>
+        <div><h3>Technical Audit</h3><div class="replaces">replaces <b>Screaming Frog · Semrush Site Audit</b></div></div>
+        <span class="cockpit-tag">Technical Control</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick build"></span> Crawl: status, redirects, canonicals <span class="src build">our crawler</span></li>
+        <li><span class="tick build"></span> Broken / orphan / duplicate <span class="src build">our crawler</span></li>
+        <li><span class="tick build"></span> Titles, meta, headings, schema <span class="src build">our crawler</span></li>
+        <li><span class="tick license"></span> JS-render &amp; edge cases (benchmark) <span class="src license">Scr. Frog</span></li>
+        <li><span class="tick owned"></span> Core Web Vitals <span class="src owned">PageSpeed</span></li>
+      </ul>
+    </div>
+
+    <!-- 4 Backlinks -->
+    <div class="module" data-phase="3">
+      <header>
+        <div><h3>Backlink Intelligence</h3><div class="replaces">replaces <b>Ahrefs Site Explorer · Semrush Backlink Analytics</b></div></div>
+        <span class="cockpit-tag">Backlink Workshop</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Backlink &amp; referring-domain index <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick paid"></span> Anchor text &amp; new/lost links <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick license"></span> Deep index cross-check <span class="src license">Ahrefs</span></li>
+        <li><span class="tick build"></span> Link intersect &amp; gap <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Prospect scoring + approval queue <span class="src build">our engine</span></li>
+      </ul>
+    </div>
+
+    <!-- 5 Competitor / Domain -->
+    <div class="module" data-phase="2">
+      <header>
+        <div><h3>Competitor &amp; Domain</h3><div class="replaces">replaces <b>Ahrefs / Semrush Domain Overview</b></div></div>
+        <span class="cockpit-tag">Competitor Intel</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Organic keywords &amp; top pages <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick paid"></span> Traffic &amp; authority estimate <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick build"></span> Keyword &amp; content gap <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Competitor registry + change watch <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> New-page &amp; visibility alerts <span class="src build">warehouse</span></li>
+      </ul>
+    </div>
+
+    <!-- 6 Content / On-page -->
+    <div class="module" data-phase="3">
+      <header>
+        <div><h3>Content &amp; On-Page</h3><div class="replaces">replaces <b>Semrush Content · Surfer · Clearscope</b></div></div>
+        <span class="cockpit-tag">Content Production</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick build"></span> SERP intent &amp; brief builder <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> On-page grader vs SERP <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Internal-link suggester <span class="src build">our crawler</span></li>
+        <li><span class="tick build"></span> Content-decay watch <span class="src build">warehouse</span></li>
+        <li><span class="tick build"></span> AI draft + human-review gate <span class="src build">our engine</span></li>
+      </ul>
+    </div>
+
+    <!-- 7 Local SEO -->
+    <div class="module" data-phase="3">
+      <header>
+        <div><h3>Local SEO</h3><div class="replaces">replaces <b>Semrush Local · BrightLocal</b></div></div>
+        <span class="cockpit-tag">Command Center</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Map-pack rank &amp; grid <span class="src paid">DataForSEO Maps</span></li>
+        <li><span class="tick owned"></span> Google Business Profile signals <span class="src owned">GBP</span></li>
+        <li><span class="tick paid"></span> Citations &amp; listings <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick paid"></span> Review monitoring <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick build"></span> Local rank history <span class="src build">warehouse</span></li>
+      </ul>
+    </div>
+
+    <!-- 8 AI / GEO -->
+    <div class="module" data-phase="3">
+      <header>
+        <div><h3>AI / GEO Visibility</h3><div class="replaces">replaces <b>Ahrefs Brand Radar · Profound</b></div></div>
+        <span class="cockpit-tag">Competitor Intel</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick paid"></span> Brand mentions in LLMs <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick paid"></span> AI Overview monitoring <span class="src paid">DataForSEO</span></li>
+        <li><span class="tick build"></span> Prompt explorer (GPT/Claude/Gemini) <span class="src build">our engine</span></li>
+        <li><span class="tick build"></span> Citation share vs rivals <span class="src build">our engine</span></li>
+      </ul>
+    </div>
+
+    <!-- 9 First-party analytics -->
+    <div class="module" data-phase="1">
+      <header>
+        <div><h3>First-Party Analytics</h3><div class="replaces">the ground truth — <b>no vendor owns this</b></div></div>
+        <span class="cockpit-tag">Page Command</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick owned"></span> Search Console (queries, pages) <span class="src owned">GSC API</span></li>
+        <li><span class="tick owned"></span> GA4 sessions &amp; conversions <span class="src owned">GA4 API</span></li>
+        <li><span class="tick owned"></span> Tag / event control <span class="src owned">GTM</span></li>
+        <li><span class="tick owned"></span> Bing rankings &amp; indexing <span class="src owned">Bing WMT</span></li>
+        <li><span class="tick owned"></span> Edge traffic &amp; cache logs <span class="src owned">Cloudflare</span></li>
+        <li><span class="tick build"></span> Permanent history store <span class="src build">warehouse</span></li>
+      </ul>
+    </div>
+
+    <!-- 10 Cockpit / Reporting -->
+    <div class="module" data-phase="4">
+      <header>
+        <div><h3>Cockpit &amp; Automation</h3><div class="replaces">replaces <b>Semrush dashboards · Looker · scheduled reports</b></div></div>
+        <span class="cockpit-tag">Command Center</span>
+      </header>
+      <ul class="tools">
+        <li><span class="tick build"></span> Multi-property portfolio view <span class="src build">cockpit</span></li>
+        <li><span class="tick build"></span> Priority queue &amp; alerts <span class="src build">cockpit</span></li>
+        <li><span class="tick build"></span> Change / deploy timeline <span class="src build">warehouse</span></li>
+        <li><span class="tick build"></span> Scheduled jobs (daily/weekly) <span class="src build">runner</span></li>
+        <li><span class="tick build"></span> GROC export → Nexus admin <span class="src build">renderer</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="note">
+    <div><b>Rule of the map:</b> owned/free is the ground truth; paid data is a comparative signal, never silently swapped for Google truth.</div>
+    <div><b>Licenses (Ahrefs, Screaming Frog):</b> used to seed and cross-check — kept only while their unique index earns its cost.</div>
+    <div><b>Human gate:</b> publishing, outreach, backlink purchases, and financial claims always wait for Richard's approval.</div>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    document.getElementById('theme').addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) cur = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+    var btns = document.querySelectorAll('.phase-btn');
+    var mods = document.querySelectorAll('.module');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        btns.forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        var p = b.getAttribute('data-phase');
+        var shown = 0, tools = 0;
+        mods.forEach(function (m) {
+          var match = p === 'all' || m.getAttribute('data-phase') === p;
+          m.classList.toggle('dim', !match);
+          if (match) { shown++; tools += m.querySelectorAll('.tools li').length; }
+        });
+        document.getElementById('modcount').textContent =
+          (p === 'all' ? '10 modules · 60 tools' : shown + ' modules · ' + tools + ' tools in phase ' + p);
+      });
+    });
+  })();
+</script>
