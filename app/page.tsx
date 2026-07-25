@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import {
   Gear,
 
@@ -7,6 +6,7 @@ import {
 } from "@/components/SteampunkElements";
 import HeroVideo from "@/components/HeroVideo";
 import OptimizedPicture from "@/components/OptimizedPicture";
+import ProblemHourglass from "@/components/ProblemHourglass";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -381,38 +381,6 @@ export default function Home() {
         }}
       />
     </>
-  );
-}
-
-function ProblemHourglass() {
-  return (
-    <div
-      aria-hidden="true"
-      className="relative flex w-full max-w-[320px] translate-x-[13%] flex-col items-center justify-center md:max-w-[360px]"
-    >
-      {/* Warm lantern glow — follows hourglass offset (PNG art is left-heavy) */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-[42%] z-0 h-[130%] w-[150%] -translate-x-1/2 -translate-y-1/2"
-        style={{
-          background:
-            "radial-gradient(ellipse 50% 48% at 50% 44%, rgba(168,120,79,0.22) 0%, rgba(0,0,0,0) 68%), radial-gradient(ellipse 42% 28% at 50% 78%, rgba(190,140,86,0.18) 0%, rgba(0,0,0,0) 72%)",
-        }}
-      />
-
-      <Image
-        src="/images/landing-hourglass.png"
-        alt=""
-        width={398}
-        height={386}
-        className="relative z-10 block h-auto w-full max-w-[300px] object-center brightness-[1.04] contrast-[1.06] saturate-[1.04] md:max-w-[340px]"
-        style={{
-          WebkitMaskImage:
-            "radial-gradient(ellipse 72% 68% at 50% 46%, #000 52%, transparent 100%)",
-          maskImage:
-            "radial-gradient(ellipse 72% 68% at 50% 46%, #000 52%, transparent 100%)",
-        }}
-      />
-    </div>
   );
 }
 
