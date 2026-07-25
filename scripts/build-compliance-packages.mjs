@@ -84,11 +84,17 @@ const listedFiles = run("git", [
 ]);
 
 const excludedFromSource = new Set([downloadArchive, sourceArchive]);
+// Cloudflare Pages hard limit is 25 MiB per file. Full-tree zip with media
+// exceeds it; keep source offer lean (code + docs). Full tree remains on GitHub.
+const sourceSkip =
+  /^(public\/videos\/|public\/images\/|campaign\/|public\/B-ATCAVE\/fcr\/|public\/downloads\/.*\.zip$)/i;
 const sourceFiles = Array.from(
   new Set(listedFiles.split(/\r?\n/).filter(Boolean)),
 )
   .filter((file) => !excludedFromSource.has(file))
   .filter((file) => !file.startsWith(".git/"))
+  .filter((file) => !sourceSkip.test(file))
+  .filter((file) => !/\.(mp4|webm|png|jpe?g|webp|gif|pdf)$/i.test(file))
   .filter((file) => existsSync(path.join(root, file)));
 
 assertFiles(sourceFiles);
