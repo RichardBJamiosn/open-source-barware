@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { Gear, GearDivider, PipeLine, PipeNode } from "@/components/SteampunkElements";
+import WhatYouNeedFlipCards, {
+  type NeedCard,
+} from "@/components/WhatYouNeedFlipCards";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -165,13 +168,59 @@ const optionalAi = {
   ],
 };
 
-const whatYouNeed = [
-  { item: "A laptop and Google Chrome", detail: "The program installs into Chrome and lives on one bookmarked page you always return to. It runs right there — offline, no account, no cloud." },
-  { item: "A phone for voice notes", detail: "Walk each bar and speak it in order — English or Spanish — bar/barra, well/pozo, row/fila, cooler, wine — naming the bottles as you go." },
-  { item: "A first bar walk", detail: "That one saved voice note is the seed the built-in parser reads to build your whole bar. Upload or paste via Employee communications." },
-  { item: "Your invoices and POS report", detail: "Type or paste the invoice numbers and pull the POS export once the first real cycle is ready." },
-  { item: "A careful review", detail: "The first map gets checked and approved before the program becomes your home base." },
-  { item: "Optional: your own AI key", detail: "Not required for anything. Add it only if you want invoice photos read from your phone instead of typing." },
+const whatYouNeed: NeedCard[] = [
+  {
+    item: "A laptop and Google Chrome",
+    detail:
+      "The program installs into Chrome and lives on one bookmarked page you always return to. It runs right there — offline, no account, no cloud.",
+    front: [
+      { text: "Laptop", size: "base" },
+      { text: "Google Chrome", size: "lg" },
+    ],
+  },
+  {
+    item: "A phone for voice notes",
+    detail:
+      "Walk each bar and speak it in order — English or Spanish — bar/barra, well/pozo, row/fila, cooler, wine — naming the bottles as you go.",
+    front: [
+      { text: "Phone", size: "base" },
+      { text: "Voice notes", size: "lg" },
+    ],
+  },
+  {
+    item: "A first bar walk",
+    detail:
+      "That one saved voice note is the seed the built-in parser reads to build your whole bar. Upload or paste via Employee communications.",
+    front: [
+      { text: "First", size: "base" },
+      { text: "Bar walk", size: "lg" },
+    ],
+  },
+  {
+    item: "Your invoices and POS report",
+    detail:
+      "Type or paste the invoice numbers and pull the POS export once the first real cycle is ready.",
+    front: [
+      { text: "Invoices", size: "base" },
+      { text: "POS report", size: "lg" },
+    ],
+  },
+  {
+    item: "A careful review",
+    detail:
+      "The first map gets checked and approved before the program becomes your home base.",
+    front: [
+      { text: "Careful", size: "base" },
+      { text: "Review", size: "lg" },
+    ],
+  },
+  {
+    item: "Optional: your own AI key",
+    detail:
+      "Not required for anything. Add it only if you want invoice photos read from your phone instead of typing.",
+    // Front: only the big phrase — no description on this face
+    front: [{ text: "Your own AI", size: "xl" }],
+  },
 ];
 
 const weeklyRhythm = [
@@ -202,7 +251,7 @@ export default function TheProcess() {
     <main className="min-h-screen">
 
       {/* HERO */}
-      <section className="relative overflow-hidden border-b border-gear-border">
+      <section className="relative overflow-hidden">
         <div className="absolute right-[-60px] top-[-40px] text-copper pointer-events-none">
           <Gear size={240} className="gear-spin opacity-20" />
         </div>
@@ -248,21 +297,21 @@ export default function TheProcess() {
       {/* PRODUCT VIEW */}
       <section id="system-report" className="border-b border-gear-border bg-bg-warm">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24">
-          <div className="max-w-3xl mb-12">
+          <div className="max-w-3xl mx-auto mb-12 text-center">
             <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-4">
               The Big Picture
             </p>
             <h2 className="font-serif text-4xl md:text-5xl text-cream mb-5">
               What you are actually using
             </h2>
-            <p className="text-text-muted leading-relaxed text-lg">
+            <p className="text-text-muted leading-relaxed text-lg mx-auto">
               One calm control panel that runs on your laptop. Starts simple for
               the average bartender — walk or talk your inventory in, easy and
               fast. Grows into the most encompassing industrial-strength bar
-              inventory system available — far better than the others, and we're
+              inventory system available — far better than the others, and we&rsquo;re
               getting better every day. Built for the average bartender but it
               has all the bells and whistles, including built-in scales and
-              pinpoint measurements. Scalable — it's all there for you.
+              pinpoint measurements. Scalable — it&rsquo;s all there for you.
             </p>
           </div>
 
@@ -344,19 +393,7 @@ export default function TheProcess() {
               gathered into one guided flow.
             </p>
           </div>
-          <ul className="flex flex-col gap-5">
-            {whatYouNeed.map((item, i) => (
-              <li key={item.item} className="panel p-5 flex items-start gap-5">
-                <div className="w-8 h-8 rounded-full border border-copper/40 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="font-serif text-copper text-sm">{i + 1}</span>
-                </div>
-                <div>
-                  <p className="text-cream text-sm font-semibold mb-1">{item.item}</p>
-                  <p className="text-text-muted text-sm leading-relaxed">{item.detail}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <WhatYouNeedFlipCards items={whatYouNeed} />
         </div>
       </section>
 

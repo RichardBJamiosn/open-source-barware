@@ -1939,3 +1939,208 @@ body { background: var(--bg); color: var(--text); }
     display: none;
   }
 }
+
+/* ── Ambient trailing cursor (Resonant pattern)
+   Sand glow: hourglass bottom — yellow-orange, not flat copper ── */
+.ambient-cursor {
+  --cursor-accent: #ffc14a;
+  --cursor-glow: #ffb020;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cursor-accent);
+  box-shadow:
+    0 0 6px 1px rgba(255, 193, 74, 0.95),
+    0 0 14px 4px rgba(255, 176, 32, 0.55),
+    0 0 28px 8px rgba(255, 160, 40, 0.28);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 180ms ease;
+}
+
+.ambient-cursor::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 193, 74, 0.55) 0%,
+    rgba(255, 176, 32, 0.18) 45%,
+    transparent 70%
+  );
+  content: "";
+  opacity: 0.85;
+  transform: translate(-50%, -50%);
+  transition: width 160ms ease, height 160ms ease, opacity 160ms ease;
+}
+
+.ambient-cursor svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+
+.ambient-cursor circle {
+  fill: none;
+  stroke: var(--cursor-accent);
+  stroke-width: 1;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px rgba(255, 193, 74, 0.85));
+  transition: stroke-dashoffset 120ms linear;
+}
+
+.ambient-cursor.is-visible {
+  opacity: 1;
+}
+
+.ambient-cursor.is-interactive::after {
+  width: 34px;
+  height: 34px;
+  opacity: 0.95;
+}
+
+.ambient-cursor.is-interactive circle {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 992px) {
+  .ambient-cursor {
+    display: block;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-cursor {
+    display: none !important;
+  }
+}
+
+/* ── Process: What you need — scroll-scrub flip cards (rotateX) ── */
+.need-flip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.need-flip {
+  position: relative;
+}
+
+/* Grid stack = height is tallest face (no clip on long backs) */
+.need-flip-inner {
+  display: grid;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: none;
+  transform: rotateX(0deg);
+  will-change: transform;
+}
+
+.need-flip-face {
+  grid-area: 1 / 1;
+  box-sizing: border-box;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: 1px solid var(--gear-border);
+  background: var(--bg-panel);
+  min-height: 7.25rem;
+}
+
+/* Front = big keywords, centered */
+.need-flip-face--front {
+  transform: rotateX(0deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem 1.5rem;
+}
+
+.need-flip-keywords {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.2rem;
+  width: 100%;
+}
+
+.need-kw {
+  font-family: var(--font-playfair), Georgia, serif;
+  color: var(--cream);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+
+.need-kw--base {
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ~2× the base line — “Google Chrome”, “Voice notes”, etc. */
+.need-kw--lg {
+  font-size: clamp(1.9rem, 4.1vw, 2.65rem);
+  font-weight: 700;
+  color: var(--cream);
+}
+
+/* Card 6 only — single phrase, still larger */
+.need-kw--xl {
+  font-size: clamp(2.15rem, 4.6vw, 3rem);
+  font-weight: 700;
+  color: var(--cream);
+}
+
+/* Back = number + title + detail (original card look) */
+.need-flip-face--back {
+  transform: rotateX(180deg);
+  display: flex;
+  align-items: stretch;
+  padding: 1.25rem 1.35rem;
+}
+
+.need-flip-back-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.need-flip-num {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 120, 79, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+}
+
+.need-flip-back-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .need-flip-inner {
+    transform: rotateX(180deg) !important;
+  }
+}
