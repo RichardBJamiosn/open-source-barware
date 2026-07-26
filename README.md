@@ -63,6 +63,10 @@ That command creates:
 
 The source archive is built from tracked and non-ignored working-tree files and excludes generated archives, local environment files, runtime state, build output, `node_modules`, and private configuration.
 
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes and launch history.
+
 ## License
 
 Copyright (C) 2026 Open Source Barware contributors.
