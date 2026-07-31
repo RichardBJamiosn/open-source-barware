@@ -126,6 +126,11 @@ export async function onRequestGet(context) {
             name: "Open Source Barware",
             url: "https://opensourcebarware.com/",
           },
+          {
+            id: "4am-slice",
+            name: "4AM Slice (Ahmed)",
+            url: "https://richardbjamison.github.io/4am-slice/",
+          },
         ],
         ga4: {
           osb: "G-DQJKBWMM8H",

@@ -32,6 +32,8 @@ const SELLING_SITES = new Set([
   "fcr-funding",
   "fcr",
   "faber-capital-resources",
+  "4am-slice",
+  "4am",
 ]);
 
 /** Probe / smoke / diag traffic — never counts as a real visitor (e.g. Favour) */

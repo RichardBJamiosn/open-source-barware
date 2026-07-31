@@ -414,6 +414,7 @@
           <a href="#proj-batiya" data-view="project" data-project="batiya">Batiya Realty</a>
           <a href="#proj-hvac" data-view="project" data-project="hvac">Sulieman HVAC</a>
           <a href="#proj-fcr-client" data-view="project" data-project="fcr-capital">FCR Capital (client UI)</a>
+          <a href="#proj-4am" data-view="project" data-project="4am">4AM Slice (Ahmed)</a>
         </div>
 
         <div class="nav-section">System</div>
@@ -765,11 +766,11 @@
           title: "Ohio Valley Land Partners",
           tag: "resident",
           blurb: "Land wholesale boiler room — site, ops tools, portal.",
-          siteIds: [],
+          siteIds: ["ovlp"],
           milestones: [
             { t: "Live", s: "done", l: "Production website" },
-            { t: "Now", s: "now", l: "Flip lab experiments" },
-            { t: "Active", s: "now", l: "Screen Pop + buyers portal" },
+            { t: "Now", s: "now", l: "SEO hubs + Screen Pop" },
+            { t: "Active", s: "now", l: "Buyers portal + claims" },
           ],
           subs: [
             { id: "ovlp-flip", title: "Flip lab", span: "County / FAQ motion" },
@@ -845,11 +846,11 @@
         impulse: {
           title: "Impulse by Design",
           tag: "resident",
-          blurb: "Local Cleveland/Ohio starter brand under Resonant orbit.",
-          siteIds: [],
+          blurb: "impulsebydesign.com — local starter brand under Resonant orbit.",
+          siteIds: ["impulse"],
           milestones: [{ t: "Active", s: "now", l: "Starter offers & positioning" }],
           subs: [{ id: "impulse-offers", title: "Offers", span: "Starter packages" }],
-          actions: [],
+          actions: [{ href: "https://impulsebydesign.com", label: "Open site", external: true }],
         },
         "impulse-offers": {
           title: "Impulse — offers",
@@ -911,6 +912,23 @@
           ],
           subs: [],
           actions: [],
+        },
+        "4am": {
+          title: "4AM Slice (Ahmed)",
+          tag: "client",
+          blurb: "Neighborhood pizza demo — site, offer (A/B), Nexus control room. Tracker → OSB Nexus.",
+          siteIds: ["4am-slice"],
+          milestones: [
+            { t: "Live", s: "done", l: "Demo site + OG mural" },
+            { t: "Live", s: "done", l: "Your Offer + Nexus panel" },
+            { t: "Live", s: "done", l: "Tracker → nexus-collect" },
+          ],
+          subs: [],
+          actions: [
+            { label: "Open public demo", href: "https://richardbjamison.github.io/4am-slice/", external: true },
+            { label: "Your Offer", href: "https://richardbjamison.github.io/4am-slice/offer.html", external: true },
+            { label: "Client Nexus", href: "https://richardbjamison.github.io/4am-slice/nexus/", external: true },
+          ],
         },
         hvac: {
           title: "Sulieman HVAC",
@@ -1055,8 +1073,10 @@
         batiya: "batiya-realty",
         hvac: "sulieman-hvac",
         fcr: "fcr-funding",
+        "4am": "4am-slice",
         osb: "osb",
         ovlp: "ovlp",
+        impulse: "impulse",
         rbj: "rbj",
         resonant: "resonant",
       };
