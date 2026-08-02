@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-25T15:23:10+00:00",
+  "generated_at": "2026-07-31T11:12:46+00:00",
   "title": "SEO Agent Jobs",
-  "spend_mtd": 2.974682,
+  "spend_mtd": 5.382492,
   "jobs": [
     {
       "job": "dive_resonant",
@@ -27,11 +27,21 @@
       "job": "dive_osbw",
       "interval_hours": 168,
       "description": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Open Source Barware",
+      "last_run": "2026-07-25 17:10 UTC",
+      "next_due": "2026-08-01 17:10 UTC",
+      "status": "current",
+      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Open Source Barware",
+      "last_status": "ok"
+    },
+    {
+      "job": "dive_recr",
+      "interval_hours": 168,
+      "description": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 RECR",
       "last_run": null,
       "next_due": null,
       "status": "never",
-      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 Open Source Barware",
-      "last_status": null
+      "notes": "Weekly crawl + keywords + competitors + backlinks + gap \u00b7 RECR \u00b7 last fail: gine/run_site.py\", line 182, in <module>\n    run(dom, sd)\n  File \"/Users/macbook15/Documents/SEO/NEXUS-SEO-OPERATING-SYS",
+      "last_status": "failed"
     },
     {
       "job": "rank_weekly",
@@ -47,8 +57,8 @@
       "job": "rank_daily",
       "interval_hours": 20,
       "description": "Daily SERP positions for the tier-1 tracking set (~27 kw)",
-      "last_run": "2026-07-25 11:10 UTC",
-      "next_due": "2026-07-26 07:10 UTC",
+      "last_run": "2026-07-30 23:11 UTC",
+      "next_due": "2026-07-31 19:11 UTC",
       "status": "current",
       "notes": "Daily SERP positions for the tier-1 tracking set (~27 kw)",
       "last_status": "ok"
@@ -77,11 +87,21 @@
       "job": "router_osbw",
       "interval_hours": 168,
       "description": "Re-score + re-route keywords \u00b7 Open Source Barware",
-      "last_run": null,
-      "next_due": null,
-      "status": "never",
+      "last_run": "2026-07-25 17:10 UTC",
+      "next_due": "2026-08-01 17:10 UTC",
+      "status": "current",
       "notes": "Re-score + re-route keywords \u00b7 Open Source Barware",
-      "last_status": null
+      "last_status": "ok"
+    },
+    {
+      "job": "router_recr",
+      "interval_hours": 168,
+      "description": "Re-score + re-route keywords \u00b7 Real Estate Capital Resources",
+      "last_run": "2026-07-26 23:11 UTC",
+      "next_due": "2026-08-02 23:11 UTC",
+      "status": "current",
+      "notes": "Re-score + re-route keywords \u00b7 Real Estate Capital Resources",
+      "last_status": "ok"
     },
     {
       "job": "gsc",
@@ -97,18 +117,18 @@
       "job": "indexnow",
       "interval_hours": 24,
       "description": "Push sitemap URLs to Bing/IndexNow (free). Self-skips until the key files are live at each site root \u2014 see _bots/BING-GSC-ACCESS.md",
-      "last_run": null,
-      "next_due": null,
-      "status": "never",
+      "last_run": "2026-07-31 11:12 UTC",
+      "next_due": "2026-08-01 11:12 UTC",
+      "status": "current",
       "notes": "Push sitemap URLs to Bing/IndexNow (free). Self-skips until the key files are live at each site root \u2014 see _bots/BING-GSC-ACCESS.md",
-      "last_status": "failed"
+      "last_status": "ok"
     },
     {
       "job": "daily_brief",
       "interval_hours": 20,
       "description": "Diff vs yesterday, movers, adjustments, action queue",
-      "last_run": "2026-07-25 11:14 UTC",
-      "next_due": "2026-07-26 07:14 UTC",
+      "last_run": "2026-07-30 23:14 UTC",
+      "next_due": "2026-07-31 19:14 UTC",
       "status": "current",
       "notes": "Diff vs yesterday, movers, adjustments, action queue",
       "last_status": "ok"
@@ -117,18 +137,18 @@
       "job": "jobs_export",
       "interval_hours": 6,
       "description": "Export orchestrator board JSON for B-ATCAVE SEO jobs strip",
-      "last_run": null,
-      "next_due": null,
-      "status": "never",
+      "last_run": "2026-07-30 23:14 UTC",
+      "next_due": "2026-07-31 05:14 UTC",
+      "status": "due",
       "notes": "Export orchestrator board JSON for B-ATCAVE SEO jobs strip",
-      "last_status": null
+      "last_status": "running"
     },
     {
       "job": "publish",
       "interval_hours": 20,
       "description": "Mirror the warehouse into the B-ATCAVE SEO panel",
-      "last_run": "2026-07-25 11:14 UTC",
-      "next_due": "2026-07-26 07:14 UTC",
+      "last_run": "2026-07-30 23:14 UTC",
+      "next_due": "2026-07-31 19:14 UTC",
       "status": "current",
       "notes": "Mirror the warehouse into the B-ATCAVE SEO panel",
       "last_status": "ok"
@@ -137,8 +157,8 @@
       "job": "infra",
       "interval_hours": 20,
       "description": "Re-verify Cloudflare zones/plans against the live API and republish the infrastructure + recurring-cost panel (read-only, changes nothing)",
-      "last_run": "2026-07-25 11:14 UTC",
-      "next_due": "2026-07-26 07:14 UTC",
+      "last_run": "2026-07-30 23:14 UTC",
+      "next_due": "2026-07-31 19:14 UTC",
       "status": "current",
       "notes": "Re-verify Cloudflare zones/plans against the live API and republish the infrastructure + recurring-cost panel (read-only, changes nothing)",
       "last_status": "ok"
@@ -147,6 +167,7 @@
   "sites": [
     "resonantwebdesign.com",
     "impulsebydesign.com",
-    "opensourcebarware.com"
+    "opensourcebarware.com",
+    "realestatecapitalresources.com"
   ]
 }

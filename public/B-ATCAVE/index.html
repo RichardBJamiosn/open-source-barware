@@ -360,6 +360,9 @@
           <a href="#seo/fabercapitalresources.com" data-view="seo-analysis" data-seo-domain="fabercapitalresources.com">FCR (legacy)</a>
         </div>
 
+        <div class="nav-section">Agents</div>
+        <a href="#agents" data-view="agents"><span class="ico">🤖</span> Agent fleet</a>
+
         <div class="nav-section">Builds</div>
 
         <button type="button" class="nav-item" data-toggle="sub-faber"><span class="ico">🏛</span> Faber / FCR build</button>
@@ -534,6 +537,17 @@
         <div id="seo-root">
           <p class="empty">Loading SEO warehouse…</p>
           <noscript><p class="empty">JavaScript required. Or open <a href="/B-ATCAVE/seo/reports/">HTML reports</a> directly.</p></noscript>
+        </div>
+      </section>
+
+      <!-- AGENTS = Hermes-style fleet cockpit -->
+      <section class="panel" id="view-agents">
+        <p class="note">
+          <strong>Agent fleet.</strong> Every agent NEXUS runs — Claude Code, Reeve, SEO Diver, Screen Pop —
+          with live status, current task, token spend, and run history. This is your window into what the agents are doing.
+        </p>
+        <div id="agents-root">
+          <p class="empty">Loading agent fleet…</p>
         </div>
       </section>
 
@@ -1498,6 +1512,18 @@
               openProject(project);
               return;
             }
+            if (view === "agents") {
+              currentProject = null;
+              if (window.BatcaveAgents && typeof window.BatcaveAgents.open === "function") {
+                window.BatcaveAgents.open();
+              } else {
+                showView("agents");
+                document.getElementById("pageTitle").textContent = "Agents";
+                document.getElementById("pageSub").textContent = "Loading agent fleet…";
+              }
+              try { history.replaceState(null, "", "#agents"); } catch (err) {}
+              return;
+            }
             if (view === "seo-analysis") {
               currentProject = null;
               if (window.BatcaveSEO && typeof window.BatcaveSEO.open === "function") {
@@ -1566,5 +1592,7 @@
   </script>
   <script src="/B-ATCAVE/seo-data.js?v=20260724c"></script>
   <script src="/B-ATCAVE/seo-panel.js?v=20260724c"></script>
+  <script src="/B-ATCAVE/agents-data.js?v=20260802a"></script>
+  <script src="/B-ATCAVE/agents-panel.js?v=20260802a"></script>
 </body>
 </html>

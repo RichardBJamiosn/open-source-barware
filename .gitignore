@@ -74,3 +74,6 @@ program/**/ai_secrets.json
 .vscode/
 *.swp
 *~
+
+# transient atomic-write temp files from publishers
+public/B-ATCAVE/data/tmp*.tmp

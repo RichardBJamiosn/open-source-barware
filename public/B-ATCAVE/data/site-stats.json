@@ -1,37 +1,37 @@
 {
-  "fetched_at": "2026-07-19 22:50",
+  "fetched_at": "2026-07-26 01:41",
   "source_note": "Live GA4 pull (oauth:richard@ohiovalleylandpartners.com) \u00b7 B-ATCAVE Phase 1 \u00b7 SA/OAuth on macbook15",
   "network": {
-    "ga_live_now": 2,
+    "ga_live_now": 0,
     "24h": {
-      "active_users": 26,
-      "new_users": 20,
-      "sessions": 39
+      "active_users": 28,
+      "new_users": 24,
+      "sessions": 47
     },
     "3d": {
-      "active_users": 41,
-      "new_users": 34,
-      "sessions": 72
+      "active_users": 37,
+      "new_users": 33,
+      "sessions": 68
     },
     "7d": {
-      "active_users": 177,
-      "new_users": 179,
-      "sessions": 359
+      "active_users": 96,
+      "new_users": 91,
+      "sessions": 181
     },
     "30d": {
-      "active_users": 628,
-      "new_users": 663,
-      "sessions": 1102
+      "active_users": 673,
+      "new_users": 717,
+      "sessions": 1222
     },
     "total": {
-      "active_users": 1107,
-      "sessions": 1803
+      "active_users": 1165,
+      "sessions": 1976
     }
   },
   "sites": [
     {
       "id": "ovlp",
-      "name": "OVLP",
+      "name": "Ohio Valley Land Partners",
       "domain": "ohiovalleylandpartners.com",
       "url": "https://ohiovalleylandpartners.com",
       "status": "live",
@@ -40,98 +40,98 @@
       "ga4_measurement_id": "G-7FQDXC8DVC",
       "periods": {
         "24h": {
-          "unique_visitors": 10,
-          "active_users": 10,
-          "new_users": 10,
-          "event_count": 33,
-          "sessions": 11,
-          "screen_page_views": 11,
-          "today_users": 5,
-          "today_sessions": 5,
-          "today_new_users": 5,
+          "unique_visitors": 3,
+          "active_users": 3,
+          "new_users": 2,
+          "event_count": 39,
+          "sessions": 4,
+          "screen_page_views": 16,
+          "today_users": 1,
+          "today_sessions": 1,
+          "today_new_users": 0,
           "active_now": 0
         },
         "3d": {
-          "active_users": 12,
-          "new_users": 12,
-          "sessions": 13,
-          "screen_page_views": 13,
+          "active_users": 5,
+          "new_users": 4,
+          "sessions": 7,
+          "screen_page_views": 18,
           "active_now": 0
         },
         "7d": {
-          "active_users": 39,
-          "new_users": 40,
-          "event_count": 155,
-          "sessions": 45,
-          "screen_page_views": 52,
+          "active_users": 16,
+          "new_users": 16,
+          "event_count": 448,
+          "sessions": 38,
+          "screen_page_views": 218,
           "active_now": 0,
           "top_channels": [
             {
               "channel": "Direct",
-              "sessions": 30
+              "sessions": 19
             },
             {
               "channel": "Referral",
-              "sessions": 7
+              "sessions": 11
             },
             {
               "channel": "Organic Search",
-              "sessions": 5
+              "sessions": 8
             },
             {
-              "channel": "AI Assistant",
+              "channel": "Unassigned",
               "sessions": 3
             }
           ],
           "top_pages": [
             {
+              "page": "Sell Land in the Ohio Valley | Direct Property Review",
+              "views": 54
+            },
+            {
+              "page": "Sell Land | Ohio Valley Land Partners",
+              "views": 42
+            },
+            {
+              "page": "Sell Land in the Ohio Valley | Ohio Valley Land Partners",
+              "views": 14
+            },
+            {
+              "page": "About | Ohio Valley Land Partners",
+              "views": 13
+            },
+            {
+              "page": "Ohio Valley Land Topics & Market Observations",
+              "views": 12
+            },
+            {
               "page": "Sell Land in the Ohio Valley | Cash Land Buyer",
-              "views": 21
-            },
-            {
-              "page": "Buy Land \u2014 Ohio Valley Land Partners | Ohio Valley Land Partners",
-              "views": 3
-            },
-            {
-              "page": "Contact Us | Ohio Valley Land Partners",
-              "views": 3
-            },
-            {
-              "page": "About Us \u2014 Ohio Valley Land Partners | Ohio Valley Land Partners",
-              "views": 2
-            },
-            {
-              "page": "Geauga County, Ohio Vacant Land: 2026 Campaign Notes | Ohio Valley Land Partners",
-              "views": 2
-            },
-            {
-              "page": "Belmont County, Ohio Land: Acquisition Notes for 2026 | Ohio Valley Land Partners",
-              "views": 1
+              "views": 12
             }
           ],
           "top_countries": [
             {
               "country": "United States",
-              "active_users": 38
+              "active_users": 15
             },
             {
-              "country": "Bangladesh",
+              "country": "Singapore",
               "active_users": 1
             }
           ]
         },
         "30d": {
-          "active_users": 117,
-          "new_users": 120,
-          "sessions": 191,
-          "screen_page_views": 303,
+          "active_users": 86,
+          "new_users": 89,
+          "sessions": 137,
+          "screen_page_views": 356,
           "active_now": 0
         },
         "total": {
-          "active_users": 365,
-          "new_users": 374,
-          "sessions": 615,
-          "screen_page_views": 1051,
+          "active_users": 375,
+          "new_users": 385,
+          "sessions": 649,
+          "screen_page_views": 1264,
           "active_now": 0
         }
       },
@@ -167,66 +167,54 @@
       "ga4_measurement_id": "G-7748LM48YW",
       "periods": {
         "24h": {
-          "unique_visitors": 1,
-          "active_users": 1,
+          "unique_visitors": 0,
+          "active_users": 0,
           "new_users": 0,
-          "event_count": 14,
-          "sessions": 2,
-          "screen_page_views": 4,
+          "event_count": 0,
+          "sessions": 0,
+          "screen_page_views": 0,
           "today_users": 0,
           "today_sessions": 0,
           "today_new_users": 0,
           "active_now": 0
         },
         "3d": {
-          "active_users": 2,
+          "active_users": 1,
           "new_users": 1,
-          "sessions": 3,
-          "screen_page_views": 5,
+          "sessions": 1,
+          "screen_page_views": 1,
           "active_now": 0
         },
         "7d": {
-          "active_users": 7,
-          "new_users": 7,
-          "event_count": 73,
-          "sessions": 12,
-          "screen_page_views": 20,
+          "active_users": 5,
+          "new_users": 3,
+          "event_count": 42,
+          "sessions": 8,
+          "screen_page_views": 11,
           "active_now": 0,
           "top_channels": [
             {
               "channel": "Direct",
-              "sessions": 10
-            },
-            {
-              "channel": "Referral",
-              "sessions": 2
+              "sessions": 8
             }
           ],
           "top_pages": [
             {
               "page": "Richard B. Jamison",
-              "views": 11
+              "views": 9
             },
             {
               "page": "Biography \u2014 Richard B. Jamison",
-              "views": 7
-            },
-            {
-              "page": "Music \u2014 Richard B. Jamison",
               "views": 2
             }
           ],
           "top_countries": [
             {
               "country": "United States",
-              "active_users": 4
+              "active_users": 3
             },
             {
-              "country": "Bangladesh",
-              "active_users": 1
-            },
-            {
-              "country": "Hong Kong",
+              "country": "Ireland",
               "active_users": 1
             },
             {
@@ -236,17 +224,17 @@
           ]
         },
         "30d": {
-          "active_users": 52,
-          "new_users": 53,
-          "sessions": 70,
-          "screen_page_views": 112,
+          "active_users": 41,
+          "new_users": 42,
+          "sessions": 63,
+          "screen_page_views": 107,
           "active_now": 0
         },
         "total": {
-          "active_users": 175,
-          "new_users": 176,
-          "sessions": 205,
-          "screen_page_views": 279,
+          "active_users": 178,
+          "new_users": 179,
+          "sessions": 213,
+          "screen_page_views": 290,
           "active_now": 0
         }
       },
@@ -281,111 +269,111 @@
       "ga4_measurement_id": "G-DQJKBWMM8H",
       "periods": {
         "24h": {
-          "unique_visitors": 9,
-          "active_users": 9,
-          "new_users": 6,
-          "event_count": 83,
-          "sessions": 15,
-          "screen_page_views": 25,
+          "unique_visitors": 16,
+          "active_users": 16,
+          "new_users": 14,
+          "event_count": 199,
+          "sessions": 23,
+          "screen_page_views": 72,
           "today_users": 1,
-          "today_sessions": 4,
+          "today_sessions": 1,
           "today_new_users": 0,
-          "active_now": 1
+          "active_now": 0
         },
         "3d": {
-          "active_users": 16,
-          "new_users": 13,
-          "sessions": 33,
-          "screen_page_views": 48,
-          "active_now": 1
+          "active_users": 17,
+          "new_users": 16,
+          "sessions": 32,
+          "screen_page_views": 113,
+          "active_now": 0
         },
         "7d": {
-          "active_users": 77,
-          "new_users": 76,
-          "event_count": 1464,
-          "sessions": 172,
-          "screen_page_views": 531,
-          "active_now": 1,
+          "active_users": 38,
+          "new_users": 37,
+          "event_count": 461,
+          "sessions": 67,
+          "screen_page_views": 161,
+          "active_now": 0,
           "top_channels": [
             {
               "channel": "Direct",
-              "sessions": 96
+              "sessions": 34
             },
             {
               "channel": "Referral",
-              "sessions": 67
-            },
-            {
-              "channel": "Organic Search",
-              "sessions": 7
+              "sessions": 27
             },
             {
               "channel": "Unassigned",
-              "sessions": 4
+              "sessions": 7
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 3
             }
           ],
           "top_pages": [
             {
-              "page": "Resonant Web Design | Boutique Websites, SEO & Launch Systems",
-              "views": 145
-            },
-            {
               "page": "Custom Web Development, SEO & Business Systems | Resonant",
-              "views": 80
+              "views": 67
             },
             {
-              "page": "SEO Foundations for Ohio Service Businesses | Resonant Web Design",
-              "views": 53
+              "page": "Website System Integrations & Automation | Resonant Web Design",
+              "views": 20
             },
             {
-              "page": "System Integrations, APIs & Business Automation | Resonant Web Design",
-              "views": 42
+              "page": "Custom Web Development | Resonant Web Design",
+              "views": 12
             },
             {
-              "page": "Affordable Website Ownership | Monthly Websites | Impulse by Design",
-              "views": 37
+              "page": "$69 Website Ownership for Cleveland Small Businesses | Impulse by Design",
+              "views": 11
             },
             {
-              "page": "Cleveland & Ohio Web Design, SEO & Integrations | Resonant",
-              "views": 37
+              "page": "How Free Bar Inventory Works (Voice Walk \u2192 Count) | Open Source Barware",
+              "views": 11
+            },
+            {
+              "page": "Open Source Barware \u2014 Free Bar Inventory Built by Bartenders",
+              "views": 7
             }
           ],
           "top_countries": [
             {
               "country": "United States",
-              "active_users": 70
+              "active_users": 33
             },
             {
-              "country": "Germany",
-              "active_users": 4
+              "country": "Sweden",
+              "active_users": 2
             },
             {
-              "country": "Bangladesh",
+              "country": "Australia",
               "active_users": 1
             },
             {
-              "country": "Netherlands",
+              "country": "China",
               "active_users": 1
             },
             {
-              "country": "Poland",
+              "country": "Japan",
               "active_users": 1
             }
           ]
         },
         "30d": {
-          "active_users": 262,
-          "new_users": 279,
-          "sessions": 515,
-          "screen_page_views": 1306,
-          "active_now": 1
+          "active_users": 274,
+          "new_users": 296,
+          "sessions": 557,
+          "screen_page_views": 1440,
+          "active_now": 0
         },
         "total": {
-          "active_users": 308,
-          "new_users": 330,
-          "sessions": 585,
-          "screen_page_views": 1402,
-          "active_now": 1
+          "active_users": 340,
+          "new_users": 367,
+          "sessions": 649,
+          "screen_page_views": 1557,
+          "active_now": 0
         }
       },
       "priority": "critical",
@@ -420,82 +408,86 @@
       "ga4_measurement_id": "G-K7RCVL5RFQ",
       "periods": {
         "24h": {
-          "unique_visitors": 5,
-          "active_users": 5,
-          "new_users": 3,
-          "event_count": 50,
-          "sessions": 10,
-          "screen_page_views": 17,
-          "today_users": 1,
-          "today_sessions": 3,
-          "today_new_users": 0,
-          "active_now": 1
+          "unique_visitors": 8,
+          "active_users": 8,
+          "new_users": 8,
+          "event_count": 279,
+          "sessions": 19,
+          "screen_page_views": 106,
+          "today_users": 7,
+          "today_sessions": 11,
+          "today_new_users": 6,
+          "active_now": 0
         },
         "3d": {
-          "active_users": 10,
-          "new_users": 7,
-          "sessions": 22,
-          "screen_page_views": 38,
-          "active_now": 1
+          "active_users": 13,
+          "new_users": 12,
+          "sessions": 25,
+          "screen_page_views": 111,
+          "active_now": 0
         },
         "7d": {
-          "active_users": 43,
-          "new_users": 44,
-          "event_count": 1221,
-          "sessions": 119,
-          "screen_page_views": 466,
-          "active_now": 1,
+          "active_users": 28,
+          "new_users": 27,
+          "event_count": 421,
+          "sessions": 52,
+          "screen_page_views": 155,
+          "active_now": 0,
           "top_channels": [
             {
               "channel": "Direct",
-              "sessions": 61
+              "sessions": 30
             },
             {
               "channel": "Referral",
-              "sessions": 49
-            },
-            {
-              "channel": "Organic Search",
-              "sessions": 7
+              "sessions": 21
             },
             {
               "channel": "Unassigned",
               "sessions": 3
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 1
             }
           ],
           "top_pages": [
             {
-              "page": "Resonant Web Design | Boutique Websites, SEO & Launch Systems",
-              "views": 146
-            },
-            {
               "page": "Custom Web Development, SEO & Business Systems | Resonant",
-              "views": 79
+              "views": 80
             },
             {
-              "page": "SEO Foundations for Ohio Service Businesses | Resonant Web Design",
-              "views": 53
+              "page": "Custom Web Development | Resonant Web Design",
+              "views": 18
             },
             {
-              "page": "System Integrations, APIs & Business Automation | Resonant Web Design",
-              "views": 42
+              "page": "Website System Integrations & Automation | Resonant Web Design",
+              "views": 18
             },
             {
-              "page": "Cleveland & Ohio Web Design, SEO & Integrations | Resonant",
-              "views": 37
+              "page": "SEO Foundations | Resonant Web Design",
+              "views": 14
             },
             {
-              "page": "Starter Sites \u2014 $69/mo Website Ownership | Resonant Web Design",
-              "views": 25
+              "page": "Resonant Web Design | Boutique Websites, SEO & Launch Systems",
+              "views": 8
+            },
+            {
+              "page": "Let\u2019s Talk | Resonant Web Design",
+              "views": 5
             }
           ],
           "top_countries": [
             {
               "country": "United States",
-              "active_users": 41
+              "active_users": 24
             },
             {
-              "country": "Bangladesh",
+              "country": "Japan",
+              "active_users": 2
+            },
+            {
+              "country": "China",
               "active_users": 1
             },
             {
@@ -505,18 +497,18 @@
           ]
         },
         "30d": {
-          "active_users": 124,
-          "new_users": 133,
-          "sessions": 241,
-          "screen_page_views": 782,
-          "active_now": 1
+          "active_users": 146,
+          "new_users": 157,
+          "sessions": 283,
+          "screen_page_views": 920,
+          "active_now": 0
         },
         "total": {
-          "active_users": 124,
-          "new_users": 133,
-          "sessions": 241,
-          "screen_page_views": 782,
-          "active_now": 1
+          "active_users": 146,
+          "new_users": 157,
+          "sessions": 283,
+          "screen_page_views": 920,
+          "active_now": 0
         }
       },
       "priority": "high",
@@ -593,104 +585,6 @@
       "ga4_measurement_id": "G-SJCKF1EMFL",
       "periods": {
         "24h": {
-          "unique_visitors": 1,
-          "active_users": 1,
-          "new_users": 1,
-          "event_count": 4,
-          "sessions": 1,
-          "screen_page_views": 1,
-          "today_users": 1,
-          "today_sessions": 1,
-          "today_new_users": 1,
-          "active_now": 0
-        },
-        "3d": {
-          "active_users": 1,
-          "new_users": 1,
-          "sessions": 1,
-          "screen_page_views": 1,
-          "active_now": 0
-        },
-        "7d": {
-          "active_users": 11,
-          "new_users": 12,
-          "event_count": 38,
-          "sessions": 11,
-          "screen_page_views": 12,
-          "active_now": 0,
-          "top_channels": [
-            {
-              "channel": "Direct",
-              "sessions": 10
-            },
-            {
-              "channel": "Referral",
-              "sessions": 1
-            },
-            {
-              "channel": "Unassigned",
-              "sessions": 1
-            }
-          ],
-          "top_pages": [
-            {
-              "page": "Miami Hidden Bar Tour \u2014 Coming September 2026",
-              "views": 12
-            }
-          ],
-          "top_countries": [
-            {
-              "country": "United States",
-              "active_users": 7
-            },
-            {
-              "country": "China",
-              "active_users": 1
-            },
-            {
-              "country": "Russia",
-              "active_users": 1
-            },
-            {
-              "country": "South Korea",
-              "active_users": 1
-            },
-            {
-              "country": "United Kingdom",
-              "active_users": 1
-            }
-          ]
-        },
-        "30d": {
-          "active_users": 56,
-          "new_users": 61,
-          "sessions": 67,
-          "screen_page_views": 87,
-          "active_now": 0
-        },
-        "total": {
-          "active_users": 56,
-          "new_users": 61,
-          "sessions": 67,
-          "screen_page_views": 87,
-          "active_now": 0
-        }
-      },
-      "priority": "medium",
-      "alerts": [],
-      "cloudflare_zone": "miamihiddenbartour.com"
-    },
-    {
-      "id": "rollin",
-      "name": "Rollin Smoke BBQ",
-      "domain": "rollinsmokeatxbbq.com",
-      "url": "https://rollinsmokeatxbbq.com",
-      "status": "live",
-      "status_label": "DATA FLOWING",
-      "ga4_property_id": "459646984",
-      "ga4_measurement_id": "G-TD5E4PZM0P",
-      "periods": {
-        "24h": {
           "unique_visitors": 0,
           "active_users": 0,
           "new_users": 0,
@@ -705,39 +599,149 @@
         "3d": {
           "active_users": 0,
           "new_users": 0,
-          "sessions": 0,
-          "screen_page_views": 0,
+          "sessions": 1,
+          "screen_page_views": 1,
           "active_now": 0
         },
         "7d": {
-          "active_users": 0,
-          "new_users": 0,
-          "event_count": 0,
-          "sessions": 0,
-          "screen_page_views": 0,
+          "active_users": 3,
+          "new_users": 3,
+          "event_count": 21,
+          "sessions": 6,
+          "screen_page_views": 8,
           "active_now": 0,
-          "top_channels": [],
-          "top_pages": [],
-          "top_countries": []
+          "top_channels": [
+            {
+              "channel": "Direct",
+              "sessions": 4
+            },
+            {
+              "channel": "Organic Search",
+              "sessions": 2
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "Miami Hidden Bar Tour \u2014 Coming September 2026",
+              "views": 8
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 3
+            }
+          ]
         },
         "30d": {
-          "active_users": 0,
-          "new_users": 0,
-          "sessions": 0,
-          "screen_page_views": 0,
+          "active_users": 58,
+          "new_users": 63,
+          "sessions": 72,
+          "screen_page_views": 94,
           "active_now": 0
         },
         "total": {
-          "active_users": 62,
-          "new_users": 62,
+          "active_users": 58,
+          "new_users": 63,
           "sessions": 72,
-          "screen_page_views": 124,
+          "screen_page_views": 94,
           "active_now": 0
         }
       },
-      "priority": "low",
+      "priority": "medium",
       "alerts": [],
-      "cloudflare_zone": "rollinsmokeatxbbq.com"
+      "cloudflare_zone": "miamihiddenbartour.com"
+    },
+    {
+      "id": "impulse",
+      "name": "Impulse by Design",
+      "domain": "impulsebydesign.com",
+      "url": "https://impulsebydesign.com",
+      "status": "live",
+      "status_label": "DATA FLOWING",
+      "ga4_property_id": "540046010",
+      "ga4_measurement_id": "G-DQJKBWMM8H",
+      "periods": {
+        "24h": {
+          "unique_visitors": 1,
+          "active_users": 1,
+          "new_users": 0,
+          "event_count": 7,
+          "sessions": 1,
+          "screen_page_views": 1,
+          "today_users": 0,
+          "today_sessions": 0,
+          "today_new_users": 0,
+          "active_now": 0
+        },
+        "3d": {
+          "active_users": 1,
+          "new_users": 0,
+          "sessions": 2,
+          "screen_page_views": 2,
+          "active_now": 0
+        },
+        "7d": {
+          "active_users": 6,
+          "new_users": 5,
+          "event_count": 50,
+          "sessions": 10,
+          "screen_page_views": 11,
+          "active_now": 0,
+          "top_channels": [
+            {
+              "channel": "Referral",
+              "sessions": 6
+            },
+            {
+              "channel": "Direct",
+              "sessions": 3
+            },
+            {
+              "channel": "Unassigned",
+              "sessions": 1
+            }
+          ],
+          "top_pages": [
+            {
+              "page": "$69 Website Ownership for Cleveland Small Businesses | Impulse by Design",
+              "views": 11
+            }
+          ],
+          "top_countries": [
+            {
+              "country": "United States",
+              "active_users": 3
+            },
+            {
+              "country": "Sweden",
+              "active_users": 2
+            },
+            {
+              "country": "Australia",
+              "active_users": 1
+            }
+          ]
+        },
+        "30d": {
+          "active_users": 51,
+          "new_users": 53,
+          "sessions": 92,
+          "screen_page_views": 130,
+          "active_now": 0
+        },
+        "total": {
+          "active_users": 51,
+          "new_users": 53,
+          "sessions": 92,
+          "screen_page_views": 130,
+          "active_now": 0
+        }
+      },
+      "priority": "high",
+      "alerts": [],
+      "notes": "GA4 filtered by hostName within property 540046010 until a dedicated property is linked",
+      "cloudflare_zone": "impulsebydesign.com"
     },
     {
       "id": "batiya",
@@ -778,6 +782,5 @@
       "priority": "critical",
       "notes": "Client mockup + offer tracking"
     }
-  ],
-  "publish_build": "20260719225103"
+  ]
 }

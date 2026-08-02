@@ -1,0 +1,364 @@
+{
+  "generated_at": "2026-08-02T19:48:00.175937+00:00",
+  "version": 1,
+  "title": "Nexus Agent Fleet",
+  "internal_only": true,
+  "is_seed": false,
+  "source_note": "Live \u00b7 coordination ledger + 3 Claude sessions (24h) \u00b7 registry 40 projects",
+  "tokens": {
+    "today": 3258279,
+    "cap": 5000000,
+    "spend_usd_today": 19.55,
+    "spend_mtd": 19.55
+  },
+  "summary": {
+    "active": 6,
+    "running": 0,
+    "idle": 5,
+    "error": 0,
+    "scheduled": 1,
+    "queued": 2,
+    "runs_24h": 3,
+    "success_rate": 1.0
+  },
+  "agents": [
+    {
+      "id": "claude-code",
+      "name": "Claude Code",
+      "role": "Primary operator \u00b7 builds & runs all agents",
+      "model": "claude-opus-4-8",
+      "status": "idle",
+      "current_task": null,
+      "last_run": null,
+      "next_run": null,
+      "runs_24h": 3,
+      "tokens_24h": 3258279,
+      "runtime_avg_s": 4809,
+      "success_rate": 1.0,
+      "host": "macbook15",
+      "schedule": "on demand"
+    },
+    {
+      "id": "reeve",
+      "name": "Reeve",
+      "role": "Morning sync \u00b7 aggregates Claude sessions to Obsidian",
+      "model": "claude-opus-4-8",
+      "status": "scheduled",
+      "current_task": null,
+      "last_run": "2026-07-30T00:59:15.647535+00:00",
+      "next_run": null,
+      "runs_24h": 0,
+      "tokens_24h": 0,
+      "runtime_avg_s": 0,
+      "success_rate": 1.0,
+      "host": "macbook15",
+      "schedule": "08:00 daily"
+    },
+    {
+      "id": "codex",
+      "name": "Codex",
+      "role": "Planning \u00b7 agent setup \u00b7 web-building programs",
+      "model": "gpt-codex",
+      "status": "idle",
+      "current_task": null,
+      "last_run": "2026-08-02T16:52:56.849274+00:00",
+      "next_run": null,
+      "runs_24h": 1,
+      "tokens_24h": 0,
+      "runtime_avg_s": 0,
+      "success_rate": 1.0,
+      "host": "macbook15",
+      "schedule": "on demand"
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "role": "Web developer of record \u00b7 site builds & CSS/HTML",
+      "model": "grok",
+      "status": "idle",
+      "current_task": null,
+      "last_run": "2026-07-30T16:41:30.359382+00:00",
+      "next_run": null,
+      "runs_24h": 0,
+      "tokens_24h": 0,
+      "runtime_avg_s": 0,
+      "success_rate": 1.0,
+      "host": "macbook15",
+      "schedule": "on demand"
+    },
+    {
+      "id": "seo-diver",
+      "name": "SEO Diver",
+      "role": "Weekly crawl \u00b7 keywords \u00b7 backlinks \u00b7 gap (DataForSEO)",
+      "model": "claude-opus-4-8",
+      "status": "idle",
+      "current_task": null,
+      "last_run": null,
+      "next_run": null,
+      "runs_24h": 0,
+      "tokens_24h": 0,
+      "runtime_avg_s": 0,
+      "success_rate": 1.0,
+      "host": "macbook15",
+      "schedule": "weekly \u00b7 per site"
+    },
+    {
+      "id": "screenpop",
+      "name": "OVLP Screen Pop",
+      "role": "Inbound caller screen pop \u00b7 GHL + Kixie + REISkip",
+      "model": "n/a",
+      "status": "idle",
+      "current_task": null,
+      "last_run": null,
+      "next_run": null,
+      "runs_24h": 0,
+      "tokens_24h": 0,
+      "runtime_avg_s": 0,
+      "success_rate": 1.0,
+      "host": "Kehlen",
+      "schedule": "event \u00b7 on call"
+    }
+  ],
+  "runs": [
+    {
+      "ts": "2026-08-02T16:52:56.849274+00:00",
+      "agent": "CODEX",
+      "task": "Built clean last-year Obsidian vault from Apple Notes, Mac backups, G-Drive exports, and recovery inventory; registered ",
+      "status": "running",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "obsidian-sync"
+    },
+    {
+      "ts": "2026-08-02T16:33:27.274041+00:00",
+      "agent": "CODEX",
+      "task": "Inventory and consolidate last-year notes from Mac and G-Drive into a clean Obsidian vault",
+      "status": "running",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "obsidian-sync"
+    },
+    {
+      "ts": "2026-07-31T11:37:55.112603+00:00",
+      "agent": "CODEX",
+      "task": "Completed first Desktop and Documents AI-sprawl cleanup; created visible Nexus library, Projects routing, and handoff/ho",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-coordination"
+    },
+    {
+      "ts": "2026-07-31T11:32:30.775551+00:00",
+      "agent": "CODEX",
+      "task": "Reorganize visible Documents/Nexus library and clean AI-generated Desktop artifacts",
+      "status": "running",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-coordination"
+    },
+    {
+      "ts": "2026-07-30T16:41:30.359382+00:00",
+      "agent": "GROK",
+      "task": "Option1 hybrid MJ queue live; job 20260730-124058-2e7ace posted waiting Richard /imagine approval; Reeve bot running",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "midjourney-hybrid"
+    },
+    {
+      "ts": "2026-07-30T14:33:21.933641+00:00",
+      "agent": "GROK",
+      "task": "Pulled wynpizzamiami.com mirror; joined 4AM V1+V2 hero (~30s hard concat); stripped hero slogan; local lab :8860",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "wyn-pizza-lab"
+    },
+    {
+      "ts": "2026-07-30T00:59:15.647535+00:00",
+      "agent": "REEVE",
+      "task": "Paused pending Richard's decisions on 3 findings + Friday Session Two",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "recr-agency-build"
+    },
+    {
+      "ts": "2026-07-30T00:58:09.526849+00:00",
+      "agent": "REEVE",
+      "task": "Transcribed 131 min of Bill Faber discovery locally; mined into cited requirements doc; 3 findings that change existing ",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "recr-agency-build"
+    },
+    {
+      "ts": "2026-07-30T00:24:36.204523+00:00",
+      "agent": "REEVE",
+      "task": "Doc-verified all 10 GHL feasibility items against official HighLevel docs; 2 intake claims corrected, 1 upgraded",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "recr-agency-build"
+    },
+    {
+      "ts": "2026-07-30T00:17:41.507200+00:00",
+      "agent": "REEVE",
+      "task": "Opened RECR agency build workspace; local transcription of 3 Bill Faber discovery recordings (131 min) running",
+      "status": "running",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "recr-agency-build"
+    },
+    {
+      "ts": "2026-07-28T11:39:47.566988+00:00",
+      "agent": "GROK",
+      "task": "Armed offline client-network rescue kit for Grok 'go' trigger",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-infrastructure"
+    },
+    {
+      "ts": "2026-07-28T11:32:21.973616+00:00",
+      "agent": "CODEX",
+      "task": "Built offline Wi-Fi rescue kit and identified manual Wi-Fi configuration risk",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-infrastructure"
+    },
+    {
+      "ts": "2026-07-28T11:28:33.064032+00:00",
+      "agent": "CODEX",
+      "task": "Prepare offline client Wi-Fi rescue diagnostic",
+      "status": "running",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-infrastructure"
+    },
+    {
+      "ts": "2026-07-28T03:01:03.193321+00:00",
+      "agent": "CODEX",
+      "task": "Performed conservative Mac housekeeping and prepared restart",
+      "status": "ok",
+      "duration_s": 0,
+      "tokens": 0,
+      "cost_usd": 0,
+      "note": "nexus-infrastructure"
+    }
+  ],
+  "stream": [
+    {
+      "ts": "2026-08-02T16:52:56.849274+00:00",
+      "agent": "CODEX",
+      "event": "Built clean last-year Obsidian vault from Apple Notes, Mac backups, G-Drive exports, and recovery inventory; r",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-08-02T16:33:27.274041+00:00",
+      "agent": "CODEX",
+      "event": "Inventory and consolidate last-year notes from Mac and G-Drive into a clean Obsidian vault",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-31T11:37:55.112603+00:00",
+      "agent": "CODEX",
+      "event": "Completed first Desktop and Documents AI-sprawl cleanup; created visible Nexus library, Projects routing, and ",
+      "severity": "high"
+    },
+    {
+      "ts": "2026-07-31T11:32:30.775551+00:00",
+      "agent": "CODEX",
+      "event": "Reorganize visible Documents/Nexus library and clean AI-generated Desktop artifacts",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-30T16:41:30.359382+00:00",
+      "agent": "GROK",
+      "event": "Option1 hybrid MJ queue live; job 20260730-124058-2e7ace posted waiting Richard /imagine approval; Reeve bot r",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-30T14:33:21.933641+00:00",
+      "agent": "GROK",
+      "event": "Pulled wynpizzamiami.com mirror; joined 4AM V1+V2 hero (~30s hard concat); stripped hero slogan; local lab :88",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-30T00:59:15.647535+00:00",
+      "agent": "REEVE",
+      "event": "Paused pending Richard's decisions on 3 findings + Friday Session Two",
+      "severity": "high"
+    },
+    {
+      "ts": "2026-07-30T00:58:09.526849+00:00",
+      "agent": "REEVE",
+      "event": "Transcribed 131 min of Bill Faber discovery locally; mined into cited requirements doc; 3 findings that change",
+      "severity": "high"
+    },
+    {
+      "ts": "2026-07-30T00:24:36.204523+00:00",
+      "agent": "REEVE",
+      "event": "Doc-verified all 10 GHL feasibility items against official HighLevel docs; 2 intake claims corrected, 1 upgrad",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-30T00:17:41.507200+00:00",
+      "agent": "REEVE",
+      "event": "Opened RECR agency build workspace; local transcription of 3 Bill Faber discovery recordings (131 min) running",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-28T11:39:47.566988+00:00",
+      "agent": "GROK",
+      "event": "Armed offline client-network rescue kit for Grok 'go' trigger",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-28T11:32:21.973616+00:00",
+      "agent": "CODEX",
+      "event": "Built offline Wi-Fi rescue kit and identified manual Wi-Fi configuration risk",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-28T11:28:33.064032+00:00",
+      "agent": "CODEX",
+      "event": "Prepare offline client Wi-Fi rescue diagnostic",
+      "severity": "info"
+    },
+    {
+      "ts": "2026-07-28T03:01:03.193321+00:00",
+      "agent": "CODEX",
+      "event": "Performed conservative Mac housekeeping and prepared restart",
+      "severity": "info"
+    }
+  ],
+  "queue": [
+    {
+      "task": "Named and launched Hermes buyer intelligence system; Franklin pilot batch 4+ scraping",
+      "agent": "GROK",
+      "eta": "expired",
+      "priority": "normal"
+    },
+    {
+      "task": "Record approved center-screen sticky scroll-scrub Flip parameter",
+      "agent": "CODEX",
+      "eta": "expired",
+      "priority": "normal"
+    }
+  ]
+}

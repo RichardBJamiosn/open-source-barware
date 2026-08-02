@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-25T11:14:13+00:00",
+  "generated_at": "2026-07-30T23:14:57+00:00",
   "version": 1,
   "title": "Nexus Infrastructure & Recurring Cost",
   "internal_only": true,
@@ -9,7 +9,7 @@
       "zones_api": "connected",
       "billing_api": "not_connected",
       "billing_detail": "token has no billing scope (HTTP 403) \u2014 cost figures are human-confirmed",
-      "last_refreshed": "2026-07-25T11:14:13+00:00",
+      "last_refreshed": "2026-07-30T23:14:57+00:00",
       "source": "cloudflare_api_live"
     },
     "managed_zones": 7,
