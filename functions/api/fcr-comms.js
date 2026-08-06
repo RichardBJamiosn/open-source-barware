@@ -4,6 +4,8 @@
  * POST /api/fcr-comms          → send message or upload meta
  *   { action: "send", author, text, attachments? }
  *   { action: "upload", name, mime, size, data_base64? , url? }
+ *   { action: "delete", id }   → remove message
+ *   { action: "delete_file", id } → remove file cabinet entry (+ blob if KV)
  *   { action: "seed" }         → force re-seed welcome if empty
  */
 import { cors, getVisitorKv, jsonError } from "../_shared/kv.js";
@@ -221,6 +223,51 @@ export async function onRequestPost(context) {
       await kv.put(MSG_KEY, JSON.stringify(kept));
       return new Response(
         JSON.stringify({ ok: true, before: messages.length, after: kept.length }),
+        { headers: cors("GET, POST, OPTIONS") }
+      );
+    }
+
+    // Permanent close (red X) — remove message from shared store for everyone
+    if (action === "delete") {
+      const id = String(body.id || body.message_id || "").trim();
+      if (!id) return jsonError("delete requires id", 400);
+      const messages = await readJson(kv, MSG_KEY, []);
+      const kept = messages.filter((m) => String(m && m.id) !== id);
+      await kv.put(MSG_KEY, JSON.stringify(kept));
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          id,
+          before: messages.length,
+          after: kept.length,
+          removed: messages.length - kept.length,
+        }),
+        { headers: cors("GET, POST, OPTIONS") }
+      );
+    }
+
+    // Permanent remove from file cabinet (+ optional KV blob)
+    if (action === "delete_file") {
+      const id = String(body.id || body.file_id || "").trim();
+      if (!id) return jsonError("delete_file requires id", 400);
+      const files = await readJson(kv, FILE_KEY, []);
+      const before = files.length;
+      const kept = files.filter((f) => String(f && f.id) !== id);
+      await kv.put(FILE_KEY, JSON.stringify(kept));
+      // Best-effort blob cleanup for inline KV uploads
+      try {
+        await kv.delete(`fcr:comms:blob:${id}`);
+      } catch {
+        /* ignore */
+      }
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          id,
+          before,
+          after: kept.length,
+          removed: before - kept.length,
+        }),
         { headers: cors("GET, POST, OPTIONS") }
       );
     }
