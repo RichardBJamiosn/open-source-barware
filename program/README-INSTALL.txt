@@ -1,4 +1,4 @@
-Open Source Barware — Chrome Program v1.5
+Open Source Barware - Chrome Program v1.5.1
 ==========================================
 July 10, 2026 public release · Free · GPL-3.0-or-later
 
@@ -56,12 +56,17 @@ WINDOWS INSTALL (5–10 minutes)
 ------------------------------
 1. Right-click the .zip → Extract All.
 2. Open the folder "open-source-barware-program".
-3. Double-click Install.bat
+3. Double-click Install.bat  (do not double-click install.ps1)
 4. If SmartScreen warns: More info → Run anyway
 5. If Python is missing: install from https://www.python.org/downloads/
    Check "Add python.exe to PATH" during setup, then run Install.bat again.
-6. Wait for "Setup complete!" — your browser opens to the program.
+6. Wait for "Setup complete!" - your browser opens to the program.
 7. Bookmark http://localhost:5052/ in Chrome or Edge.
+
+If Install.bat dies with "The string is missing the terminator":
+you have the July 10 zip. Download a fresh Windows zip from
+https://opensourcebarware.com/download and run Install.bat again.
+Python and PATH were never the problem.
 
 The program installs to:  %USERPROFILE%\osb-program
 It starts automatically when you log in (Startup folder shortcut).

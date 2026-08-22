@@ -1,4 +1,6 @@
-# Open Source Barware — Windows installer
+﻿# Open Source Barware - Windows installer
+# ASCII-only on purpose: Windows PowerShell 5.1 misreads UTF-8 em-dashes
+# without a BOM as a string terminator (Install.bat dies at Read-Host).
 # Usage: powershell -ExecutionPolicy Bypass -File install.ps1
 #   -Silent          CI / no prompts
 #   -SkipBrowser     Do not open Chrome/Edge after install
@@ -91,7 +93,7 @@ function Stop-PortListener([int]$port) {
 
 if (-not $Silent) { Clear-Host }
 Write-Host ""
-Write-Host "  Open Source Barware — Windows Install"
+Write-Host "  Open Source Barware - Windows Install"
 Write-Host "  -------------------------------------"
 Write-Host ""
 

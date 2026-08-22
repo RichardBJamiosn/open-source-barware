@@ -61,7 +61,7 @@ export default function ChangelogPage() {
           </h1>
           <p className="text-text-muted text-lg leading-relaxed max-w-2xl mb-6">
             Released July 10, 2026 · Version{" "}
-            <code className="text-copper text-sm">1.5.0</code> · GPL-3.0-or-later
+            <code className="text-copper text-sm">1.5.1</code> · GPL-3.0-or-later
             · Free forever. Local-first Chrome program on Mac and Windows — no
             subscription, no cloud account required.
           </p>
@@ -93,11 +93,22 @@ export default function ChangelogPage() {
 
       <section className="max-w-3xl mx-auto px-6 py-14 md:py-20 space-y-12">
         <div>
+          <h2 className="font-serif text-2xl text-cream mb-4">v1.5.1 — August 22, 2026</h2>
+          <p className="text-text-muted leading-relaxed mb-3">
+            Windows installer patch.{" "}
+            <code className="text-copper text-sm">Install.bat</code> died on
+            Windows PowerShell 5.1 with “The string is missing the terminator”
+            before Python ever ran. Re-download the Windows zip and run
+            Install.bat again — Python and PATH were never the problem.
+          </p>
+        </div>
+
+        <div>
           <h2 className="font-serif text-2xl text-cream mb-4">Summary</h2>
           <p className="text-text-muted leading-relaxed">
             The July 4 free launch is now the full{" "}
             <strong className="text-cream">v1.5</strong> public drop. Same
-            local-first program — installers on the Download page are v1.5.
+            local-first program — installers on the Download page are v1.5.1.
             Built for the average bartender to start simple; industrial strength
             when needed.
           </p>

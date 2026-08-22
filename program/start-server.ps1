@@ -1,4 +1,4 @@
-# Start Open Source Barware server (manual or login startup)
+﻿# Start Open Source Barware server (manual or login startup)
 param([switch]$Background)
 
 $InstallDir = if ($PSScriptRoot) { $PSScriptRoot } else { Join-Path $env:USERPROFILE "osb-program" }

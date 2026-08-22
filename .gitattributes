@@ -1,0 +1,4 @@
+# Windows PowerShell 5.1 must see CRLF + no UTF-8 em-dashes.
+program/*.ps1 text eol=crlf
+program/scripts/*.ps1 text eol=crlf
+program/*.bat text eol=crlf

@@ -1,4 +1,4 @@
-# Synthetic Windows client — internal verification checklist (VC).
+﻿# Synthetic Windows client - internal verification checklist (VC).
 # No physical Windows PC required; run on GitHub windows-latest or after local install.
 # Usage: pwsh -File scripts/windows-vc.ps1 [-InstallDir $env:USERPROFILE\osb-program] [-Port 5052]
 
@@ -52,7 +52,7 @@ Add-Check "VC-00" "Port listening on 127.0.0.1" {
 }
 
 Write-Host ""
-Write-Host "  OSB Windows VC — synthetic client"
+Write-Host "  OSB Windows VC - synthetic client"
 Write-Host "  InstallDir: $InstallDir"
 Write-Host "  -------------------------------------"
 
@@ -140,7 +140,7 @@ Add-Check "VC-10" "Server log files present" {
 $failed = @($checks | Where-Object { -not $_.Pass })
 foreach ($c in $checks) {
     $mark = if ($c.Pass) { "PASS" } else { "FAIL" }
-    Write-Host ("  [{0}] {1} — {2}" -f $mark, $c.Id, $c.Label)
+    Write-Host ("  [{0}] {1} - {2}" -f $mark, $c.Id, $c.Label)
     if ($c.Detail) { Write-Host ("         {0}" -f $c.Detail) }
 }
 

@@ -1,4 +1,4 @@
-1.5.0
-V1.5 Public Release — Spanish-ready notes + full bar toolkit
-Release: July 10, 2026
-Build: EN/ES inventory notes · Spanish walk/count synonyms · Employee communications · PIN logins · mobile count · barcode · POS · recipes · multi-venue · coming-soon roadmap
+1.5.1
+V1.5.1 Windows installer fix + v1.5 public toolkit
+Release: August 22, 2026 (installer patch on July 10 2026 v1.5)
+Build: Windows PowerShell 5.1 install.ps1 encoding fix · EN/ES inventory notes · Spanish walk/count synonyms · Employee communications · PIN logins · mobile count · barcode · POS · recipes · multi-venue · coming-soon roadmap
